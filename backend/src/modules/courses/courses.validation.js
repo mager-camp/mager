@@ -1,0 +1,15 @@
+import { z } from 'zod';
+
+export const createCourseSchema =
+  z.object({
+    title: z.string().min(3),
+    description: z.string(),
+    type: z.enum([
+      'regular',
+      'premium'
+    ]),
+    price: z.number().nonnegative()
+  });
+
+export const updateCourseSchema =
+  createCourseSchema.partial();
