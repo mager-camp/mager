@@ -1,0 +1,28 @@
+import { Router } from 'express';
+import authRoutes from '../modules/auth/auth.routes.js';
+import scheduleRoutes from '../modules/schedules/schedules.routes.js';
+import activityRoutes from '../modules/activities/activities.routes.js';
+import workoutLogsRoutes from '../modules/workout-logs/workoutLogs.routes.js';
+import dashboardRoutes from '../modules/dashboard/dashboard.routes.js';
+import notificationsRoutes from '../modules/notifications/notifications.routes.js';
+import profileRoutes from '../modules/profile/profile.routes.js';
+import coursesRoutes from '../modules/courses/courses.routes.js';
+
+const router = Router();
+
+router.use('/auth', authRoutes);
+router.use('/schedules', scheduleRoutes);
+router.use('/activities', activityRoutes);
+router.use(
+    '/workout-logs',
+    workoutLogsRoutes
+);
+router.use('/dashboard', dashboardRoutes);
+router.use(
+  '/notifications',
+  notificationsRoutes
+);
+router.use('/profile', profileRoutes);
+router.use('/courses', coursesRoutes);
+
+export default router;

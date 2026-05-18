@@ -1,0 +1,25 @@
+import prisma from '../../config/prisma.js';
+
+export const findUserByEmail = (email) => {
+  return prisma.user.findUnique({
+    where: { email },
+    include: {
+      role: true
+    }
+  });
+};
+
+export const findUserById = (id) => {
+  return prisma.user.findUnique({
+    where: { id },
+    include: {
+      role: true
+    }
+  });
+};
+
+export const createUser = (data) => {
+  return prisma.user.create({
+    data
+  });
+};
