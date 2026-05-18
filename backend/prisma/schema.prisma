@@ -104,22 +104,31 @@ model UserSchedule {
   id            String           @id @default(uuid())
   userId        String
   activityId    String
-  scheduledDate DateTime
-  scheduledTime String
+
+  scheduledAt   DateTime
+
+  alarmAt       DateTime?
+
   intensity     Intensity
   programType   String
-  alarmTime     String?
+
   alarmEnabled  Boolean          @default(false)
   status        ScheduleStatus   @default(pending)
+
   notes         String?
+
+  reminderSent  Boolean          @default(false)
+
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
+
   notifications Notification[]
   activity      ActivityTemplate @relation(fields: [activityId], references: [id])
   user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   workoutLogs   WorkoutLog[]
 
-  @@index([userId, scheduledDate])
+  @@index([userId, scheduledAt])
+  @@index([alarmAt])
 }
 
 model Notification {

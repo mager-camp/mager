@@ -66,8 +66,12 @@ async function main() {
   });
 
   // payment
-  await prisma.payment.create({
-    data: {
+  await prisma.payment.upsert({
+    where: {
+      invoiceNumber: "INV-001",
+    },
+    update: {},
+    create: {
       userId: user.id,
       courseId: course.id,
       paymentMethodId: paymentMethod.id,
@@ -133,12 +137,13 @@ async function main() {
     data: {
       userId: user.id,
       activityId: running.id,
-      scheduledDate: new Date(),
-      scheduledTime: "07:00",
+
+      scheduledAt: new Date("2026-08-25T07:00:00.000Z"),
+      alarmAt: new Date("2026-08-25T06:30:00.000Z"),
+
       intensity: "medium",
       programType: "endurance",
       alarmEnabled: true,
-      alarmTime: "06:30",
     },
   });
 

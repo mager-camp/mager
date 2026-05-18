@@ -1,54 +1,41 @@
-import prisma from '../../config/prisma.js';
+import prisma from "../../config/prisma.js";
 
-export const createScheduleRepo = (
-  data
-) => {
+export const createScheduleRepo = (data) => {
   return prisma.userSchedule.create({
-    data
+    data,
   });
 };
 
-export const getSchedulesRepo = (
-  userId
-) => {
+export const getSchedulesRepo = (userId) => {
   return prisma.userSchedule.findMany({
     where: { userId },
     include: {
-      activity: true
+      activity: true,
     },
     orderBy: {
-      scheduledDate: 'asc'
-    }
+      scheduledAt: "asc",
+    },
   });
 };
 
-export const getScheduleByIdRepo = (
-  id,
-  userId
-) => {
+export const getScheduleByIdRepo = (id, userId) => {
   return prisma.userSchedule.findFirst({
     where: {
       id,
-      userId
-    }
+      userId,
+    },
   });
 };
 
-export const updateScheduleRepo = (
-  id,
-  userId,
-  data
-) => {
+export const updateScheduleRepo = (id, userId, data) => {
   return prisma.userSchedule.update({
     where: { id },
-    data
+    data,
   });
 };
 
-export const deleteScheduleRepo = (
-  id
-) => {
+export const deleteScheduleRepo = (id) => {
   return prisma.userSchedule.delete({
-    where: { id }
+    where: { id },
   });
 };
