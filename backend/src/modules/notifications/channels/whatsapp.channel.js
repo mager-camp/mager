@@ -1,20 +1,39 @@
-import axios from 'axios';
+import axios from "axios";
 
-export const sendWhatsApp = async (phone, message) => {
+export const sendWhatsApp = async (
+  phone,
+  message
+) => {
   try {
-    return await axios.post(
-      'https://api.fonnte.com/send',
+    console.log("SEND TO:", phone);
+    console.log("MESSAGE:", message);
+
+    const response = await axios.post(
+      "https://api.fonnte.com/send",
       {
         target: phone,
-        message
+        message,
       },
       {
         headers: {
-          Authorization: process.env.FONNTE_TOKEN
-        }
+          Authorization:
+            process.env.FONNTE_TOKEN,
+          },
       }
     );
+
+    console.log(
+      "FONNTE RESPONSE:",
+      response.data
+    );
+
+    return response.data;
   } catch (err) {
-    console.error('WA Error:', err.message);
+    console.error(
+      "WA ERROR FULL:",
+      err.response?.data || err.message
+    );
+
+    throw err;
   }
 };

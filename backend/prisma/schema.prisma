@@ -104,24 +104,16 @@ model UserSchedule {
   id            String           @id @default(uuid())
   userId        String
   activityId    String
-
-  scheduledAt   DateTime
-
-  alarmAt       DateTime?
-
   intensity     Intensity
   programType   String
-
   alarmEnabled  Boolean          @default(false)
   status        ScheduleStatus   @default(pending)
-
   notes         String?
-
-  reminderSent  Boolean          @default(false)
-
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
-
+  alarmAt       DateTime?
+  reminderSent  Boolean          @default(false)
+  scheduledAt   DateTime
   notifications Notification[]
   activity      ActivityTemplate @relation(fields: [activityId], references: [id])
   user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -180,9 +172,9 @@ enum PaymentStatus {
 
 enum ActivityCategory {
   workout
-  sport
   recovery
   rest
+  sport
 }
 
 enum Intensity {

@@ -2,19 +2,27 @@ import cron from "node-cron";
 import prisma from "../config/prisma.js";
 import { sendReminderNotification } from "../modules/notifications/services/notification.dispatcher.js";
 
+let isRunning = false;
+
 export const startReminderJob = () => {
   cron.schedule("* * * * *", async () => {
+    if (isRunning) return;
+
+    isRunning = true;
+
     try {
       console.log("🔄 Checking schedules...");
 
       const now = new Date();
+
+      console.log("SERVER NOW:", new Date());
 
       const schedules = await prisma.userSchedule.findMany({
         where: {
           alarmEnabled: true,
           reminderSent: false,
           alarmAt: {
-            lte: new Date(),
+            lte: now,
           },
         },
         include: {
@@ -22,6 +30,8 @@ export const startReminderJob = () => {
           activity: true,
         },
       });
+
+      console.log("Schedules found:", schedules.length);
 
       for (const schedule of schedules) {
         console.log("📩 Sending WA to:", schedule.user.fullName);
@@ -39,6 +49,8 @@ export const startReminderJob = () => {
       }
     } catch (err) {
       console.error("❌ Reminder Job Error:", err);
+    } finally {
+      isRunning = false;
     }
   });
 };
