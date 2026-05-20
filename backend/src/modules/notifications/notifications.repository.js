@@ -3,7 +3,6 @@ import prisma from '../../config/prisma.js';
 export const getTodayNotificationsRepo =
   async (userId) => {
     const today = new Date();
-
     today.setHours(0, 0, 0, 0);
 
     const tomorrow = new Date(today);
@@ -15,7 +14,7 @@ export const getTodayNotificationsRepo =
       where: {
         userId,
         alarmEnabled: true,
-        scheduledDate: {
+        scheduledAt: {
           gte: today,
           lt: tomorrow
         }
@@ -24,7 +23,7 @@ export const getTodayNotificationsRepo =
         activity: true
       },
       orderBy: {
-        scheduledTime: 'asc'
+        scheduledAt: 'asc'
       }
     });
   };
