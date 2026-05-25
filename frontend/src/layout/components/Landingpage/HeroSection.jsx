@@ -23,7 +23,7 @@ export function HeroSection({ onScroll }) {
         className="absolute top-0 left-0 w-full h-full z-[1]"
         id="hero-lapisan-gradasi"
         style={{
-          background: 'linear-gradient(to right, #B8D1E9 0%, #B8D1E9 35%, rgba(184, 209, 233, 0.85) 50%, rgba(184, 209, 233, 0.64) 70%, rgba(184, 209, 233, 0.39) 85%, #b8d1e91c 100%)',
+          background: 'linear-gradient(to right, rgb(184, 209, 233) 0%, rgb(184, 209, 233) 35%, rgba(184, 209, 233, 0.65) 50%, rgba(184, 209, 233, 0.5) 70%, rgba(184, 209, 233, 0.35) 85%, rgba(184, 209, 233, 0) 100%)',
         }}
       />
 
