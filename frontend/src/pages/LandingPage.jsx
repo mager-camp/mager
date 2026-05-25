@@ -1,9 +1,9 @@
 import { useLandingPage } from '../hooks/useLandingPage';
-import Navigasi from './components/landingpage/Navigasi';
-import { HeroSection, Footer } from './components/landingpage/HeroSection';
-import KeunggulanTaktis from './components/landingpage/KeunggulanTaktis';
-import PerformaMaksimal from './components/landingpage/PerformaMaksimal';
-import SectionPremium from './components/landingpage/SectionPremium';
+import Navigasi from '../layout/components/landingpage/Navigasi';
+import { HeroSection, Footer } from '../layout/components/landingpage/HeroSection';
+import KeunggulanTaktis from '../layout/components/landingpage/KeunggulanTaktis';
+import PerformaMaksimal from '../layout/components/landingpage/PerformaMaksimal';
+import SectionPremium from '../layout/components/landingpage/SectionPremium';
 
 function LandingPageLayout() {
   const { navigasiRef, handleSmoothScroll } = useLandingPage();
