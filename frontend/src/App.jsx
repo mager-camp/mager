@@ -1,14 +1,10 @@
-import './App.css'
-import { Button } from "@/components/ui/button"
+import './index.css';
+import LandingPageLayout from './layout/LandingPageLayout';
 
 function App() {
   return (
-    <div className="h-screen flex items-center justify-center">
-      <Button>
-        Mulai Latihan
-      </Button>
-    </div>
-  )
+    <LandingPageLayout />
+  );
 }
 
-export default App
+export default App;
