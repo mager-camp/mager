@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
 import Sidebar from "@/layout/components/Sidebar/Sidebar";
 import { Header } from "@/layout/components/Navbar/header-with-search";
 
-export default function UserLayout({ children }) {
+export default function UserLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
@@ -10,9 +11,11 @@ export default function UserLayout({ children }) {
       <Header />
 
       <div className="flex flex-1 overflow-hidden pt-14">
-        <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+        <Sidebar
+          isCollapsed={isCollapsed}
+          setIsCollapsed={setIsCollapsed}
+        />
 
-        {/* CONTENT */}
         <main
           className={`
             flex-1 transition-all duration-300
@@ -20,7 +23,7 @@ export default function UserLayout({ children }) {
             ${isCollapsed ? "md:ml-24" : "md:ml-72"}
           `}
         >
-          {children}
+          <Outlet />
         </main>
       </div>
     </div>

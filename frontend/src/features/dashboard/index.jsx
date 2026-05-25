@@ -1,4 +1,3 @@
-import UserLayout from "@/layout/UserLayout";
 import WelcomeCard from "@/features/dashboard/components/WelcomeCard";
 import NextSessionCard from "@/features/dashboard/components/NextSessionCard";
 import GoalCard from "@/features/dashboard/components/GoalCard";
@@ -6,8 +5,6 @@ import WeeklyVolumeChart from "@/features/dashboard/components/WeeklyVolumeChart
 
 export default function Dashboard() {
   return (
-    <UserLayout>
-
       <div className="
         p-4 md:p-6
         flex flex-col gap-4
@@ -64,6 +61,5 @@ export default function Dashboard() {
         </div>
 
       </div>
-    </UserLayout>
   );
 }
