@@ -11,7 +11,6 @@ export default function Sidebar({
   setIsCollapsed,
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState("dashboard");
 
   useEffect(() => {
     const handleResize = () => {
@@ -79,11 +78,7 @@ export default function Sidebar({
           toggleCollapse={() => setIsCollapsed(!isCollapsed)}
         />
 
-        <SidebarNav
-          activeItem={activeItem}
-          setActiveItem={setActiveItem}
-          isCollapsed={isCollapsed}
-        />
+        <SidebarNav isCollapsed={isCollapsed} />
 
         {/* <SidebarProfile isCollapsed={isCollapsed} /> */}
 

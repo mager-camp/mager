@@ -1,11 +1,10 @@
 import SidebarItem from "./SidebarItem";
 import { navigationItems } from "./navigation";
+import { useLocation } from "react-router-dom";
 
-export default function SidebarNav({
-  activeItem,
-  setActiveItem,
-  isCollapsed,
-}) {
+export default function SidebarNav({ isCollapsed }) {
+  const location = useLocation();
+
   return (
     <nav className="flex-1 px-3 py-4">
       <ul className="space-y-2">
@@ -13,11 +12,8 @@ export default function SidebarNav({
           <li key={item.id}>
             <SidebarItem
               item={item}
-              isActive={activeItem === item.id}
+              isActive={location.pathname === item.href}
               isCollapsed={isCollapsed}
-              onClick={() =>
-                setActiveItem(item.id)
-              }
             />
           </li>
         ))}

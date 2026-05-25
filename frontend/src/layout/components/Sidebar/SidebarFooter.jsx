@@ -4,11 +4,11 @@ export default function SidebarFooter({
   isCollapsed,
 }) {
   return (
-    <div className="p-3 border-t-2 border-[var(--border)]">
+    <div className="py-3 px-5 border-t-2 border-[var(--border)]">
       <button
         className={`
           w-full flex items-center
-          rounded-xl px-3 py-3
+          rounded-sm px-3 py-3
           text-text-primary
           hover:bg-[var(--primary)]
           transition-all

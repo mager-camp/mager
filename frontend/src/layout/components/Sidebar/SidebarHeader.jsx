@@ -6,7 +6,7 @@ export default function SidebarHeader({ isCollapsed, toggleCollapse }) {
       className={`
         flex items-center
         transition-all duration-300
-        ${isCollapsed ? "justify-center p-3 pb-0" : "justify-between px-4 py-4"}
+        ${isCollapsed ? "justify-center p-3 pb-0" : "justify-between px-4 pt-4"}
       `}
     >
       {!isCollapsed && (

@@ -1,4 +1,11 @@
-export default function SidebarItem({ item, isActive, isCollapsed, onClick }) {
+import { Link } from "react-router-dom";
+
+export default function SidebarItem({
+  item,
+  isActive,
+  isCollapsed,
+  onClick,
+}) {
   const Icon = item.icon;
 
   const activeClass = isActive
@@ -6,11 +13,12 @@ export default function SidebarItem({ item, isActive, isCollapsed, onClick }) {
     : "text-[var(--text-primary)] hover:bg-slate-100";
 
   return (
-    <button
+    <Link
+      to={item.href}
       onClick={onClick}
       className={`
         relative w-full flex items-center
-        rounded-sm pl-3 pr-2 py-3
+        rounded-sm pl-5 pr-4 py-3
         transition-all duration-200 font-bold
         group
         ${activeClass}
@@ -56,6 +64,6 @@ export default function SidebarItem({ item, isActive, isCollapsed, onClick }) {
           {item.name}
         </div>
       )}
-    </button>
+    </Link>
   );
 }
