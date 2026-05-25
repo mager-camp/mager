@@ -1,7 +1,7 @@
 import mainLandingPage from '../../../assets/main_landing_page.svg';
 import page1 from '../../../assets/page1.svg';
 import panahKanan from '../../../assets/icon/panah_kanan.svg';
-import mager from '../../../assets/mager.svg';
+import logoMager from '../../../assets/logo_mager.svg';
 
 export function HeroSection({ onScroll }) {
   return (
@@ -27,10 +27,12 @@ export function HeroSection({ onScroll }) {
         }}
       />
 
+      {/* Kontainer konten hero */}
       <div
         className="hero-konten relative z-[2] w-full h-full flex items-center justify-between px-10 mx-auto"
         id="hero-konten"
       >
+        {/* Kiri: Judul, subjudul, CTA */}
         <div className="hero-kiri flex-[0_0_50%] max-w-[550px] pt-5" id="hero-kiri">
           <div
             className="animasi-dari-bawah tunda-1 inline-flex items-center gap-2 bg-[#1B2B3F] backdrop-blur-sm border border-[rgba(27,58,92,0.15)] rounded-full py-1.5 px-[18px] mb-6 text-xs font-semibold text-white tracking-[0.8px] uppercase"
@@ -86,7 +88,7 @@ export function HeroSection({ onScroll }) {
           </div>
         </div>
 
-        {/* Kanan Gambar dashboard */}
+        {/* Kanan: Gambar dashboard */}
         <div
           className="hero-kanan animasi-dari-kanan tunda-3 flex-[0_0_48%] flex items-center justify-end relative h-full pt-[30px]"
           id="hero-kanan"
@@ -123,14 +125,14 @@ export function Footer({ onScroll }) {
             onClick={(e) => onScroll(e, '#navigasi-utama')}
           >
             <img
-              src={mager}
-              alt="mager"
+              src={logoMager}
+              alt="Logo MAGER - Modern Pentathlon Training"
               className="h-[38px] w-auto block"
             />
           </a>
         </div>
 
-        {/* Tengah Link Navigasi Tambahan */}
+        {/* Tengah: Link Navigasi Tambahan */}
         <div className="footer-tengah flex gap-8" id="footer-tengah">
           <a
             href="#kebijakan"
@@ -148,6 +150,7 @@ export function Footer({ onScroll }) {
           </a>
         </div>
 
+        {/* Kanan: Hak Cipta */}
         <div className="footer-kanan text-right" id="footer-kanan">
           <p className="text-xs font-medium text-[#4682A9] tracking-[0.3px]">
             © 2026 MAGER (MONITORING ATLET &amp; GERAK EFEKTIF RUTIN)
