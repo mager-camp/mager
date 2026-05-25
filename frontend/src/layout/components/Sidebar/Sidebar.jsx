@@ -34,9 +34,9 @@ export default function Sidebar({
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="
-          fixed top-5 left-5 z-50
-          p-3 rounded-xl
-          bg-#487D97
+          fixed top-2 right-4 z-50
+          p-2 rounded-sm
+          bg-background
           shadow-sm
           md:hidden
         "
@@ -60,7 +60,7 @@ export default function Sidebar({
       {/* SIDEBAR */}
       <aside
         className={`
-    fixed left-0 z-40
+    fixed left-0 z-40 border-r-2 border-border
     top-14 h-[calc(100vh-3.5rem)]
     bg-[var(--background)]
     flex flex-col

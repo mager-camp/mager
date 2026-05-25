@@ -89,7 +89,7 @@ export function Header() {
           </Button>
 
           {/* MOBILE MENU */}
-          <Sheet open={open} onOpenChange={setOpen}>
+          {/* <Sheet open={open} onOpenChange={setOpen}>
             <Button
               size="icon"
               variant="outline"
@@ -124,7 +124,7 @@ export function Header() {
                 <Button>Get Started</Button>
               </SheetFooter>
             </SheetContent>
-          </Sheet>
+          </Sheet> */}
         </div>
       </nav>
     </header>
