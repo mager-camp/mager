@@ -1,7 +1,7 @@
 import mainLandingPage from '../../../assets/main_landing_page.svg';
 import page1 from '../../../assets/page1.svg';
 import panahKanan from '../../../assets/icon/panah_kanan.svg';
-import logoMager from '../../../assets/logo_mager.svg';
+import mager from '../../../assets/mager.svg';
 
 export function HeroSection({ onScroll }) {
   return (
@@ -121,12 +121,12 @@ export function Footer({ onScroll }) {
           <a
             href="#navigasi-utama"
             className="block"
-            id="footer-logo"
+            id="mager"
             onClick={(e) => onScroll(e, '#navigasi-utama')}
           >
             <img
-              src={logoMager}
-              alt="Logo MAGER - Modern Pentathlon Training"
+              src={mager}
+              alt="mager"
               className="h-[38px] w-auto block"
             />
           </a>
