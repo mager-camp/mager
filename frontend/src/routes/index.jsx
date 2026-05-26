@@ -7,6 +7,7 @@ import LandingPage from "@/pages/LandingPage";
 import Dashboard from "@/pages/user/Dashboard";
 import Kalender from "@/pages/user/Kalender";
 import Course from "@/pages/user/Course";
+import Rekap from "@/pages/user/Rekap";
 
 export const router = createBrowserRouter([
    {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path: "course",
         element: <Course />,
+      },
+      {
+        path: "Rekap",
+        element: <Rekap />,
       },
     ],
   },
