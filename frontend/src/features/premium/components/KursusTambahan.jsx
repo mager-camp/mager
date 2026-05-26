@@ -1,7 +1,11 @@
-import { Clock, BookOpen, GraduationCap, PlayCircle } from "lucide-react";
+// features/premium/components/KursusTambahan.jsx
+import { GraduationCap, PlayCircle, BookOpen } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { KURSUS_ITEMS } from "../constants/premiumData";
 
 function KursusCard({ item }) {
+  const navigate = useNavigate();
+
   return (
     <div
       className="
@@ -68,27 +72,27 @@ function KursusCard({ item }) {
         <div className="flex items-center gap-2 mb-3">
           <span
             className="
-      bg-[#1A365D]
-      text-white
-      text-[9px] md:text-[10px]
-      font-black
-      px-2.5 py-1
-      rounded
-    "
+              bg-[#1A365D]
+              text-white
+              text-[9px] md:text-[10px]
+              font-black
+              px-2.5 py-1
+              rounded
+            "
           >
             {item.kategori}
           </span>
 
           <span
             className="
-      bg-white
-      text-[#ED8936]
-      text-[9px] md:text-[10px]
-      font-black
-      px-2.5 py-1
-      rounded
-      flex items-center gap-1
-    "
+              bg-white
+              text-[#ED8936]
+              text-[9px] md:text-[10px]
+              font-black
+              px-2.5 py-1
+              rounded
+              flex items-center gap-1
+            "
           >
             <GraduationCap size={8} />
             {item.badge}
@@ -101,23 +105,23 @@ function KursusCard({ item }) {
           <div>
             <h3
               className="
-        text-lg md:text-xl
-        font-black
-        text-white
-        leading-tight
-      "
+                text-lg md:text-xl
+                font-black
+                text-white
+                leading-tight
+              "
             >
               {item.title}
             </h3>
 
             <p
               className="
-        text-[11px] md:text-xs
-        text-blue-100
-        mt-2
-        leading-relaxed
-        line-clamp-3
-      "
+                text-[11px] md:text-xs
+                text-blue-100
+                mt-2
+                leading-relaxed
+                line-clamp-3
+              "
             >
               {item.desc}
             </p>
@@ -125,24 +129,22 @@ function KursusCard({ item }) {
 
           {/* Button always bottom */}
           <button
+            onClick={() => navigate(`/user/premium/kursus/${item.slug}`)}
             className="
-        mt-auto
-
-        w-full
-        py-2 md:py-2.5
-        rounded
-
-        bg-[#ED8936]
-        hover:bg-[#DD6B20]
-
-        active:scale-[0.98]
-        transition-all
-
-        text-white
-        text-[10px] md:text-xs
-        font-black
-        tracking-wider
-      "
+              mt-auto
+              w-full
+              cursor-pointer
+              py-2 md:py-2.5
+              rounded
+              bg-[#ED8936]
+              hover:bg-[#DD6B20]
+              active:scale-[0.98]
+              transition-all
+              text-white
+              text-[10px] md:text-xs
+              font-black
+              tracking-wider
+            "
           >
             MULAI KURSUS
           </button>

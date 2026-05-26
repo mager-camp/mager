@@ -10,6 +10,8 @@ import Premium from "@/pages/user/Premium";
 import Course from "@/pages/user/Course";
 import Rekap from "@/pages/user/Rekap";
 import Settings from "@/pages/user/Settings";
+import CoursePage from "@/features/premium/pages/CoursePage";
+import ModulPage from "@/features/premium/pages/ModulPage";
 
 export const router = createBrowserRouter([
    {
@@ -37,7 +39,20 @@ export const router = createBrowserRouter([
       },
       {
         path: "premium",
-        element: <Premium />,
+        children: [
+          {
+            index: true,
+            element: <Premium />,
+          },
+          {
+            path: "kursus/:slug",
+            element: <CoursePage />,
+          },
+          {
+            path: "kursus/:slug/modul/:modulId",
+            element: <ModulPage />,
+          },
+        ],
       },
       {
         path: "course",

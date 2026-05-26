@@ -12,7 +12,10 @@ export default function SidebarNav({ isCollapsed }) {
           <li key={item.id}>
             <SidebarItem
               item={item}
-              isActive={location.pathname === item.href}
+              isActive={
+                location.pathname === item.href ||
+                location.pathname.startsWith(`${item.href}/`)
+              }
               isCollapsed={isCollapsed}
             />
           </li>
