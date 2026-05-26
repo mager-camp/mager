@@ -44,6 +44,6 @@ export const navigationItems = [
     id: "pengaturan",
     name: "Pengaturan",
     icon: Settings,
-    href: "/user/pengaturan",
+    href: "/user/settings",
   },
 ];

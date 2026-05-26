@@ -8,6 +8,7 @@ import Dashboard from "@/pages/user/Dashboard";
 import Kalender from "@/pages/user/Kalender";
 import Course from "@/pages/user/Course";
 import Rekap from "@/pages/user/Rekap";
+import Settings from "@/pages/user/Settings";
 
 export const router = createBrowserRouter([
    {
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
       {
         path: "Rekap",
         element: <Rekap />,
+      },
+      {
+        path: "settings",
+        element: <Settings />,
       },
     ],
   },
