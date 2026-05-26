@@ -6,6 +6,7 @@ import UserLayout from "@/layout/UserLayout";
 import LandingPage from "@/pages/LandingPage";
 import Dashboard from "@/pages/user/Dashboard";
 import Kalender from "@/pages/user/Kalender";
+import Course from "@/pages/user/Course";
 
 export const router = createBrowserRouter([
    {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
       {
         path: "kalender",
         element: <Kalender />,
+      },
+      {
+        path: "course",
+        element: <Course />,
       },
     ],
   },

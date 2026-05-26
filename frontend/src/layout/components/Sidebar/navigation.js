@@ -31,7 +31,7 @@ export const navigationItems = [
     id: "kursus",
     name: "Kursus",
     icon: GraduationCap,
-    href: "/user/kursus",
+    href: "/user/course",
     //badge: "12",
   },
   {
