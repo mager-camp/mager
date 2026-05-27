@@ -10,6 +10,7 @@ import Premium from "@/pages/user/Premium";
 import Course from "@/pages/user/Course";
 import Rekap from "@/pages/user/Rekap";
 import Settings from "@/pages/user/Settings";
+import Dukungan from "@/pages/user/Support";
 import CoursePage from "@/features/premium/pages/CoursePage";
 import ModulPage from "@/features/premium/pages/ModulPage";
 
@@ -59,12 +60,16 @@ export const router = createBrowserRouter([
         element: <Course />,
       },
       {
-        path: "Rekap",
+        path: "rekap",
         element: <Rekap />,
       },
       {
         path: "settings",
         element: <Settings />,
+      },
+      {
+        path: "support",
+        element: <Dukungan />,
       },
     ],
   },
