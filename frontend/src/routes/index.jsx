@@ -1,4 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
+import GuestRoute from "@/routes/GuestRoute";
+import ProtectedRoute from "@/routes/ProtectedRoute";
 
 import PublicLayout from "@/layout/PublicLayout";
 import UserLayout from "@/layout/UserLayout";
@@ -17,9 +19,13 @@ import CoursePage from "@/features/premium/pages/CoursePage";
 import ModulPage from "@/features/premium/pages/ModulPage";
 
 export const router = createBrowserRouter([
-   {
+  {
     path: "/",
-    element: <PublicLayout />,
+    element: (
+      <GuestRoute>
+        <PublicLayout />
+      </GuestRoute>
+    ),
     children: [
       {
         index: true,
@@ -35,10 +41,14 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  
+
   {
     path: "/user",
-    element: <UserLayout />,
+    element: (
+      <ProtectedRoute>
+        <UserLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "dashboard",

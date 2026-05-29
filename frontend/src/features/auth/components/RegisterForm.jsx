@@ -4,6 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, Lock, Eye, EyeOff, User, Phone, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { registerSchema } from "../constants/authSchema";
+import {
+  register as registerUser,
+  login,
+} from "@/services/authService";
+import { useAuth } from "@/contexts/AuthContext";
 
 function InputField({ label, icon: Icon, type = "text", placeholder, registration, error, rightSlot }) {
   return (
@@ -35,6 +40,7 @@ export default function RegisterForm() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading,     setLoading]     = useState(false);
   const navigate = useNavigate();
+  const { login: setAuth } = useAuth();
 
   const {
     register,
@@ -43,19 +49,51 @@ export default function RegisterForm() {
   } = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      namaLengkap: "", email: "", noTelepon: "",
+      fullName: "", email: "", phone: "",
       password: "", konfirmasiPassword: "", setuju: false,
     },
   });
 
-  async function onSubmit(data) {
+
+ async function onSubmit(data) {
+  try {
     setLoading(true);
-    // Simulasi API call — ganti dengan axios/fetch ke backend
-    await new Promise((r) => setTimeout(r, 1200));
-    console.log("Register:", data);
+
+    // register
+    await registerUser({
+      fullName: data.fullName,
+      email: data.email,
+      phone: data.phone,
+      password: data.password,
+    });
+
+    // auto login
+    const loginResult = await login({
+      email: data.email,
+      password: data.password,
+    });
+
+    // update auth context
+    setAuth(
+      loginResult.data.user,
+      loginResult.data.token
+    );
+
+    // redirect
     navigate("/user/dashboard");
+
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      error.response?.data?.message ||
+      "Register gagal"
+    );
+  } finally {
     setLoading(false);
   }
+}
+
 
   const eyeBtn = (show, toggle) => (
     <button type="button" onClick={toggle} className="text-gray-400 hover:text-gray-600">
@@ -84,8 +122,8 @@ export default function RegisterForm() {
             label="Nama Lengkap"
             icon={User}
             placeholder="Martin Edwards Park"
-            registration={register("namaLengkap")}
-            error={errors.namaLengkap}
+            registration={register("fullName")}
+            error={errors.fullName}
           />
 
           {/* Email */}
@@ -104,8 +142,8 @@ export default function RegisterForm() {
             icon={Phone}
             type="tel"
             placeholder="+62 812 3456 7890"
-            registration={register("noTelepon")}
-            error={errors.noTelepon}
+            registration={register("phone")}
+            error={errors.phone}
           />
 
           {/* Password */}

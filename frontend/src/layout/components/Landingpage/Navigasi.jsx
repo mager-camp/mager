@@ -1,5 +1,5 @@
-import mager from '../../../assets/mager.svg';
-
+import mager from "../../../assets/mager.svg";
+import { Link } from "react-router-dom";
 function Navigasi({ navigasiRef, onScroll }) {
   return (
     <header
@@ -8,26 +8,24 @@ function Navigasi({ navigasiRef, onScroll }) {
       ref={navigasiRef}
     >
       <nav className="w-full h-full flex items-center justify-between">
-
         <a
           href="#navigasi-utama"
           className="flex items-center gap-2 no-underline"
           id="logo-mager"
-          onClick={(e) => onScroll(e, '#navigasi-utama')}
+          onClick={(e) => onScroll(e, "#navigasi-utama")}
         >
-          <img
-            src={mager}
-            alt="mager"
-            className="h-10 w-auto"
-          />
+          <img src={mager} alt="mager" className="h-10 w-auto" />
         </a>
 
-        <ul className="menu-navigasi flex items-center gap-8 list-none" id="menu-navigasi">
+        <ul
+          className="menu-navigasi flex items-center gap-8 list-none"
+          id="menu-navigasi"
+        >
           <li>
             <a
               href="#kursus"
               className="no-underline text-[#1B3A5C] font-medium text-sm tracking-[0.5px] transition-all duration-300 relative hover:text-[#E8601C]"
-              onClick={(e) => onScroll(e, '#kursus')}
+              onClick={(e) => onScroll(e, "#kursus")}
             >
               KURSUS
             </a>
@@ -36,7 +34,7 @@ function Navigasi({ navigasiRef, onScroll }) {
             <a
               href="#keunggulan-baris-atas"
               className="no-underline text-[#1B3A5C] font-medium text-sm tracking-[0.5px] transition-all duration-300 relative hover:text-[#E8601C]"
-              onClick={(e) => onScroll(e, '#keunggulan-baris-atas')}
+              onClick={(e) => onScroll(e, "#keunggulan-baris-atas")}
             >
               KALENDER
             </a>
@@ -45,7 +43,7 @@ function Navigasi({ navigasiRef, onScroll }) {
             <a
               href="#section-premium-mager"
               className="no-underline text-[#1B3A5C] font-medium text-sm tracking-[0.5px] transition-all duration-300 relative hover:text-[#E8601C]"
-              onClick={(e) => onScroll(e, '#section-premium-mager')}
+              onClick={(e) => onScroll(e, "#section-premium-mager")}
             >
               PREMIUM
             </a>
@@ -53,24 +51,22 @@ function Navigasi({ navigasiRef, onScroll }) {
         </ul>
 
         <div className="flex items-center gap-3" id="grup-tombol-header">
-          <a
-            href="#masuk"
+          <Link
+            to="/login"
             className="tombol-masuk w-[140px] h-9 bg-[#1B3A5C] text-white border-2 border-[#1B3A5C] rounded-md font-semibold text-[13px] tracking-[0.8px] cursor-pointer transition-all duration-300 flex items-center justify-center no-underline hover:bg-transparent hover:text-[#1B3A5C] hover:-translate-y-px"
             id="tombol-masuk"
-            onClick={(e) => onScroll(e, '#masuk')}
           >
             MASUK
-          </a>
-          <a
-            href="#dashboard"
+          </Link>
+
+          <Link
+            to="/user/dashboard"
             className="tombol-dashboard w-[140px] h-9 bg-transparent text-[#1B3A5C] border-2 border-[#1B3A5C] rounded-md font-semibold text-[13px] tracking-[0.8px] cursor-pointer transition-all duration-300 flex items-center justify-center no-underline hover:bg-[#1B3A5C] hover:text-white hover:-translate-y-px"
             id="tombol-dashboard"
-            onClick={(e) => onScroll(e, '#dashboard')}
           >
             KE DASHBOARD
-          </a>
+          </Link>
         </div>
-
       </nav>
     </header>
   );

@@ -6,9 +6,9 @@ export const loginSchema = z.object({
 });
 
 export const registerSchema = z.object({
-  namaLengkap:      z.string().min(2, "Nama minimal 2 karakter"),
+  fullName:      z.string().min(2, "Nama minimal 2 karakter"),
   email:            z.string().email("Alamat email tidak valid"),
-  noTelepon:        z.string().min(8, "No. telepon tidak valid"),
+  phone:            z.string().min(8, "No. telepon tidak valid"),
   password:         z.string().min(6, "Kata sandi minimal 6 karakter"),
   konfirmasiPassword: z.string(),
   setuju:           z.boolean().refine((v) => v === true, "Anda harus menyetujui syarat & ketentuan"),

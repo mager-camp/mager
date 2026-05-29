@@ -1,10 +1,13 @@
 import { LogOut, HelpCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { logout } from "@/services/authService";
 
 export default function SidebarFooter({
   isCollapsed,
 }) {
   const location = useLocation();
+  const { logout } = useAuth();
 
   const supportActive =
     location.pathname === "/user/support";
@@ -40,7 +43,8 @@ export default function SidebarFooter({
       {/* LOGOUT */}
       <button
         onClick={() => {
-          console.log("logout");
+          logout();
+          navigate("/login");
         }}
         className={`
           w-full flex items-center

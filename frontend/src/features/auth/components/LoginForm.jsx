@@ -4,11 +4,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, Lock, Eye, EyeOff, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { loginSchema } from "../constants/authSchema";
+import { login } from "@/services/authService";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function LoginForm() {
   const [showPass, setShowPass] = useState(false);
   const [loading,  setLoading]  = useState(false);
   const navigate = useNavigate();
+  const { login: setAuth } = useAuth();
 
   const {
     register,
@@ -20,20 +23,35 @@ export default function LoginForm() {
     defaultValues: { email: "", password: "" },
   });
 
-  async function onSubmit(data) {
+async function onSubmit(data) {
+  try {
     setLoading(true);
-    // Simulasi API call — ganti dengan axios/fetch ke backend
-    await new Promise((r) => setTimeout(r, 1200));
+    const result = await login({
+      email: data.email,
+      password: data.password,
+    });
 
-    // Contoh cek kredensial statis, ganti dengan response API
-    if (data.email === "martin@mager.id" && data.password === "mager123") {
-      navigate("/user/dashboard");
+    setAuth(
+      result.data.user,
+      result.data.token
+    );
+    
+    if (result.data.user.role === "ADMIN") {
+      navigate("/admin/dashboard");
     } else {
-      setError("password", { message: "Email atau kata sandi salah" });
+      navigate("/user/dashboard");
     }
+
+  } catch (error) {
+    setError("password", {
+      message:
+        error.response?.data?.message ||
+        "Email atau password salah",
+    });
+  } finally {
     setLoading(false);
   }
-
+}
   return (
     <div className="w-full max-w-[320px] mx-auto">
       {/* Logo */}

@@ -23,6 +23,7 @@ export const registerUser = async (payload) => {
   const user = await createUser({
     fullName: payload.fullName,
     email: payload.email,
+    phone: payload.phone,
     passwordHash: hashed,
     role: {
       connect: { name: ROLES.USER }
