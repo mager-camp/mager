@@ -1,6 +1,8 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function SidebarHeader({ isCollapsed, toggleCollapse }) {
+  const { user } = useAuth();
   return (
     <div
       className={`
@@ -31,7 +33,7 @@ export default function SidebarHeader({ isCollapsed, toggleCollapse }) {
                 text-md
               "
             >
-              USN
+              {user?.fullName.toUpperCase()}
             </p>
           </div>
         </div>
