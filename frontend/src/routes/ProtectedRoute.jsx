@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function ProtectedRoute({
   children,
@@ -12,7 +13,7 @@ export default function ProtectedRoute({
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center">
-        Loading...
+        <LoadingSpinner />
       </div>
     );
   }
