@@ -4,7 +4,12 @@ function toDateStr(date) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
-export default function CalendarDayCell({ date, isCurrentMonth, events = [], isToday }) {
+export default function CalendarDayCell({
+  date,
+  isCurrentMonth,
+  events = [],
+  isToday,
+}) {
   const dateStr = toDateStr(date);
   const dayNum = date.getDate();
 
@@ -32,7 +37,8 @@ export default function CalendarDayCell({ date, isCurrentMonth, events = [], isT
           <EventChip
             key={ev.id}
             title={ev.title}
-            time={ev.time}
+            startTime={ev.startTime}
+            endTime={ev.endTime}
             color={ev.color}
             isRestDay={ev.isRestDay}
           />
