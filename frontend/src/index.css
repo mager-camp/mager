@@ -136,6 +136,9 @@
   html {
     @apply font-sans;
     }
+  button {
+    @apply cursor-pointer;
+  }
 }
 
 /* KUSTOM KEYFRAMES & ANIMASI Landing Page */

@@ -15,7 +15,7 @@ export const programSchema = z.object({
 
   jenisLatihan: z.string().min(1, "Jenis latihan wajib dipilih"),
 
-  intensity: z.enum(["LOW", "MED", "HIGH"], {
+  intensity: z.enum(["LIGHT", "MEDIUM", "HEAVY"], {
     errorMap: () => ({ message: "Pilih intensitas" }),
   }),
 

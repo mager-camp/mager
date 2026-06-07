@@ -1,115 +1,16 @@
-export const INITIAL_EVENTS = [
-  {
-    id: 1,
-    date: "2026-06-01",
-    title: "Anggar",
-    startTime: "09:00",
-    endTime: "11:00",
-    color: "blue",
-  },
-
-  {
-    id: 2,
-    date: "2026-06-01",
-    title: "Teknik",
-    startTime: "14:00",
-    endTime: "16:00",
-    color: "orange",
-  },
-
-  {
-    id: 3,
-    date: "2026-06-02",
-    title: "Anggar",
-    startTime: "10:00",
-    endTime: "12:00",
-    color: "blue",
-  },
-
-  {
-    id: 4,
-    date: "2026-06-04",
-    title: "Run",
-    startTime: "07:00",
-    endTime: "08:00",
-    color: "orange",
-  },
-
-  {
-    id: 5,
-    date: "2026-06-05",
-    title: "Free",
-    color: "gray",
-    isRestDay: true,
-  },
-
-  {
-    id: 6,
-    date: "2026-06-08",
-    title: "Teknik",
-    startTime: "08:00",
-    endTime: "10:00",
-    color: "blue",
-  },
-
-  {
-    id: 7,
-    date: "2026-06-08",
-    title: "Sparring",
-    startTime: "14:00",
-    endTime: "16:00",
-    color: "orange",
-  },
-
-  {
-    id: 8,
-    date: "2026-06-08",
-    title: "Laser-Run",
-    startTime: "17:30",
-    endTime: "18:30",
-    color: "red",
-  },
-
-  {
-    id: 9,
-    date: "2026-06-12",
-    title: "Teknik",
-    startTime: "09:00",
-    endTime: "11:00",
-    color: "blue",
-  },
-
-  {
-    id: 10,
-    date: "2026-06-19",
-    title: "Anggar",
-    startTime: "10:00",
-    endTime: "12:00",
-    color: "blue",
-  },
-
-  {
-    id: 11,
-    date: "2026-06-26",
-    title: "Sparring",
-    startTime: "09:00",
-    endTime: "11:00",
-    color: "orange",
-  },
-];
-
 export const MACROCYCLE_INFO = {
-  cycle: "MACROCYCLE 03",
-  phase: "PERSIAPAN KOMPETISI",
+  cycle: "KALENDER",
+  phase: "JADWAL PROGRAM",
 };
 
 export const JENIS_LATIHAN_OPTIONS = [
-  { value: "anggar",    label: "Anggar",    color: "blue"   },
-  { value: "laser-run", label: "Laser-Run", color: "red"    },
-  { value: "sparring",  label: "Sparring",  color: "orange" },
-  { value: "teknik",    label: "Teknik",    color: "blue"   },
-  { value: "fisik",     label: "Fisik",     color: "orange" },
-  { value: "recovery",  label: "Recovery",  color: "gray"   },
+  { value: "Running",  activityId: "cf546c66-ed48-445e-b1ea-e69715ae3c4a", label: "Lari",     color: "green",  programType: "TRAINING"  },
+  { value: "Swimming", activityId: "8c354255-61a9-4d3b-9d07-fda0c6c28be9", label: "Renang",   color: "blue",   programType: "TRAINING"  },
+  { value: "Fencing",  activityId: "c2b67475-cb3a-4f8d-b13d-e36d42088287", label: "Anggar",   color: "orange", programType: "TRAINING"  },
+  { value: "Shooting", activityId: "fe699ba2-aa7e-4e66-95fb-b8e534f6862c", label: "Tembak",   color: "red",    programType: "TRAINING"  },
+  { value: "Obstacle", activityId: "e681ecd0-16e9-4859-98b3-dbd1be73ed16", label: "Obstacle", color: "gray",   programType: "TRAINING"  },
 ];
 
-export const INTENSITY_OPTIONS = ["LOW", "MED", "HIGH"];
+export const ACTIVITY_OPTIONS = ["Lari", "Renang", "Anggar", "Tembak", "Obstacle"];
+
+export const INTENSITY_OPTIONS = ["LIGHT", "MEDIUM", "HEAVY"];

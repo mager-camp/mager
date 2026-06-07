@@ -82,67 +82,71 @@ async function main() {
   });
 
   // activity
-  const running = await prisma.activityTemplate.upsert({
-    where: { name: "Running" },
-    update: {},
-    create: {
-      name: "Running",
-      category: "sport",
-      description: "Running training for pentathlon",
-    },
-  });
+ const running = await prisma.activityTemplate.upsert({
+  where: { name: "LARI" },
+  update: {},
+  create: {
+    name: "LARI",
+    category: "sport",
+    description: "Running training",
+  },
+});
 
-  const swimming = await prisma.activityTemplate.upsert({
-    where: { name: "Swimming" },
-    update: {},
-    create: {
-      name: "Swimming",
-      category: "sport",
-      description: "Swimming training",
-    },
-  });
+const swimming = await prisma.activityTemplate.upsert({
+  where: { name: "RENANG" },
+  update: {},
+  create: {
+    name: "RENANG",
+    category: "sport",
+    description: "Swimming training",
+  },
+});
 
-  const fencing = await prisma.activityTemplate.upsert({
-    where: { name: "Fencing" },
-    update: {},
-    create: {
-      name: "Fencing",
-      category: "sport",
-      description: "Fencing drills and sparring",
-    },
-  });
+const fencing = await prisma.activityTemplate.upsert({
+  where: { name: "ANGGAR" },
+  update: {},
+  create: {
+    name: "ANGGAR",
+    category: "sport",
+    description: "Fencing drills",
+  },
+});
 
-  const shooting = await prisma.activityTemplate.upsert({
-    where: { name: "Shooting" },
-    update: {},
-    create: {
-      name: "Shooting",
-      category: "sport",
-      description: "Laser shooting practice",
-    },
-  });
+const shooting = await prisma.activityTemplate.upsert({
+  where: { name: "TEMBAK" },
+  update: {},
+  create: {
+    name: "TEMBAK",
+    category: "sport",
+    description: "Shooting practice",
+  },
+});
 
-  const recovery = await prisma.activityTemplate.upsert({
-    where: { name: "Recovery" },
-    update: {},
-    create: {
-      name: "Recovery",
-      category: "recovery",
-      description: "Recovery session",
-    },
-  });
-
+const recovery = await prisma.activityTemplate.upsert({
+  where: { name: "OBSTACLE" },
+  update: {},
+  create: {
+    name: "OBSTACLE",
+    category: "sport",
+    description: "Obstacle training",
+  },
+});
   // schedule
   const schedule = await prisma.userSchedule.create({
     data: {
       userId: user.id,
       activityId: running.id,
 
-      scheduledAt: new Date("2026-08-25T07:00:00.000Z"),
+      scheduledAt: new Date("2026-08-25T00:00:00.000Z"),
+
+      startAt: new Date("2026-08-25T07:00:00.000Z"),
+      endAt: new Date("2026-08-25T08:30:00.000Z"),
+
       alarmAt: new Date("2026-08-25T06:30:00.000Z"),
 
       intensity: "medium",
-      programType: "endurance",
+      programType: "TRAINING",
+
       alarmEnabled: true,
     },
   });

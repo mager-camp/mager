@@ -1,25 +1,59 @@
-import { useState, useMemo, useCallback } from "react";
-import {
-  INITIAL_EVENTS,
-  JENIS_LATIHAN_OPTIONS,
-} from "../constants/calendarData";
 import { useFeedback } from "@/hooks/useFeedback";
+import { useEffect, useState, useMemo, useCallback } from "react";
+import {
+  getSchedules,
+  createSchedule,
+  deleteSchedule,
+  updateSchedule,
+} from "@/services/scheduleService";
+import { formatDate, formatTime } from "../utils/dateUtils";
 
-let nextId = INITIAL_EVENTS.length + 1;
+const ACTIVITY_TYPE_TO_COLOR = {
+  LARI: "green",
+  RENANG: "blue",
+  ANGGAR: "orange",
+  TEMBAK: "red",
+  OBSTACLE: "gray",
+};
 
-function formatDate(date) {
-  return [
-    date.getFullYear(),
-    String(date.getMonth() + 1).padStart(2, "0"),
-    String(date.getDate()).padStart(2, "0"),
-  ].join("-");
+function getActivityColor(activityName) {
+  if (!activityName) return "blue";
+  return ACTIVITY_TYPE_TO_COLOR[activityName.toUpperCase()] ?? "blue";
 }
+
+// Map raw API schedule to local event shape
+function mapScheduleToEvent(s) {
+  const activityName = s.activity?.name;
+  return {
+    id: s.id,
+    date: formatDate(new Date(s.scheduledAt)),
+    title: activityName ?? "—",
+    startTime: formatTime(s.startAt),
+    endTime: formatTime(s.endAt),
+    color: getActivityColor(activityName),
+    intensity: s.intensity,
+    notes: s.notes ?? null,
+    status: s.status ?? "pending",
+  };
+}
+
 export function useCalendar() {
   const { showSuccess, showError } = useFeedback();
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [events, setEvents] = useState(INITIAL_EVENTS);
+  const [events, setEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getSchedules();
+      setEvents(data.map(mapScheduleToEvent));
+      setIsLoading(false);
+    }
+    fetchData();
+  }, []);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -27,7 +61,6 @@ export function useCalendar() {
     .toLocaleString("id-ID", { month: "long" })
     .toUpperCase();
 
-  // Generate array of day objects untuk grid
   const days = useMemo(() => {
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
@@ -48,10 +81,10 @@ export function useCalendar() {
         isCurrentMonth: false,
       });
     }
+
     return result;
   }, [year, month]);
 
-  // Map events by date string "YYYY-MM-DD"
   const eventsByDate = useMemo(() => {
     return events.reduce((acc, ev) => {
       if (!acc[ev.date]) acc[ev.date] = [];
@@ -60,56 +93,58 @@ export function useCalendar() {
     }, {});
   }, [events]);
 
-  // Tambah event baru dari form data
-  const addEvent = useCallback((formData) => {
-    const jenisOption = JENIS_LATIHAN_OPTIONS.find(
-      (o) => o.value === formData.jenisLatihan,
-    );
+  const addEvent = useCallback(
+    async (payloads) => {
+      try {
+        const results = await Promise.all(payloads.map(createSchedule));
+        setEvents((prev) => [...prev, ...results.map(mapScheduleToEvent)]);
+        showSuccess("Jadwal Berhasil Ditambahkan");
+      } catch (err) {
+        console.error(err);
+        showError("Gagal menambahkan jadwal");
+      }
+    },
+    [showSuccess, showError],
+  );
 
-    const from = new Date(formData.dateRange.from);
-    const to = new Date(formData.dateRange.to);
-
-    const newEvents = [];
-
-    const current = new Date(from);
-
-    while (current <= to) {
-      newEvents.push({
-        id: nextId++,
-
-        date: formatDate(current),
-
-        title: jenisOption?.label ?? formData.jenisLatihan,
-
-        startTime: formData.startTime,
-        endTime: formData.endTime,
-
-        color: jenisOption?.color ?? "blue",
-
-        intensity: formData.intensity,
-
-        notes: formData.targetFokus ?? "",
+  const updateEvent = useCallback(
+  async (id, { activityId, startTime, endTime, intensity, notes }) => {
+    try {
+      const dateStr = events.find((ev) => ev.id === id)?.date;
+      const res = await updateSchedule(id, {
+        ...(activityId && { activityId }), 
+        startAt: new Date(`${dateStr}T${startTime}`).toISOString(),
+        endAt: new Date(`${dateStr}T${endTime}`).toISOString(),
+        intensity: intensity.toLowerCase(),
+        notes: notes || undefined,
       });
+      setEvents((prev) =>
+        prev.map((ev) => (ev.id === id ? mapScheduleToEvent(res) : ev)),
+      );
+      showSuccess("Jadwal berhasil diupdate");
+    } catch (err) {
+      console.error(err);
+      showError("Gagal mengupdate jadwal");
+    }
+  },
+  [events, showSuccess, showError],
+);
 
-      current.setDate(current.getDate() + 1);
-    };
-    
-    showSuccess("Jadwal Berhasil Ditambahkan");
-    setEvents((prev) => [...prev, ...newEvents]);
+  const removeEvent = useCallback(
+    async (id) => {
+      try {
+        await deleteSchedule(id);
+        setEvents((prev) => prev.filter((ev) => ev.id !== id));
+        showSuccess("Jadwal berhasil dihapus");
+      } catch (err) {
+        console.error(err);
+        showError("Gagal menghapus jadwal");
+      }
+    },
+    [showSuccess, showError],
+  );
 
-    setCurrentDate(new Date(from.getFullYear(), from.getMonth(), 1));
-  }, []);
-
-  const goToPrevMonth = () => setCurrentDate(new Date(year, month - 1, 1));
-  const goToNextMonth = () => setCurrentDate(new Date(year, month + 1, 1));
-  const goToToday = () => setCurrentDate(new Date());
-
-
-  const todayStr = [
-    today.getFullYear(),
-    String(today.getMonth() + 1).padStart(2, "0"),
-    String(today.getDate()).padStart(2, "0"),
-  ].join("-");
+  const todayStr = formatDate(today);
 
   return {
     year,
@@ -118,9 +153,12 @@ export function useCalendar() {
     days,
     eventsByDate,
     addEvent,
-    goToPrevMonth,
-    goToNextMonth,
-    goToToday,
+    goToPrevMonth: () => setCurrentDate(new Date(year, month - 1, 1)),
+    goToNextMonth: () => setCurrentDate(new Date(year, month + 1, 1)),
+    goToToday: () => setCurrentDate(new Date()),
     todayStr,
+    updateEvent,
+    removeEvent,
+    isLoading,
   };
 }

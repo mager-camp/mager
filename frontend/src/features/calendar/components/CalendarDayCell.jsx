@@ -9,8 +9,8 @@ export default function CalendarDayCell({
   isCurrentMonth,
   events = [],
   isToday,
+  onSelectEvent,
 }) {
-  const dateStr = toDateStr(date);
   const dayNum = date.getDate();
 
   return (
@@ -21,7 +21,6 @@ export default function CalendarDayCell({
         ${isToday ? "ring-1 ring-inset ring-[#2B6CB0]" : ""}
       `}
     >
-      {/* Nomor tanggal */}
       <span
         className={`
           text-[11px] font-semibold leading-none self-end
@@ -31,17 +30,22 @@ export default function CalendarDayCell({
         {dayNum}
       </span>
 
-      {/* Event chips */}
       <div className="flex flex-col gap-0.5 overflow-hidden">
         {events.map((ev) => (
-          <EventChip
+          <button
             key={ev.id}
-            title={ev.title}
-            startTime={ev.startTime}
-            endTime={ev.endTime}
-            color={ev.color}
-            isRestDay={ev.isRestDay}
-          />
+            type="button"
+            onClick={() => onSelectEvent?.(ev)}
+            className="text-left w-full cursor-pointer"
+          >
+            <EventChip
+              title={ev.title}
+              startTime={ev.startTime}
+              endTime={ev.endTime}
+              color={ev.color}
+              isRestDay={ev.isRestDay}
+            />
+          </button>
         ))}
       </div>
     </div>

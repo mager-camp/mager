@@ -91,12 +91,12 @@ model Payment {
 }
 
 model ActivityTemplate {
-  id            String           @id @default(uuid())
-  name          String           @unique
+  id            String       @id @default(uuid())
+  name          ActivityType @unique
   category      ActivityCategory
   description   String?
-  isPremiumOnly Boolean          @default(false)
-  createdAt     DateTime         @default(now())
+  isPremiumOnly Boolean      @default(false)
+  createdAt     DateTime     @default(now())
   schedules     UserSchedule[]
 }
 
@@ -104,8 +104,11 @@ model UserSchedule {
   id            String           @id @default(uuid())
   userId        String
   activityId    String
+  scheduledAt   DateTime  
+  startAt       DateTime 
+  endAt         DateTime 
   intensity     Intensity
-  programType   String
+  programType   ProgramType
   alarmEnabled  Boolean          @default(false)
   status        ScheduleStatus   @default(pending)
   notes         String?
@@ -113,7 +116,6 @@ model UserSchedule {
   updatedAt     DateTime         @updatedAt
   alarmAt       DateTime?
   reminderSent  Boolean          @default(false)
-  scheduledAt   DateTime
   notifications Notification[]
   activity      ActivityTemplate @relation(fields: [activityId], references: [id])
   user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -193,4 +195,18 @@ enum NotificationType {
   reminder
   system
   payment
+}
+
+enum ProgramType {
+  TRAINING
+  COMPETITION
+  RECOVERY
+}
+
+enum ActivityType {
+  ANGGAR
+  LARI
+  RENANG
+  TEMBAK
+  OBSTACLE
 }

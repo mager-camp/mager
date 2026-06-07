@@ -3,6 +3,9 @@ import prisma from "../../config/prisma.js";
 export const createScheduleRepo = (data) => {
   return prisma.userSchedule.create({
     data,
+    include: {
+      activity: true,
+    },
   });
 };
 
@@ -29,13 +32,20 @@ export const getScheduleByIdRepo = (id, userId) => {
 
 export const updateScheduleRepo = (id, userId, data) => {
   return prisma.userSchedule.update({
-    where: { id },
+    where: {
+      id,
+      userId,
+    },
     data,
+    include: { activity: true },
   });
 };
 
-export const deleteScheduleRepo = (id) => {
+export const deleteScheduleRepo = (id, userId) => {
   return prisma.userSchedule.delete({
-    where: { id },
+    where: {
+      id,
+      userId,
+    },
   });
 };

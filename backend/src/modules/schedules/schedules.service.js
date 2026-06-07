@@ -6,13 +6,28 @@ import {
   deleteScheduleRepo
 } from './schedules.repository.js';
 
-export const createSchedule = async (
-  payload,
-  userId
-) => {
+export const createSchedule = async (payload, userId) => {
+  const {
+    activityId,
+    scheduledAt,
+    startAt,
+    endAt,
+    intensity,
+    programType,
+    notes,
+  } = payload;
+
+  // console.log("PAYLOAD SERVICE:", payload);
+
   return createScheduleRepo({
-    ...payload,
-    userId
+    userId,
+    activityId,
+    scheduledAt: new Date(scheduledAt),
+    startAt: new Date(startAt),
+    endAt: new Date(endAt),
+    intensity,
+    programType,
+    notes,
   });
 };
 

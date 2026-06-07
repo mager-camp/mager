@@ -24,6 +24,7 @@ export const create = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+  // console.log("REQ BODY:", req.body);
 };
 
 export const getAll = async (req, res, next) => {

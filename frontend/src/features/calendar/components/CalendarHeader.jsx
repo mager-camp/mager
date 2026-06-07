@@ -26,7 +26,7 @@ export default function CalendarHeader({
       <div className="flex items-center gap-2 mb-1">
         <button
           onClick={onToday}
-          className="text-xs font-semibold px-3 py-1.5 rounded border-2 border-border text-text-primary hover:bg-gray-50 transition-colors"
+          className="text-xs font-semibold px-3 py-1.5 rounded border-2 border-border text-text-primary hover:bg-gray-50 transition-colors cursor-pointer"
         >
           Hari Ini
         </button>
