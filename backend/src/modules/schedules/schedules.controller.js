@@ -29,13 +29,20 @@ export const create = async (req, res, next) => {
 
 export const getAll = async (req, res, next) => {
   try {
+    console.log("USER ID:", req.user.id);
+
     const result = await getSchedules(req.user.id);
+
+    console.log("RESULT COUNT:", result.length);
 
     res.json({
       success: true,
       data: result,
     });
   } catch (error) {
+    console.error("GET SCHEDULES ERROR:");
+    console.error(error);
+
     next(error);
   }
 };
