@@ -1,23 +1,22 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { RouterProvider } from 'react-router-dom'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
+import QueryProvider from "@/providers/QueryProvider";
 
-import { router } from './routes'
-import { AuthProvider } from './contexts/AuthContext'
-import {
-  FeedbackProvider,
-} from "@/contexts/FeedbackContext";
+import { router } from "./routes";
+import { AuthProvider } from "./contexts/AuthContext";
+import { FeedbackProvider } from "@/contexts/FeedbackContext";
 
-import './index.css'
+import "./index.css";
 
-ReactDOM.createRoot(
-  document.getElementById('root')
-).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
-      <FeedbackProvider>
-      <RouterProvider router={router} />
-      </FeedbackProvider>
-    </AuthProvider>
+    <QueryProvider>
+      <AuthProvider>
+        <FeedbackProvider>
+          <RouterProvider router={router} />
+        </FeedbackProvider>
+      </AuthProvider>
+    </QueryProvider>
   </React.StrictMode>,
-)
+);

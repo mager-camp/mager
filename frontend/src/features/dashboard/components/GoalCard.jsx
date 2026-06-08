@@ -1,4 +1,4 @@
-import { Bike } from "lucide-react";
+import { BowArrow, Swords, Construction } from "lucide-react";
 import { FaRunning } from "react-icons/fa";
 import { PiPersonSimpleSwimFill } from "react-icons/pi";
 
@@ -28,7 +28,9 @@ const STATUS_CONFIG = {
 const ICON_MAP = {
   swim: PiPersonSimpleSwimFill,
   run: FaRunning,
-  bike: Bike,
+  shoot: BowArrow,
+  fencing: Swords,
+  obstacle : Construction,
 };
 
 export default function GoalCard({
