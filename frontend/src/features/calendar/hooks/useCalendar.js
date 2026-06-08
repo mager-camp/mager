@@ -178,5 +178,6 @@ export function useCalendar() {
     updateStatus,
     removeEvent,
     isLoading,
+    events,
   };
 }

@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import CalendarHeader from "./components/CalendarHeader";
 import CalendarGrid from "./components/CalendarGrid";
 import AddProgramPanel from "./components/AddProgramPanel";
 import EventDetailModal from "./components/EventDetailModal";
 import { useCalendar } from "./hooks/useCalendar";
+
 
 export default function CalendarPage() {
   const {
@@ -20,10 +22,25 @@ export default function CalendarPage() {
     updateStatus,
     removeEvent,
     isLoading,
+    events,
   } = useCalendar();
 
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams(); 
 
+
+  useEffect(() => {
+    const scheduleId = searchParams.get("scheduleId");
+    if (!scheduleId || !events.length) return;
+
+    const found = events.find((ev) => ev.id === scheduleId);
+    if (found) {
+      setSelectedEvent(found);
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams, events]);
+
+  
   return (
     <div className="p-4 md:p-6 h-full flex gap-4 overflow-hidden">
       {/* Kolom kiri: kalender */}
@@ -58,10 +75,10 @@ export default function CalendarPage() {
           setSelectedEvent(null);
         }}
         onUpdate={updateEvent}
-       onStatusChange={async (id, status) => {
-    await updateStatus(id, status);
-    setSelectedEvent((prev) => prev ? { ...prev, status } : prev);
-  }}
+        onStatusChange={async (id, status) => {
+          await updateStatus(id, status);
+          setSelectedEvent((prev) => (prev ? { ...prev, status } : prev));
+        }}
       />
     </div>
   );
