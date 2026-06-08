@@ -1,19 +1,18 @@
 import { useTodaySchedules } from "../hooks/useDashboard";
 import GoalCard from "./GoalCard";
 
-// Map activity name BE → icon di GoalCard
 const ACTIVITY_ICON_MAP = {
   LARI:     "run",
   RENANG:   "swim",
-  ANGGAR:   "sword", 
+  ANGGAR:   "fencing", 
   TEMBAK:   "shoot",
   OBSTACLE: "obstacle",
 };
 
 const STATUS_MAP = {
-  pending:   "DIJADWALKAN",
+  scheduled:   "DIJADWALKAN",
   completed: "SELESAI",
-  skipped:   "AKTIF",
+  active:   "AKTIF",
 };
 
 function formatTime(isoString) {

@@ -4,11 +4,11 @@ export const MACROCYCLE_INFO = {
 };
 
 export const JENIS_LATIHAN_OPTIONS = [
-  { value: "Running",  activityId: "cf546c66-ed48-445e-b1ea-e69715ae3c4a", label: "Lari",     color: "green",  programType: "TRAINING"  },
-  { value: "Swimming", activityId: "8c354255-61a9-4d3b-9d07-fda0c6c28be9", label: "Renang",   color: "blue",   programType: "TRAINING"  },
-  { value: "Fencing",  activityId: "c2b67475-cb3a-4f8d-b13d-e36d42088287", label: "Anggar",   color: "orange", programType: "TRAINING"  },
-  { value: "Shooting", activityId: "fe699ba2-aa7e-4e66-95fb-b8e534f6862c", label: "Tembak",   color: "red",    programType: "TRAINING"  },
-  { value: "Obstacle", activityId: "e681ecd0-16e9-4859-98b3-dbd1be73ed16", label: "Obstacle", color: "gray",   programType: "TRAINING"  },
+  { value: "Running",  activityId: "ec91e124-eff7-420f-a8b1-400e1f47b9f0", label: "Lari",     color: "green",  programType: "TRAINING"  },
+  { value: "Swimming", activityId: "5e7d9651-3731-479e-9521-7faba6970b10", label: "Renang",   color: "blue",   programType: "TRAINING"  },
+  { value: "Fencing",  activityId: "8f9390e1-e52e-4e42-8de7-5e151f76ab2d", label: "Anggar",   color: "orange", programType: "TRAINING"  },
+  { value: "Shooting", activityId: "18e10e59-88d8-4ae4-bd3e-96a2a3a3c155", label: "Tembak",   color: "red",    programType: "TRAINING"  },
+  { value: "Obstacle", activityId: "4132175d-1566-44af-8851-30ecd15600e0", label: "Obstacle", color: "gray",   programType: "TRAINING"  },
 ];
 
 export const ACTIVITY_OPTIONS = ["Lari", "Renang", "Anggar", "Tembak", "Obstacle"];

@@ -13,4 +13,8 @@ export const createScheduleSchema = z.object({
   notes:        z.string().max(300).optional(),
 });
 
-export const updateScheduleSchema = createScheduleSchema.partial();
+export const updateScheduleSchema = createScheduleSchema
+  .partial()
+  .extend({
+    status: z.enum(["scheduled", "active", "completed", "skipped"]).optional(),
+  });

@@ -24,3 +24,8 @@ export const deleteSchedule = async (id) => {
   return response.data;
 };
 
+export const updateScheduleStatus = async (id, status) => {
+  const response = await api.patch(`/schedules/${id}`, { status });
+  return response.data.data;
+};
+

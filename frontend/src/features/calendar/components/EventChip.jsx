@@ -1,4 +1,5 @@
 const COLOR_MAP = {
+  green: "bg-[#C6F6D5] text-[#2F855A] border-[#9AE6B4]",
   blue: "bg-[#BEE3F8] text-[#2B6CB0] border-[#90CDF4]",
   orange: "bg-[#FEEBC8] text-[#C05621] border-[#FBD38D]",
   red: "bg-[#FED7D7] text-[#C53030] border-[#FEB2B2]",

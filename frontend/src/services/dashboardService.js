@@ -44,7 +44,7 @@ export const getNextSession = async () => {
   const data = await getSchedules();
   const now  = new Date();
   const upcoming = data
-    .filter((s) => new Date(s.startAt) >= now && s.status === "pending")
+    .filter((s) => new Date(s.startAt) >= now && s.status === "scheduled")
     .sort((a, b) => new Date(a.startAt) - new Date(b.startAt));
   return upcoming[0] ?? null;
 };

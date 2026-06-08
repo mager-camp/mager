@@ -110,7 +110,7 @@ model UserSchedule {
   intensity     Intensity
   programType   ProgramType
   alarmEnabled  Boolean          @default(false)
-  status        ScheduleStatus   @default(pending)
+  status        ScheduleStatus   @default(scheduled)
   notes         String?
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
@@ -186,7 +186,8 @@ enum Intensity {
 }
 
 enum ScheduleStatus {
-  pending
+  scheduled
+  active
   completed
   skipped
 }

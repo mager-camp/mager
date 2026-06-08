@@ -1,6 +1,7 @@
 import { BowArrow, Swords, Construction } from "lucide-react";
 import { FaRunning } from "react-icons/fa";
 import { PiPersonSimpleSwimFill } from "react-icons/pi";
+import { Zap } from "lucide-react";
 
 const STATUS_CONFIG = {
   SELESAI: {

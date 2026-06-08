@@ -7,21 +7,26 @@ import {
   CalendarCheck,
 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { INTENSITY_OPTIONS, JENIS_LATIHAN_OPTIONS } from "../constants/calendarData";
+import {
+  INTENSITY_OPTIONS,
+  JENIS_LATIHAN_OPTIONS,
+} from "../constants/calendarData";
 
 const INTENSITY_LABEL = { LIGHT: "Ringan", MEDIUM: "Sedang", HEAVY: "Berat" };
 const STATUS_LABEL = {
-  pending: "Terjadwal",
+  scheduled: "Terjadwal",
+  active: "Sedang Berlangsung",
   completed: "Selesai",
   skipped: "Dilewati",
 };
 const STATUS_COLOR = {
-  pending: "text-blue-600 bg-blue-50",
+  scheduled: "text-blue-600 bg-blue-50",
+  active: "text-orange-600 bg-orange-50",
   completed: "text-green-600 bg-green-50",
   skipped: "text-gray-500 bg-gray-100",
 };
 
-function ViewMode({ event, onClose, onDelete, onEditClick }) {
+function ViewMode({ event, onClose, onDelete, onEditClick, onStatusChange }) {
   const status = event.status ?? "pending";
   const dateObj = new Date(event.date);
   const dateLabel = dateObj.toLocaleDateString("id-ID", {
@@ -29,6 +34,7 @@ function ViewMode({ event, onClose, onDelete, onEditClick }) {
     month: "long",
     year: "numeric",
   });
+  const isCompleted = event.status === "completed";
 
   return (
     <div className="fixed inset-0 z-[999] flex items-center justify-center">
@@ -39,7 +45,7 @@ function ViewMode({ event, onClose, onDelete, onEditClick }) {
       />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] w-[480px] max-w-[95vw] overflow-hidden">
+      <div className="relative bg-white rounded shadow-[0_20px_60px_rgba(0,0,0,0.15)] w-[480px] max-w-[95vw] overflow-hidden">
         {/* Top bar */}
         <div className="px-5 py-3 border-b border-gray-100 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -75,7 +81,7 @@ function ViewMode({ event, onClose, onDelete, onEditClick }) {
         <div className="px-5 py-4 flex flex-col gap-4">
           {/* Waktu & Jenis */}
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-gray-50 rounded-xl px-4 py-3">
+            <div className="bg-gray-50 rounded px-4 py-3">
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
                 Waktu
               </p>
@@ -83,7 +89,7 @@ function ViewMode({ event, onClose, onDelete, onEditClick }) {
                 {event.startTime} - {event.endTime} WIB
               </p>
             </div>
-            <div className="bg-gray-50 rounded-xl px-4 py-3">
+            <div className="bg-gray-50 rounded px-4 py-3">
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
                 Jenis Latihan
               </p>
@@ -93,7 +99,7 @@ function ViewMode({ event, onClose, onDelete, onEditClick }) {
 
           {/* Intensitas */}
           {event.intensity && (
-            <div className="bg-gray-50 rounded-xl px-4 py-3">
+            <div className="bg-gray-50 rounded px-4 py-3">
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
                 Intensitas
               </p>
@@ -109,7 +115,7 @@ function ViewMode({ event, onClose, onDelete, onEditClick }) {
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
                 Catatan
               </p>
-              <div className="bg-gray-50 rounded-xl px-4 py-3">
+              <div className="bg-gray-50 rounded px-4 py-3">
                 <p className="text-sm text-gray-700">{event.notes}</p>
               </div>
             </div>
@@ -118,37 +124,57 @@ function ViewMode({ event, onClose, onDelete, onEditClick }) {
 
         {/* Footer */}
         <div className="px-5 pb-5 flex flex-col gap-2">
-          <button
-            onClick={() => onEdit?.(event)}
-            className="w-full flex items-center justify-center gap-2 bg-[#2B6CB0] hover:bg-[#2C5282] text-white font-bold text-sm py-3 rounded-xl transition-colors"
-          >
-            Mulai Latihan
-            <ArrowRight size={16} />
-          </button>
+          {event.status === "completed" ? (
+            <div className="w-full flex items-center justify-center gap-2 bg-[#7e7e7e] text-white font-bold text-sm py-3 rounded">
+              <CalendarCheck size={16} />
+              Latihan Selesai
+            </div>
+          ) : (
+            <>
+              {event.status === "active" ? (
+                <button
+                  onClick={() => onStatusChange(event.id, "completed")}
+                  className="w-full flex items-center justify-center gap-2 bg-[#38A169] hover:bg-[#2F855A] text-white font-bold text-sm py-3 rounded transition-colors"
+                >
+                  <CalendarCheck size={16} />
+                  Selesai
+                </button>
+              ) : (
+                <button
+                  onClick={() => onStatusChange(event.id, "active")}
+                  className="w-full flex items-center justify-center gap-2 bg-[#2B6CB0] hover:bg-[#2C5282] text-white font-bold text-sm py-3 rounded transition-colors"
+                >
+                  Mulai Latihan <ArrowRight size={16} />
+                </button>
+              )}
 
-          <div className="grid grid-cols-3 gap-2">
-            <button
-              onClick={() => onDelete?.(event)}
-              className="flex items-center justify-center gap-1.5 border-2 border-red-200 text-red-500 hover:bg-red-50 font-bold text-xs py-2.5 rounded-xl transition-colors"
-            >
-              <Trash2 size={13} />
-              Hapus
-            </button>
-            <button
-              onClick={onEditClick}
-              className="flex items-center justify-center gap-1.5 border-2 border-gray-200 text-gray-600 hover:bg-gray-50 font-bold text-xs py-2.5 rounded-xl transition-colors"
-            >
-              <Pencil size={13} />
-              Edit Jadwal
-            </button>
-            <button
-              onClick={onClose}
-              className="flex items-center justify-center gap-1.5 border-2 border-gray-200 text-gray-600 hover:bg-gray-50 font-bold text-xs py-2.5 rounded-xl transition-colors"
-            >
-              Kembali
-              <ArrowRight size={13} />
-            </button>
-          </div>
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  onClick={() => onDelete?.(event)}
+                  className="flex items-center justify-center gap-1.5 border-2 border-red-200 text-red-500 hover:bg-red-50 font-bold text-xs py-2.5 rounded transition-colors"
+                >
+                  <Trash2 size={13} />
+                  Hapus
+                </button>
+
+                <button
+                  onClick={onEditClick}
+                  className="flex items-center justify-center gap-1.5 border-2 border-gray-200 text-gray-600 hover:bg-gray-50 font-bold text-xs py-2.5 rounded transition-colors"
+                >
+                  <Pencil size={13} />
+                  Edit Jadwal
+                </button>
+
+                <button
+                  onClick={onClose}
+                  className="flex items-center justify-center gap-1.5 border-2 border-gray-200 text-gray-600 hover:bg-gray-50 font-bold text-xs py-2.5 rounded transition-colors"
+                >
+                  Kembali
+                  <ArrowRight size={13} />
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -210,17 +236,19 @@ function EditMode({ event, onClose, onBack, onSave }) {
         <h2 className="text-2xl font-black text-gray-800">{event.title}</h2>
       </div>
 
-      {/* Body — pakai blok bg-gray-50 rounded-xl kayak ViewMode */}
+      {/* Body — pakai blok bg-gray-50 rounded kayak ViewMode */}
       <div className="px-5 py-4 flex flex-col gap-4">
-                {/* Jenis Latihan */}
-        <div className="bg-gray-50 rounded-xl px-4 py-3">
+        {/* Jenis Latihan */}
+        <div className="bg-gray-50 rounded px-4 py-3">
           <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
             Jenis Latihan
           </label>
           <select
             value={selectedActivity.activityId}
             onChange={(e) => {
-              const found = JENIS_LATIHAN_OPTIONS.find(o => o.activityId === e.target.value);
+              const found = JENIS_LATIHAN_OPTIONS.find(
+                (o) => o.activityId === e.target.value,
+              );
               setSelectedActivity(found);
             }}
             className="w-full bg-transparent text-sm font-bold text-gray-800 focus:outline-none cursor-pointer"
@@ -235,7 +263,7 @@ function EditMode({ event, onClose, onBack, onSave }) {
 
         {/* Waktu */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-gray-50 rounded-xl px-4 py-3">
+          <div className="bg-gray-50 rounded px-4 py-3">
             <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
               Mulai
             </label>
@@ -246,7 +274,7 @@ function EditMode({ event, onClose, onBack, onSave }) {
               className="w-full bg-transparent text-sm font-bold text-gray-800 focus:outline-none"
             />
           </div>
-          <div className="bg-gray-50 rounded-xl px-4 py-3">
+          <div className="bg-gray-50 rounded px-4 py-3">
             <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
               Selesai
             </label>
@@ -260,7 +288,7 @@ function EditMode({ event, onClose, onBack, onSave }) {
         </div>
 
         {/* Intensitas */}
-        <div className="bg-gray-50 rounded-xl px-4 py-3">
+        <div className="bg-gray-50 rounded px-4 py-3">
           <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
             Intensitas
           </label>
@@ -277,9 +305,8 @@ function EditMode({ event, onClose, onBack, onSave }) {
           </select>
         </div>
 
-
         {/* Catatan */}
-        <div className="bg-gray-50 rounded-xl px-4 py-3">
+        <div className="bg-gray-50 rounded px-4 py-3">
           <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
             Catatan
           </label>
@@ -298,14 +325,14 @@ function EditMode({ event, onClose, onBack, onSave }) {
         <button
           onClick={handleSave}
           disabled={isSubmitting}
-          className="w-full flex items-center justify-center gap-2 bg-[#2B6CB0] hover:bg-[#2C5282] disabled:opacity-60 text-white font-bold text-sm py-3 rounded-xl transition-colors"
+          className="w-full flex items-center justify-center gap-2 bg-[#2B6CB0] hover:bg-[#2C5282] disabled:opacity-60 text-white font-bold text-sm py-3 rounded transition-colors"
         >
           <CalendarCheck size={16} />
           {isSubmitting ? "Menyimpan..." : "Simpan Perubahan"}
         </button>
         <button
           onClick={onBack}
-          className="w-full flex items-center justify-center gap-2 border-2 border-gray-200 text-gray-600 hover:bg-gray-50 font-bold text-sm py-2.5 rounded-xl transition-colors"
+          className="w-full flex items-center justify-center gap-2 border-2 border-gray-200 text-gray-600 hover:bg-gray-50 font-bold text-sm py-2.5 rounded transition-colors"
         >
           Batal
         </button>
@@ -319,6 +346,7 @@ export default function EventDetailModal({
   onClose,
   onDelete,
   onUpdate,
+  onStatusChange,
 }) {
   const [mode, setMode] = useState("view");
 
@@ -334,13 +362,14 @@ export default function EventDetailModal({
         className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] w-[480px] max-w-[95vw] overflow-hidden">
+      <div className="relative bg-white rounded shadow-[0_20px_60px_rgba(0,0,0,0.15)] w-[480px] max-w-[95vw] overflow-hidden">
         {mode === "view" ? (
           <ViewMode
             event={event}
             onClose={onClose}
             onDelete={onDelete}
             onEditClick={() => setMode("edit")}
+            onStatusChange={onStatusChange}
           />
         ) : (
           <EditMode

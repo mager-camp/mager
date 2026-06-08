@@ -17,6 +17,7 @@ export default function CalendarPage() {
     goToToday,
     todayStr,
     updateEvent,
+    updateStatus,
     removeEvent,
     isLoading,
   } = useCalendar();
@@ -57,6 +58,10 @@ export default function CalendarPage() {
           setSelectedEvent(null);
         }}
         onUpdate={updateEvent}
+       onStatusChange={async (id, status) => {
+    await updateStatus(id, status);
+    setSelectedEvent((prev) => prev ? { ...prev, status } : prev);
+  }}
       />
     </div>
   );

@@ -5,6 +5,7 @@ import {
   createSchedule,
   deleteSchedule,
   updateSchedule,
+  updateScheduleStatus,
 } from "@/services/scheduleService";
 import { formatDate, formatTime } from "../utils/dateUtils";
 
@@ -24,6 +25,7 @@ function getActivityColor(activityName) {
 // Map raw API schedule to local event shape
 function mapScheduleToEvent(s) {
   const activityName = s.activity?.name;
+
   return {
     id: s.id,
     date: formatDate(new Date(s.scheduledAt)),
@@ -33,7 +35,7 @@ function mapScheduleToEvent(s) {
     color: getActivityColor(activityName),
     intensity: s.intensity,
     notes: s.notes ?? null,
-    status: s.status ?? "pending",
+    status: s.status ?? "scheduled",
   };
 }
 
@@ -108,27 +110,42 @@ export function useCalendar() {
   );
 
   const updateEvent = useCallback(
-  async (id, { activityId, startTime, endTime, intensity, notes }) => {
-    try {
-      const dateStr = events.find((ev) => ev.id === id)?.date;
-      const res = await updateSchedule(id, {
-        ...(activityId && { activityId }), 
-        startAt: new Date(`${dateStr}T${startTime}`).toISOString(),
-        endAt: new Date(`${dateStr}T${endTime}`).toISOString(),
-        intensity: intensity.toLowerCase(),
-        notes: notes || undefined,
-      });
-      setEvents((prev) =>
-        prev.map((ev) => (ev.id === id ? mapScheduleToEvent(res) : ev)),
-      );
-      showSuccess("Jadwal berhasil diupdate");
-    } catch (err) {
-      console.error(err);
-      showError("Gagal mengupdate jadwal");
-    }
-  },
-  [events, showSuccess, showError],
-);
+    async (id, { activityId, startTime, endTime, intensity, notes }) => {
+      try {
+        const dateStr = events.find((ev) => ev.id === id)?.date;
+        const res = await updateSchedule(id, {
+          ...(activityId && { activityId }),
+          startAt: new Date(`${dateStr}T${startTime}`).toISOString(),
+          endAt: new Date(`${dateStr}T${endTime}`).toISOString(),
+          intensity: intensity.toLowerCase(),
+          notes: notes || undefined,
+        });
+        setEvents((prev) =>
+          prev.map((ev) => (ev.id === id ? mapScheduleToEvent(res) : ev)),
+        );
+        showSuccess("Jadwal berhasil diupdate");
+      } catch (err) {
+        console.error(err);
+        showError("Gagal mengupdate jadwal");
+      }
+    },
+    [events, showSuccess, showError],
+  );
+
+  const updateStatus = useCallback(
+    async (id, status) => {
+      try {
+        const res = await updateScheduleStatus(id, status);
+        setEvents((prev) =>
+          prev.map((ev) => (ev.id === id ? mapScheduleToEvent(res) : ev)),
+        );
+      } catch (err) {
+        console.error(err);
+        showError("Gagal mengupdate status jadwal");
+      }
+    },
+    [showError],
+  );
 
   const removeEvent = useCallback(
     async (id) => {
@@ -158,6 +175,7 @@ export function useCalendar() {
     goToToday: () => setCurrentDate(new Date()),
     todayStr,
     updateEvent,
+    updateStatus,
     removeEvent,
     isLoading,
   };
