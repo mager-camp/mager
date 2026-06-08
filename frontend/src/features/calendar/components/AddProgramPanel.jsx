@@ -97,7 +97,7 @@ export default function AddProgramPanel({ onAddEvent }) {
   }
 
   return (
-    <div className="bg-[var(--text-dashboard)] rounded-xl flex flex-col h-full overflow-hidden">
+    <div className="bg-[var(--text-dashboard)] rounded flex flex-col h-full overflow-hidden">
       {/* Header */}
       <div className="px-5 py-4 flex-shrink-0">
         <div className="flex items-center justify-center gap-2 text-white font-bold text-sm">
@@ -229,7 +229,7 @@ export default function AddProgramPanel({ onAddEvent }) {
             className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
             onClick={() => setIsDateModalOpen(false)}
           />
-          <div className="relative bg-white rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] p-6 w-[380px] max-w-[95vw]">
+          <div className="relative bg-white rounded shadow-[0_20px_60px_rgba(0,0,0,0.15)] p-6 w-[380px] max-w-[95vw]">
             {/* Modal Header */}
             <div className="flex items-center justify-between mb-5">
               <div>
@@ -246,7 +246,7 @@ export default function AddProgramPanel({ onAddEvent }) {
             </div>
 
             {/* Range Preview */}
-            <div className="mb-4 p-3 rounded-xl border bg-slate-50">
+            <div className="mb-4 p-3 rounded border bg-slate-50">
               <div className="text-[10px] uppercase font-bold text-gray-500">Rentang Dipilih</div>
               <div className="mt-1 text-sm font-semibold text-gray-800">
                 {dateRange?.from ? dateRange.from.toLocaleDateString("id-ID") : "--"}
@@ -263,7 +263,7 @@ export default function AddProgramPanel({ onAddEvent }) {
                     key={days}
                     type="button"
                     onClick={() => setPresetRange(days)}
-                    className="px-3 py-1.5 text-xs font-semibold rounded-lg border hover:bg-gray-50"
+                    className="px-3 py-1.5 text-xs font-semibold rounded border hover:bg-gray-50"
                   >
                     {label}
                   </button>
@@ -286,7 +286,7 @@ export default function AddProgramPanel({ onAddEvent }) {
               <button
                 type="button"
                 onClick={() => setValue("dateRange", { from: undefined, to: undefined })}
-                className="px-4 py-2 rounded-lg border text-sm font-medium hover:bg-gray-50"
+                className="px-4 py-2 rounded border text-sm font-medium hover:bg-gray-50"
               >
                 Reset
               </button>
@@ -294,14 +294,14 @@ export default function AddProgramPanel({ onAddEvent }) {
                 <button
                   type="button"
                   onClick={() => setIsDateModalOpen(false)}
-                  className="px-4 py-2 rounded-lg border text-sm font-medium"
+                  className="px-4 py-2 rounded border text-sm font-medium"
                 >
                   Batal
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsDateModalOpen(false)}
-                  className="px-4 py-2 rounded-lg bg-[#2B6CB0] text-white text-sm font-semibold"
+                  className="px-4 py-2 rounded bg-[#2B6CB0] text-white text-sm font-semibold"
                 >
                   Simpan
                 </button>
