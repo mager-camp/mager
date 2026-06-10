@@ -1,13 +1,12 @@
-import { TrendingUp, TrendingDown, BarChart2, Activity } from "lucide-react";
+import { CheckCircle, Clock, Flame } from "lucide-react";
 
-function StatCard({ icon: Icon, iconBg, label, children }) {
+function StatCard({ icon: Icon, iconBg, iconColor, label, children }) {
   return (
     <div className="bg-white rounded-sm border border-gray-100 shadow-sm p-5 flex flex-col justify-between h-full relative overflow-hidden">
-      {/* Watermark icon */}
       <div className={`absolute right-3 top-3 w-10 h-10 rounded-lg ${iconBg} flex items-center justify-center opacity-20`}>
-        <Icon size={20} className="text-gray-600" />
+        <Icon size={20} className={iconColor} />
       </div>
-      <p className="text-sm  font-bold text-[var(--text-dashboard)] uppercase tracking-widest mb-3">
+      <p className="text-sm font-bold text-[var(--text-dashboard)] uppercase tracking-widest mb-3">
         {label}
       </p>
       {children}
@@ -15,59 +14,66 @@ function StatCard({ icon: Icon, iconBg, label, children }) {
   );
 }
 
-export default function SummaryCards({ stats }) {
+export default function SummaryCards({ stats, isLoading }) {
+if (isLoading) {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-shrink-0">
+      {[1, 2, 3].map((i) => (
+        <div
+          key={i}
+          className="bg-white rounded-sm border border-gray-100 shadow-sm p-5 relative overflow-hidden"
+        >
+          {/* icon */}
+          <div className="absolute right-3 top-3 w-10 h-10 rounded-lg bg-gray-100 animate-pulse" />
+
+          {/* label */}
+          <div className="h-3 w-28 bg-gray-100 rounded animate-pulse mb-5" />
+
+          {/* value */}
+          <div className="h-8 w-24 bg-gray-100 rounded animate-pulse mb-2" />
+
+          {/* subtitle */}
+          <div className="h-3 w-20 bg-gray-100 rounded animate-pulse" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
   if (!stats) return null;
-  const { volumeLatihan, skorKinerja, efisiensiPemulihan } = stats;
+
+  const { totalWorkout, totalDurasi, aktivitasUtama } = stats;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-shrink-0">
-      {/* Volume */}
-      <StatCard icon={BarChart2} iconBg="bg-blue-100" label="Jumlah Total Volume Latihan">
+      {/* Total Workout Selesai */}
+      <StatCard icon={CheckCircle} iconBg="bg-blue-100" iconColor="text-blue-600" label="Total Workout Selesai">
         <div>
-          <p className="text-3xl font-black text-text-primary">
-            {volumeLatihan.value}
-            <span className="text-base font-bold text-gray-400 ml-1">{volumeLatihan.unit}</span>
+          <p className="text-3xl font-black text-[var(--text-dashboard)]">
+            {totalWorkout.value}
+            <span className="text-base font-bold text-gray-400 ml-1">sesi</span>
           </p>
-          {volumeLatihan.up !== null && (
-            <p className={`text-xs mt-1.5 flex items-center gap-1 font-semibold ${
-              volumeLatihan.up ? "text-green-500" : "text-red-400"
-            }`}>
-              {volumeLatihan.up ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
-              {volumeLatihan.change}
-            </p>
-          )}
-          {volumeLatihan.up === null && (
-            <p className="text-xs mt-1.5 text-gray-400">{volumeLatihan.change}</p>
-          )}
+          <p className="text-xs mt-1.5 text-gray-400 font-medium">{totalWorkout.label}</p>
         </div>
       </StatCard>
 
-      {/* Skor Kinerja */}
-      <StatCard icon={Activity} iconBg="bg-green-100" label="Skor Kinerja Rata-Rata">
+      {/* Total Durasi */}
+      <StatCard icon={Clock} iconBg="bg-green-100" iconColor="text-green-600" label="Total Durasi Latihan">
         <div>
-          <p className="text-3xl font-black text-gray-600">
-            {skorKinerja.value}
-            <span className="text-base font-bold text-gray-400 ml-0.5">/ {skorKinerja.outOf}</span>
+          <p className="text-3xl font-black text-[var(--text-dashboard)]">
+            {totalDurasi.value}
           </p>
-          <p className="text-xs mt-1.5 text-gray-400 font-medium">{skorKinerja.label}</p>
+          <p className="text-xs mt-1.5 text-gray-400 font-medium">{totalDurasi.label}</p>
         </div>
       </StatCard>
 
-      {/* Efisiensi Pemulihan */}
-      <StatCard icon={TrendingUp} iconBg="bg-purple-100" label="Efisiensi Pemulihan">
+      {/* Aktivitas Terbanyak */}
+      <StatCard icon={Flame} iconBg="bg-orange-100" iconColor="text-orange-500" label="Aktivitas Terbanyak">
         <div>
-          <p className="text-3xl font-black text-gray-500">
-            {efisiensiPemulihan.value}
-            <span className="text-base font-bold text-gray-400 ml-0.5">{efisiensiPemulihan.unit}</span>
+          <p className="text-3xl font-black text-[var(--text-dashboard)] capitalize">
+            {aktivitasUtama.value}
           </p>
-          {efisiensiPemulihan.up !== null ? (
-            <p className="text-xs mt-1.5 text-green-500 font-semibold flex items-center gap-1">
-              <TrendingUp size={12} />
-              {efisiensiPemulihan.label}
-            </p>
-          ) : (
-            <p className="text-xs mt-1.5 text-gray-400">{efisiensiPemulihan.label}</p>
-          )}
+          <p className="text-xs mt-1.5 text-gray-400 font-medium">{aktivitasUtama.label}</p>
         </div>
       </StatCard>
     </div>

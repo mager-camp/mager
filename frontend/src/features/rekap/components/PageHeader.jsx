@@ -1,4 +1,4 @@
-import { TIME_FILTERS } from "../constants/rekapLatihanData";
+import { TIME_FILTERS } from "../hooks/useRekapFilter";
 
 export default function PageHeader({ activeFilter, onFilterChange }) {
   return (
@@ -12,7 +12,6 @@ export default function PageHeader({ activeFilter, onFilterChange }) {
         </p>
       </div>
 
-      {/* Filter pills */}
       <div className="flex items-center bg-[#2B6CB0] rounded-sm overflow-hidden shrink-0 self-start sm:self-auto">
         {TIME_FILTERS.map((f) => (
           <button

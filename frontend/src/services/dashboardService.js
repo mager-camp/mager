@@ -13,7 +13,7 @@ export const getSchedules = async () => {
 // Derived dari schedules — hitung aktivitas per hari 7 hari terakhir
 export const getWeeklyProgress = async () => {
   const data = await getSchedules();
-  const now  = new Date();
+  const now = new Date();
 
   // Buat map 7 hari terakhir
   const days = {};
@@ -25,8 +25,8 @@ export const getWeeklyProgress = async () => {
 
   // Hitung jadwal per hari (pakai startAt biar akurat ke tanggal lokal)
   data.forEach((s) => {
-    const dateStr = new Date(s.startAt).toLocaleDateString("sv"); // "YYYY-MM-DD"
-    if (dateStr in days) days[dateStr]++;
+    const dateStr = new Date(s.startAt).toLocaleDateString("sv");
+    if (dateStr in days && s.status === "completed") days[dateStr]++;
   });
 
   return Object.entries(days).map(([date, workouts]) => ({ date, workouts }));
@@ -34,15 +34,17 @@ export const getWeeklyProgress = async () => {
 
 // Jadwal hari ini
 export const getTodaySchedules = async () => {
-  const data    = await getSchedules();
+  const data = await getSchedules();
   const todayStr = new Date().toLocaleDateString("sv");
-  return data.filter((s) => new Date(s.startAt).toLocaleDateString("sv") === todayStr);
+  return data.filter(
+    (s) => new Date(s.startAt).toLocaleDateString("sv") === todayStr,
+  );
 };
 
 // Sesi berikutnya (terdekat dari sekarang, status pending)
 export const getNextSession = async () => {
   const data = await getSchedules();
-  const now  = new Date();
+  const now = new Date();
   const upcoming = data
     .filter((s) => new Date(s.startAt) >= now && s.status === "scheduled")
     .sort((a, b) => new Date(a.startAt) - new Date(b.startAt));

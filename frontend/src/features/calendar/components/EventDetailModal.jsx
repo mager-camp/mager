@@ -39,10 +39,10 @@ function ViewMode({ event, onClose, onDelete, onEditClick, onStatusChange }) {
   return (
     <div className="fixed inset-0 z-[999] flex items-center justify-center">
       {/* Backdrop */}
-      <div
+      {/* <div
         className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
         onClick={onClose}
-      />
+      /> */}
 
       {/* Modal */}
       <div className="relative bg-white rounded shadow-[0_20px_60px_rgba(0,0,0,0.15)] w-[480px] max-w-[95vw] overflow-hidden">
@@ -133,7 +133,10 @@ function ViewMode({ event, onClose, onDelete, onEditClick, onStatusChange }) {
             <>
               {event.status === "active" ? (
                 <button
-                  onClick={() => onStatusChange(event.id, "completed")}
+                  onClick={() => {
+                    onStatusChange(event.id, "completed");
+                    onClose();
+                  }}
                   className="w-full flex items-center justify-center gap-2 bg-[#38A169] hover:bg-[#2F855A] text-white font-bold text-sm py-3 rounded transition-colors"
                 >
                   <CalendarCheck size={16} />
@@ -141,7 +144,10 @@ function ViewMode({ event, onClose, onDelete, onEditClick, onStatusChange }) {
                 </button>
               ) : (
                 <button
-                  onClick={() => onStatusChange(event.id, "active")}
+                  onClick={() => {
+                    onStatusChange(event.id, "active");
+                    onClose();
+                  }}
                   className="w-full flex items-center justify-center gap-2 bg-[#2B6CB0] hover:bg-[#2C5282] text-white font-bold text-sm py-3 rounded transition-colors"
                 >
                   Mulai Latihan <ArrowRight size={16} />

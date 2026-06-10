@@ -6,8 +6,10 @@ import {
   deleteSchedule,
   updateSchedule,
   updateScheduleStatus,
+  createWorkoutLog,
 } from "@/services/scheduleService";
 import { formatDate, formatTime } from "../utils/dateUtils";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ACTIVITY_TYPE_TO_COLOR = {
   LARI: "green",
@@ -41,9 +43,14 @@ function mapScheduleToEvent(s) {
 
 export function useCalendar() {
   const { showSuccess, showError } = useFeedback();
-
+  const queryClient = useQueryClient();
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+
+  const STATUS_MESSAGE = {
+    active: "Status Latihan Aktif",
+    completed: "Status Latihan Selesai",
+  };
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState([]);
@@ -124,6 +131,7 @@ export function useCalendar() {
           prev.map((ev) => (ev.id === id ? mapScheduleToEvent(res) : ev)),
         );
         showSuccess("Jadwal berhasil diupdate");
+        queryClient.invalidateQueries({ queryKey: ["dashboard"] });
       } catch (err) {
         console.error(err);
         showError("Gagal mengupdate jadwal");
@@ -135,16 +143,39 @@ export function useCalendar() {
   const updateStatus = useCallback(
     async (id, status) => {
       try {
-        const res = await updateScheduleStatus(id, status);
-        setEvents((prev) =>
-          prev.map((ev) => (ev.id === id ? mapScheduleToEvent(res) : ev)),
-        );
+        if (status === "completed") {
+          const event = events.find((ev) => ev.id === id);
+
+          const [startH, startM] = event.startTime.split(".").map(Number);
+          const [endH, endM] = event.endTime.split(".").map(Number);
+          const durationMinutes = Math.max(
+            endH * 60 + endM - (startH * 60 + startM),
+            1,
+          );
+
+          await createWorkoutLog({ userScheduleId: id, durationMinutes });
+
+          // BE sudah update status jadi completed via completeScheduleRepo
+          setEvents((prev) =>
+            prev.map((ev) =>
+              ev.id === id ? { ...ev, status: "completed" } : ev,
+            ),
+          );
+        } else {
+          const res = await updateScheduleStatus(id, status);
+          setEvents((prev) =>
+            prev.map((ev) => (ev.id === id ? mapScheduleToEvent(res) : ev)),
+          );
+        }
+
+        queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+        showSuccess(STATUS_MESSAGE[status] ?? "Status berhasil diupdate");
       } catch (err) {
         console.error(err);
         showError("Gagal mengupdate status jadwal");
       }
     },
-    [showError],
+    [events, showError, showSuccess, queryClient],
   );
 
   const removeEvent = useCallback(
@@ -153,6 +184,7 @@ export function useCalendar() {
         await deleteSchedule(id);
         setEvents((prev) => prev.filter((ev) => ev.id !== id));
         showSuccess("Jadwal berhasil dihapus");
+        queryClient.invalidateQueries({ queryKey: ["dashboard"] });
       } catch (err) {
         console.error(err);
         showError("Gagal menghapus jadwal");

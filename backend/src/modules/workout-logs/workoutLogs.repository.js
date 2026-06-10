@@ -1,8 +1,8 @@
-import prisma from '../../config/prisma.js';
+import prisma from "../../config/prisma.js";
 
 export const createWorkoutLogRepo = (data) => {
   return prisma.workoutLog.create({
-    data
+    data,
   });
 };
 
@@ -12,45 +12,47 @@ export const getWorkoutLogsRepo = (userId) => {
     include: {
       userSchedule: {
         include: {
-          activity: true
-        }
-      }
+          activity: true,
+        },
+      },
     },
     orderBy: {
-      completedAt: 'desc'
-    }
+      completedAt: "desc",
+    },
   });
 };
 
 export const getWorkoutLogByIdRepo = (id) => {
   return prisma.workoutLog.findUnique({
-    where: { id }
+    where: { id },
   });
 };
 
-export const updateWorkoutLogRepo = (
-  id,
-  data
-) => {
+export const updateWorkoutLogRepo = (id, data) => {
   return prisma.workoutLog.update({
     where: { id },
-    data
+    data,
   });
 };
 
 export const deleteWorkoutLogRepo = (id) => {
   return prisma.workoutLog.delete({
-    where: { id }
+    where: { id },
   });
 };
 
-export const completeScheduleRepo = (
-  scheduleId
-) => {
+export const completeScheduleRepo = (scheduleId) => {
   return prisma.userSchedule.update({
     where: { id: scheduleId },
     data: {
-      status: 'completed'
-    }
+      status: "completed",
+    },
+  });
+};
+
+export const getScheduleNotesRepo = (scheduleId) => {
+  return prisma.userSchedule.findUnique({
+    where: { id: scheduleId },
+    select: { notes: true },
   });
 };
