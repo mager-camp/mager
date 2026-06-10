@@ -3,110 +3,74 @@ import {
   getWorkoutLogs,
   getWorkoutLogById,
   updateWorkoutLog,
-  deleteWorkoutLog
-} from './workoutLogs.service.js';
+  deleteWorkoutLog,
+} from "./workoutLogs.service.js";
 
 import {
-    createWorkoutLogSchema,
-    updateWorkoutLogSchema
-} from './workoutLogs.validation.js';
+  createWorkoutLogSchema,
+  updateWorkoutLogSchema,
+} from "./workoutLogs.validation.js";
 
-export const create = async (
-  req,
-  res,
-  next
-) => {
+export const create = async (req, res, next) => {
+  console.log("WORKOUT LOG BODY:", req.body);
   try {
-    const data =
-      await createWorkoutLog(
-        req.user.id,
-        req.body
-      );
+    const data = await createWorkoutLog(req.user.id, req.body);
 
     res.status(201).json({
       success: true,
-      data
+      data,
     });
   } catch (error) {
     next(error);
   }
 };
 
-export const getAll = async (
-  req,
-  res,
-  next
-) => {
+export const getAll = async (req, res, next) => {
   try {
-    const data =
-      await getWorkoutLogs(
-        req.user.id
-      );
+    const data = await getWorkoutLogs(req.user.id);
 
     res.json({
       success: true,
-      data
+      data,
     });
   } catch (error) {
     next(error);
   }
 };
 
-export const getById = async (
-  req,
-  res,
-  next
-) => {
+export const getById = async (req, res, next) => {
   try {
-    const data =
-      await getWorkoutLogById(
-        req.params.id
-      );
+    const data = await getWorkoutLogById(req.params.id);
 
     res.json({
       success: true,
-      data
+      data,
     });
   } catch (error) {
     next(error);
   }
 };
 
-export const update = async (
-  req,
-  res,
-  next
-) => {
+export const update = async (req, res, next) => {
   try {
-    const data =
-      await updateWorkoutLog(
-        req.params.id,
-        req.body
-      );
+    const data = await updateWorkoutLog(req.params.id, req.body);
 
     res.json({
       success: true,
-      data
+      data,
     });
   } catch (error) {
     next(error);
   }
 };
 
-export const remove = async (
-  req,
-  res,
-  next
-) => {
+export const remove = async (req, res, next) => {
   try {
-    await deleteWorkoutLog(
-      req.params.id
-    );
+    await deleteWorkoutLog(req.params.id);
 
     res.json({
       success: true,
-      message:
-        'Workout log deleted'
+      message: "Workout log deleted",
     });
   } catch (error) {
     next(error);

@@ -6,7 +6,6 @@ import AddProgramPanel from "./components/AddProgramPanel";
 import EventDetailModal from "./components/EventDetailModal";
 import { useCalendar } from "./hooks/useCalendar";
 
-
 export default function CalendarPage() {
   const {
     year,
@@ -26,8 +25,7 @@ export default function CalendarPage() {
   } = useCalendar();
 
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [searchParams, setSearchParams] = useSearchParams(); 
-
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const scheduleId = searchParams.get("scheduleId");
@@ -40,7 +38,6 @@ export default function CalendarPage() {
     }
   }, [searchParams, events]);
 
-  
   return (
     <div className="p-4 md:p-6 h-full flex gap-4 overflow-hidden">
       {/* Kolom kiri: kalender */}
@@ -68,7 +65,11 @@ export default function CalendarPage() {
 
       {/* Modal detail event */}
       <EventDetailModal
-        event={selectedEvent}
+        event={
+          selectedEvent
+            ? (events.find((ev) => ev.id === selectedEvent.id) ?? selectedEvent) // ✅ sync dengan state terbaru
+            : null
+        }
         onClose={() => setSelectedEvent(null)}
         onDelete={async (ev) => {
           await removeEvent(ev.id);

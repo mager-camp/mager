@@ -29,3 +29,7 @@ export const updateScheduleStatus = async (id, status) => {
   return response.data.data;
 };
 
+export const createWorkoutLog = async (payload) => {
+  const response = await api.post("/workout-logs", payload);
+  return response.data.data;
+};

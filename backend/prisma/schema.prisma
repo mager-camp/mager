@@ -144,8 +144,6 @@ model WorkoutLog {
   userScheduleId  String
   userId          String
   durationMinutes Int
-  caloriesBurned  Int?
-  distanceKm      Decimal?     @db.Decimal(5, 2)
   notes           String?
   completedAt     DateTime     @default(now())
   user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)

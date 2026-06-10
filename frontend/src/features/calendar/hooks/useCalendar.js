@@ -6,10 +6,10 @@ import {
   deleteSchedule,
   updateSchedule,
   updateScheduleStatus,
+  createWorkoutLog,
 } from "@/services/scheduleService";
 import { formatDate, formatTime } from "../utils/dateUtils";
 import { useQueryClient } from "@tanstack/react-query";
-import { DASHBOARD_KEYS } from "@/features/dashboard/hooks/useDashboard";
 
 const ACTIVITY_TYPE_TO_COLOR = {
   LARI: "green",
@@ -143,10 +143,31 @@ export function useCalendar() {
   const updateStatus = useCallback(
     async (id, status) => {
       try {
-        const res = await updateScheduleStatus(id, status);
-        setEvents((prev) =>
-          prev.map((ev) => (ev.id === id ? mapScheduleToEvent(res) : ev)),
-        );
+        if (status === "completed") {
+          const event = events.find((ev) => ev.id === id);
+
+          const [startH, startM] = event.startTime.split(".").map(Number);
+          const [endH, endM] = event.endTime.split(".").map(Number);
+          const durationMinutes = Math.max(
+            endH * 60 + endM - (startH * 60 + startM),
+            1,
+          );
+
+          await createWorkoutLog({ userScheduleId: id, durationMinutes });
+
+          // BE sudah update status jadi completed via completeScheduleRepo
+          setEvents((prev) =>
+            prev.map((ev) =>
+              ev.id === id ? { ...ev, status: "completed" } : ev,
+            ),
+          );
+        } else {
+          const res = await updateScheduleStatus(id, status);
+          setEvents((prev) =>
+            prev.map((ev) => (ev.id === id ? mapScheduleToEvent(res) : ev)),
+          );
+        }
+
         queryClient.invalidateQueries({ queryKey: ["dashboard"] });
         showSuccess(STATUS_MESSAGE[status] ?? "Status berhasil diupdate");
       } catch (err) {
@@ -154,7 +175,7 @@ export function useCalendar() {
         showError("Gagal mengupdate status jadwal");
       }
     },
-    [showError, queryClient],
+    [events, showError, showSuccess, queryClient],
   );
 
   const removeEvent = useCallback(
