@@ -12,7 +12,7 @@ import {
 } from "./workoutLogs.validation.js";
 
 export const create = async (req, res, next) => {
-  console.log("WORKOUT LOG BODY:", req.body);
+  // console.log("WORKOUT LOG BODY:", req.body);
   try {
     const data = await createWorkoutLog(req.user.id, req.body);
 

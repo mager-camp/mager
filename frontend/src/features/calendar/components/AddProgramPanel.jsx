@@ -54,7 +54,7 @@ export default function AddProgramPanel({ onAddEvent }) {
   const selectedIntensity = watch("intensity");
 
   async function onSubmit(data) {
-     console.log("FORM DATA:", data);
+    //  console.log("FORM DATA:", data);
     const selectedActivity = JENIS_LATIHAN_OPTIONS.find(
       (opt) => opt.value === data.jenisLatihan,
     );
