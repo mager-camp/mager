@@ -6,20 +6,25 @@ export const createWorkoutLogRepo = (data) => {
   });
 };
 
-export const getWorkoutLogsRepo = (userId) => {
-  return prisma.workoutLog.findMany({
-    where: { userId },
-    include: {
-      userSchedule: {
-        include: {
-          activity: true,
+export const getWorkoutLogsRepo = async (userId) => {
+  try {
+    return await prisma.workoutLog.findMany({
+      where: { userId },
+      include: {
+        userSchedule: {
+          include: {
+            activity: true,
+          },
         },
       },
-    },
-    orderBy: {
-      completedAt: "desc",
-    },
-  });
+      orderBy: {
+        completedAt: "desc",
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
 };
 
 export const getWorkoutLogByIdRepo = (id) => {
