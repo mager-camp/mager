@@ -23,9 +23,19 @@ export const createWorkoutLog = async (userId, payload) => {
 };
 
 export const getWorkoutLogs = async (userId) => {
-  return getWorkoutLogsRepo(userId);
-};
+  try {
+    const data = await getWorkoutLogsRepo(userId);
 
+    console.log("WORKOUT LOGS:", data.length);
+
+    return data;
+  } catch (err) {
+    console.error("GET WORKOUT LOGS ERROR");
+    console.error(err);
+
+    throw err;
+  }
+};
 export const getWorkoutLogById = async (id) => {
   const data = await getWorkoutLogByIdRepo(id);
 
