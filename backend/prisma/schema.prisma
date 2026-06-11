@@ -30,25 +30,102 @@ model User {
   notifications    Notification[]
   payments         Payment[]
   role             Role           @relation(fields: [roleId], references: [id])
+  instructor       Instructor?
+  moduleProgress   UserModuleProgress[]
   userCourses      UserCourse[]
   schedules        UserSchedule[]
   workoutLogs      WorkoutLog[]
+  adminSetting     AdminSetting?
+}
+
+model AdminSetting {
+  id          String   @id @default(uuid())
+  adminId     String   @unique
+  notifEmail  Boolean  @default(true)
+  notifSystem Boolean  @default(true)
+  notifReport Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  admin       User     @relation(fields: [adminId], references: [id], onDelete: Cascade)
+}
+
+model Instructor {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  bio       String?
+  badges    InstructorBadge[]
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courses   Course[]
 }
 
 model Course {
-  id           String       @id @default(uuid())
+  id           String            @id @default(uuid())
   createdBy    String
+  instructorId String?
   title        String
   description  String?
+  about        String?
+  totalDurasi  String?
   type         CourseType
-  price        Decimal      @db.Decimal(12, 2)
   thumbnailUrl String?
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
   deletedAt    DateTime?
-  creator      User         @relation("CreatedCourses", fields: [createdBy], references: [id])
+  creator      User              @relation("CreatedCourses", fields: [createdBy], references: [id])
+  instructor   Instructor?       @relation(fields: [instructorId], references: [id])
+  modules      CourseModule[]
+  highlights   CourseHighlight[]
   payments     Payment[]
   userCourses  UserCourse[]
+}
+
+model CourseHighlight {
+  id       String @id @default(uuid())
+  courseId String
+  icon     String
+  title    String
+  desc     String
+  order    Int    @default(0)
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+
+model CourseModule {
+  id         String      @id @default(uuid())
+  courseId   String
+  title      String
+  durasi     String?
+  order      Int
+  createdAt  DateTime    @default(now())
+  course     Course      @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  subModules SubModule[]
+  userProgress UserModuleProgress[]
+
+  @@index([courseId, order])
+}
+
+model SubModule {
+  id       String        @id @default(uuid())
+  moduleId String
+  title    String
+  durasi   String?
+  type     SubModuleType
+  order    Int
+  videoUrl String?
+  module   CourseModule  @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@index([moduleId, order])
+}
+
+model UserModuleProgress {
+  id          String       @id @default(uuid())
+  userId      String
+  moduleId    String
+  completedAt DateTime     @default(now())
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module      CourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, moduleId])
 }
 
 model UserCourse {
@@ -208,4 +285,19 @@ enum ActivityType {
   RENANG
   TEMBAK
   OBSTACLE
+}
+
+enum SubModuleType {
+  video
+  drill
+}
+
+enum InstructorBadge {
+  ID
+  SG
+  MY
+  AU
+  GO
+  FR
+  US
 }

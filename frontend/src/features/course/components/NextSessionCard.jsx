@@ -1,16 +1,18 @@
 import { MapPin, Zap, Clock } from "lucide-react";
 import { useCountdownTo } from "../hooks/useCountdownTo";
 import { useNextSession } from "@/features/dashboard/hooks/useDashboard"; // sesuaikan path
+import { useNavigate } from "react-router-dom";
 
 const INTENSITY_LABEL = {
-  light:  "Ringan",
+  light: "Ringan",
   medium: "Sedang",
-  heavy:  "Berat",
+  heavy: "Berat",
 };
 
 export default function NextSessionCard() {
   const { data: session, isLoading } = useNextSession();
   const { display, isFinished } = useCountdownTo(session?.startAt ?? null);
+  const navigate = useNavigate();
 
   if (isLoading) {
     return (
@@ -47,7 +49,8 @@ export default function NextSessionCard() {
             )}
             <span className="flex items-center gap-1.5">
               <Zap size={13} className="text-gray-400" />
-              Intensitas: {INTENSITY_LABEL[session.intensity] ?? session.intensity}
+              Intensitas:{" "}
+              {INTENSITY_LABEL[session.intensity] ?? session.intensity}
             </span>
           </div>
         </div>
@@ -64,8 +67,11 @@ export default function NextSessionCard() {
         </div>
       </div>
 
-      <button className="mt-4 w-max px-6 py-2 bg-[#ED8936] hover:bg-[#DD6B20] active:scale-95 transition-all text-white text-sm font-bold rounded-sm">
-        LIHAT MODUL
+      <button
+        onClick={() => navigate(`/user/kalender?scheduleId=${session.id}`)}
+        className="mt-4 w-max px-6 py-2 bg-[#ED8936] hover:bg-[#DD6B20] active:scale-95 transition-all text-white text-sm font-bold rounded-sm"
+      >
+        LIHAT JADWAL
       </button>
     </div>
   );

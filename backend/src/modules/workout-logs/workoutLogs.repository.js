@@ -53,6 +53,6 @@ export const completeScheduleRepo = (scheduleId) => {
 export const getScheduleNotesRepo = (scheduleId) => {
   return prisma.userSchedule.findUnique({
     where: { id: scheduleId },
-    select: { notes: true },
+    select: { notes: true, startAt: true },
   });
 };

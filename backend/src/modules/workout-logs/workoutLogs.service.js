@@ -11,10 +11,14 @@ import {
 export const createWorkoutLog = async (userId, payload) => {
   const schedule = await getScheduleNotesRepo(payload.userScheduleId);
 
+  const durationMinutes = Math.round(
+    (Date.now() - new Date(schedule.startAt)) / 60000
+  );
+
   const data = await createWorkoutLogRepo({
     userScheduleId: payload.userScheduleId,
     userId,
-    durationMinutes: payload.durationMinutes,
+    durationMinutes,
     notes: schedule?.notes ?? null,
   });
 

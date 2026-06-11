@@ -14,10 +14,12 @@ export const getSchedulesRepo = (userId) => {
     where: { userId },
     include: {
       activity: true,
+      workoutLogs: {
+        take: 1,
+        orderBy: { completedAt: "desc" },
+      },
     },
-    orderBy: {
-      scheduledAt: "asc",
-    },
+    orderBy: { startAt: "asc" },
   });
 };
 

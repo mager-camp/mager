@@ -8,7 +8,6 @@ export const createCourseSchema =
       'regular',
       'premium'
     ]),
-    price: z.number().nonnegative()
   });
 
 export const updateCourseSchema =
