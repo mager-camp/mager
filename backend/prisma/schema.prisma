@@ -74,6 +74,7 @@ model Course {
   deletedAt    DateTime?
   creator      User              @relation("CreatedCourses", fields: [createdBy], references: [id])
   instructor   Instructor?       @relation(fields: [instructorId], references: [id])
+  introVideoUrl String?
   modules      CourseModule[]
   highlights   CourseHighlight[]
   payments     Payment[]

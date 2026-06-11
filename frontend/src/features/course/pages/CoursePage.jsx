@@ -1,21 +1,47 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, PlayCircle, BookOpen, Lock, ChevronRight, Clock } from 'lucide-react';
 import { useCourseDetail } from '../hooks/useCourses';
+import { useState } from "react";
+import { getYouTubeEmbedUrl } from '@/utils/youtube';
 
-function CourseHero({ image, title }) {
+function CourseHero({ image, title, introVideoUrl }) {
+  const [playing, setPlaying] = useState(false);
+
+  const embedUrl = introVideoUrl ? getYouTubeEmbedUrl(introVideoUrl) : null;
+
   return (
-    <div className="relative w-full h-[240px] sm:h-[320px] md:h-[420px] rounded overflow-hidden group cursor-pointer shrink-0">
-      <img
-        src={image}
-        alt={title}
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-      />
-      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors" />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-[#ED8936]/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-          <PlayCircle size={42} className="text-white" />
-        </div>
-      </div>
+    <div className="relative w-full h-[240px] sm:h-[320px] md:h-[420px] rounded overflow-hidden shrink-0">
+      {playing && embedUrl ? (
+        <iframe
+          src={embedUrl}
+          title={title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          className="absolute inset-0 w-full h-full"
+        />
+      ) : (
+        <>
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/40" />
+          <div
+            className="absolute inset-0 flex items-center justify-center cursor-pointer group"
+            onClick={() => embedUrl && setPlaying(true)}
+          >
+            <div className={`w-16 h-16 md:w-24 md:h-24 rounded-full flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110 ${embedUrl ? 'bg-[#ED8936]/90' : 'bg-gray-500/60'}`}>
+              <PlayCircle size={42} className="text-white" />
+            </div>
+            {!embedUrl && (
+              <p className="absolute bottom-4 text-white/60 text-xs font-bold">
+                Video intro belum tersedia
+              </p>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -125,7 +151,7 @@ export default function CoursePage() {
         <h1 className="text-2xl md:text-3xl font-black text-[var(--text-dashboard)] uppercase leading-tight">
           {course.title}
         </h1>
-        {firstUnlocked && ( console.log(course),
+        {firstUnlocked && (
           <button
             onClick={() => navigate(`/user/course/free/${course.id}/modul/${firstUnlocked.id}`)}
             className="cursor-pointer px-5 py-2.5 rounded bg-[#ED8936] hover:bg-[#DD6B20] active:scale-[0.98] transition-all text-white text-xs font-black tracking-wider shadow"
@@ -135,7 +161,11 @@ export default function CoursePage() {
         )}
       </div>
 
-      <CourseHero image={course.thumbnailUrl ?? '/placeholder.webp'} title={course.title} />
+      <CourseHero
+  image={course.thumbnailUrl ?? '/placeholder.webp'}
+  title={course.title}
+  introVideoUrl={course.introVideoUrl}
+/>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-5">
         {/* LEFT */}

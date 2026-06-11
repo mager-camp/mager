@@ -6,6 +6,7 @@ export const COURSE_KEYS = {
   detail: (id) => ['courses', id],
 };
 
+
 const getFreeCourses = async () => {
   const { data } = await api.get('/courses', { params: { type: 'regular' } });
   return data.data;

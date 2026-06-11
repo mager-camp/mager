@@ -103,11 +103,42 @@ function GoalItem({ schedule }) {
   );
 }
 
+function GoalItemSkeleton() {
+  return (
+    <div className="w-full rounded border border-gray-100 bg-white p-4 flex flex-col gap-2 animate-pulse">
+      {/* icon + badge */}
+      <div className="flex items-start justify-between">
+        <div className="w-8 h-8 rounded-lg bg-gray-200" />
+        <div className="w-16 h-4 rounded-full bg-gray-200" />
+      </div>
+
+      {/* content */}
+      <div className="flex flex-col gap-1.5 mt-1">
+        <div className="w-3/4 h-3 rounded bg-gray-200" />
+        <div className="w-1/2 h-5 rounded bg-gray-200" />
+        <div name="w-2/3 h-3 rounded bg-gray-200" />
+      </div>
+
+      {/* progress bar */}
+      <div className="h-[3px] rounded-full bg-gray-100 mt-auto" />
+    </div>
+  );
+}
+
 export default function GoalCardList() {
   const { data: schedules = [], isLoading } = useTodaySchedules();
 
   if (isLoading) {
-    return <p className="text-sm text-gray-400">Memuat goals...</p>;
+    return (
+      <div>
+        <h2 className="text-base font-bold text-gray-900 mb-3">Goals Hari Ini</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 md:grid-cols-3 gap-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <GoalItemSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   if (schedules.length === 0) {

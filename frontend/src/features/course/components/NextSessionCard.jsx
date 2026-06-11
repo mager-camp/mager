@@ -16,8 +16,24 @@ export default function NextSessionCard() {
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded border border-gray-100 shadow-sm p-5 h-full flex items-center justify-center">
-        <p className="text-sm text-gray-400">Memuat sesi...</p>
+      <div className="bg-white rounded border border-gray-100 shadow-sm p-5 flex flex-col justify-between h-full animate-pulse">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1 min-w-0 flex flex-col gap-2">
+            {/* label "Sesi Berikutnya" */}
+            <div className="w-24 h-3 rounded bg-gray-200" />
+            {/* title */}
+            <div className="w-3/4 h-5 rounded bg-gray-200" />
+            {/* location + intensity */}
+            <div className="flex gap-3 mt-1">
+              <div className="w-20 h-3 rounded bg-gray-200" />
+              <div className="w-24 h-3 rounded bg-gray-200" />
+            </div>
+          </div>
+          {/* countdown badge */}
+          <div className="w-24 h-8 rounded-lg bg-gray-200 shrink-0" />
+        </div>
+        {/* button */}
+        <div className="mt-4 w-28 h-8 rounded bg-gray-200" />
       </div>
     );
   }
