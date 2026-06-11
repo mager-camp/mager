@@ -157,8 +157,6 @@ const recovery = await prisma.activityTemplate.upsert({
       userId: user.id,
       userScheduleId: schedule.id,
       durationMinutes: 45,
-      caloriesBurned: 350,
-      distanceKm: 5,
     },
   });
 

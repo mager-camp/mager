@@ -17,6 +17,8 @@ import Settings from "@/pages/user/Settings";
 import Dukungan from "@/pages/user/Support";
 import CoursePage from "@/features/premium/pages/CoursePage";
 import ModulPage from "@/features/premium/pages/ModulPage";
+import FreeCoursePage from "@/features/course/pages/CoursePage";
+import FreeModulPage from "@/features/course/pages/ModulPage";
 
 export const router = createBrowserRouter([
   {
@@ -77,7 +79,20 @@ export const router = createBrowserRouter([
       },
       {
         path: "course",
-        element: <Course />,
+        children: [
+          {
+            index: true,
+            element: <Course />,
+          },
+          {
+            path: "free/:slug",
+            element: <FreeCoursePage />,
+          },
+          {
+            path: "free/:slug/modul/:modulId",
+            element: <FreeModulPage />,
+          },
+        ],
       },
       {
         path: "rekap",

@@ -1,33 +1,57 @@
 import { MapPin, Zap, Clock } from "lucide-react";
-import { useCountdown } from "../hooks/useCountdown";
-import { NEXT_SESSION } from "../constants/courseData";
+import { useCountdownTo } from "../hooks/useCountdownTo";
+import { useNextSession } from "@/features/dashboard/hooks/useDashboard"; // sesuaikan path
+
+const INTENSITY_LABEL = {
+  light:  "Ringan",
+  medium: "Sedang",
+  heavy:  "Berat",
+};
 
 export default function NextSessionCard() {
-  const { display, isFinished } = useCountdown(NEXT_SESSION.durationSeconds);
+  const { data: session, isLoading } = useNextSession();
+  const { display, isFinished } = useCountdownTo(session?.startAt ?? null);
+
+  if (isLoading) {
+    return (
+      <div className="bg-white rounded border border-gray-100 shadow-sm p-5 h-full flex items-center justify-center">
+        <p className="text-sm text-gray-400">Memuat sesi...</p>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return (
+      <div className="bg-white rounded border border-gray-100 shadow-sm p-5 h-full flex items-center justify-center">
+        <p className="text-sm text-gray-400">Tidak ada sesi terjadwal.</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 flex flex-col justify-between h-full">
+    <div className="bg-white rounded border border-gray-100 shadow-sm p-5 flex flex-col justify-between h-full">
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">
           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
             Sesi Berikutnya
           </p>
           <h3 className="text-base font-bold text-[#2B6CB0] leading-snug mb-3 truncate">
-            {NEXT_SESSION.title}
+            {session.activity.name}
           </h3>
           <div className="flex items-center gap-4 text-sm text-gray-600 flex-wrap">
-            <span className="flex items-center gap-1.5">
-              <MapPin size={13} className="text-gray-400" />
-              {NEXT_SESSION.location}
-            </span>
+            {session.notes && (
+              <span className="flex items-center gap-1.5">
+                <MapPin size={13} className="text-gray-400" />
+                {session.notes}
+              </span>
+            )}
             <span className="flex items-center gap-1.5">
               <Zap size={13} className="text-gray-400" />
-              Intensitas: {NEXT_SESSION.intensity}
+              Intensitas: {INTENSITY_LABEL[session.intensity] ?? session.intensity}
             </span>
           </div>
         </div>
 
-        {/* Countdown */}
         <div
           className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-mono font-bold transition-colors ${
             isFinished
@@ -40,7 +64,7 @@ export default function NextSessionCard() {
         </div>
       </div>
 
-      <button className="mt-4 w-max px-6 py-2 bg-[#ED8936] hover:bg-[#DD6B20] active:scale-95 transition-all text-white text-sm font-bold rounded-lg">
+      <button className="mt-4 w-max px-6 py-2 bg-[#ED8936] hover:bg-[#DD6B20] active:scale-95 transition-all text-white text-sm font-bold rounded-sm">
         LIHAT MODUL
       </button>
     </div>

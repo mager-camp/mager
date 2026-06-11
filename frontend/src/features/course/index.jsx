@@ -2,7 +2,8 @@ import NextSessionCard from "./components/NextSessionCard";
 import ReadinessCard from "./components/ReadinessCard";
 import RecoveryWarningCard from "./components/RecoveryWarningCard";
 import GoalCardList from "./components/GoalCard";
-import StatsGrid from "./components/StatsGrid";
+import Course from "./components/Course";
+// import StatsGrid from "./components/StatsGrid";
 
 export default function CoursePage() {
   return (
@@ -25,7 +26,8 @@ export default function CoursePage() {
       </div>
 
       {/* Row 3: Stats — ngisi sisa tinggi layar */}
-      <StatsGrid />
+      {/* <StatsGrid /> */}
+      <Course />
     </div>
   );
 }

@@ -1,10 +1,12 @@
 import prisma from '../../config/prisma.js';
 
-export const getCoursesRepo = () => {
+export const getCoursesRepo = (filters = {}) => {
   return prisma.course.findMany({
-    orderBy: {
-      createdAt: 'desc'
-    }
+    where: {
+      ...(filters.type && { type: filters.type }),
+      deletedAt: null,
+    },
+    orderBy: { createdAt: "desc" },
   });
 };
 

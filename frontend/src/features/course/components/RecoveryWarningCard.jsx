@@ -3,7 +3,7 @@ import { RECOVERY_WARNING } from "../constants/courseData";
 
 export default function RecoveryWarningCard() {
   return (
-    <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex gap-3 h-full">
+    <div className="bg-red-50 border border-red-200 rounded p-4 flex gap-3 h-full">
       <div className="shrink-0 mt-0.5">
         <AlertTriangle size={16} className="text-red-500" />
       </div>

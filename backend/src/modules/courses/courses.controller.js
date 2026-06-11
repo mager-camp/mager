@@ -12,19 +12,11 @@ import {
 } from './courses.validation.js';
 
 
-export const getAll = async (
-  req,
-  res,
-  next
-) => {
+export const getAll = async (req, res, next) => {
   try {
-    const data =
-      await getCourses();
-
-    res.json({
-      success: true,
-      data
-    });
+    const { type } = req.query;
+    const data = await getCourses({ type });
+    res.json({ success: true, data });
   } catch (error) {
     next(error);
   }

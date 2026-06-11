@@ -108,12 +108,16 @@ export function useCalendar() {
         const results = await Promise.all(payloads.map(createSchedule));
         setEvents((prev) => [...prev, ...results.map(mapScheduleToEvent)]);
         showSuccess("Jadwal Berhasil Ditambahkan");
+        await queryClient.invalidateQueries({
+          queryKey: ["dashboard"],
+        });
+        showSuccess("Jadwal Berhasil Ditambahkan");
       } catch (err) {
         console.error(err);
         showError("Gagal menambahkan jadwal");
       }
     },
-    [showSuccess, showError],
+    [queryClient, showSuccess, showError],
   );
 
   const updateEvent = useCallback(
