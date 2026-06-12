@@ -12,7 +12,7 @@ function getRoleName(user) {
     return role.name.toUpperCase();
   }
 
-  return "";
+  return null;
 }
 
 export default function SidebarHeader({ isCollapsed, toggleCollapse }) {

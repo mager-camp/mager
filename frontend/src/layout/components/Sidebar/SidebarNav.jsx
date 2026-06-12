@@ -14,7 +14,7 @@ function getRoleName(user) {
     return role.name.toUpperCase();
   }
 
-  return "";
+  return null;
 }
 
 export default function SidebarNav({ isCollapsed }) {
@@ -22,7 +22,8 @@ export default function SidebarNav({ isCollapsed }) {
   const { user } = useAuth();
 
   const roleName = getRoleName(user);
-  const items = roleName === "ADMIN" ? adminNavigationItems : userNavigationItems;
+  const items =
+    roleName === "ADMIN" ? adminNavigationItems : userNavigationItems;
 
   return (
     <nav className="flex-1 px-3 py-4">

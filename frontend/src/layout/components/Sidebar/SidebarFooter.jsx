@@ -13,7 +13,7 @@ function getRoleName(user) {
     return role.name.toUpperCase();
   }
 
-  return "";
+  return null;
 }
 
 export default function SidebarFooter({ isCollapsed }) {
@@ -53,7 +53,7 @@ export default function SidebarFooter({ isCollapsed }) {
       <button
         onClick={() => {
           logout();
-          navigate("/login", { replace: true });
+          navigate("/login");
         }}
         className={`
           w-full flex items-center
