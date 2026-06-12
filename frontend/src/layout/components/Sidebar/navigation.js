@@ -5,6 +5,7 @@ import {
   GraduationCap,
   TrendingUp,
   Settings,
+  Users,
 } from "lucide-react";
 
 export const userNavigationItems = [
@@ -55,5 +56,37 @@ export const adminNavigationItems = [
   },
 ];
 
-// biar file lama yang masih import navigationItems tidak error
+export const pelatihNavigationItems = [
+  {
+    id: "dashboard",
+    name: "Dasbor",
+    icon: LayoutDashboard,
+    href: "/pelatih/dashboard",
+  },
+  {
+    id: "jadwal",
+    name: "Manajemen Jadwal",
+    icon: Calendar,
+    href: "/pelatih/jadwal",
+  },
+  {
+    id: "kursus",
+    name: "Manajemen Kursus",
+    icon: GraduationCap,
+    href: "/pelatih/kursus",
+  },
+  {
+    id: "atlet",
+    name: "Daftar Atlet",
+    icon: Users,
+    href: "/pelatih/atlet",
+  },
+  {
+    id: "pengaturan",
+    name: "Pengaturan",
+    icon: Settings,
+    href: "/pelatih/pengaturan",
+  },
+];
+
 export const navigationItems = userNavigationItems;

@@ -5,6 +5,7 @@ import RoleRoute from "@/routes/RoleRoute";
 import PublicLayout from "@/layout/PublicLayout";
 import UserLayout from "@/layout/UserLayout";
 import AdminLayout from "@/layout/AdminLayout";
+import PelatihLayout from "@/layout/PelatihLayout";
 
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
@@ -25,6 +26,12 @@ import FreeModulPage from "@/features/course/pages/ModulPage";
 
 import DashboardAdmin from "@/pages/admin/Dashboard-admin";
 import UnauthorizedPage from "@/pages/UnauthorizedPage";
+
+import DashboardPelatih from "@/pages/pelatih/Dashboard";
+import DaftarAtlet from "@/pages/pelatih/DaftarAtlet";
+import ManajemenJadwal from "@/pages/pelatih/ManajemenJadwal";
+import ManajemenKursus from "@/pages/pelatih/ManajemenKursus";
+import PengaturanPelatih from "@/pages/pelatih/Pengaturan";
 
 export const router = createBrowserRouter([
   {
@@ -114,6 +121,33 @@ export const router = createBrowserRouter([
       },
     ],
   },
+
+{
+  path: "/pelatih",
+  element: <PelatihLayout />,
+  children: [
+    {
+      path: "dashboard",
+      element: <DashboardPelatih />,
+    },
+    {
+      path: "jadwal",
+      element: <ManajemenJadwal />,
+    },
+    {
+      path: "kursus",
+      element: <ManajemenKursus />,
+    },
+    {
+      path: "atlet",
+      element: <DaftarAtlet />,
+    },
+    {
+      path: "pengaturan",
+      element: <PengaturanPelatih />,
+    },
+  ],
+},
 
   {
     path: "/admin",

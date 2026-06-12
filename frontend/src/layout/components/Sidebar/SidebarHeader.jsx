@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
 function getRoleName(user) {
@@ -15,11 +16,17 @@ function getRoleName(user) {
   return "";
 }
 
-export default function SidebarHeader({ isCollapsed, toggleCollapse }) {
+export default function SidebarHeader({
+  isCollapsed,
+  toggleCollapse,
+}) {
   const { user } = useAuth();
+  const location = useLocation();
 
   const roleName = getRoleName(user);
-  const isAdmin = roleName === "ADMIN";
+
+  const isAdmin = location.pathname.startsWith("/admin");
+  const isPelatih = location.pathname.startsWith("/pelatih");
 
   return (
     <div
@@ -39,7 +46,11 @@ export default function SidebarHeader({ isCollapsed, toggleCollapse }) {
                 tracking-[0.1em]
               "
             >
-              {isAdmin ? "PORTAL ADMIN" : "PORTAL ATLET"}
+              {isAdmin
+                ? "PORTAL ADMIN"
+                : isPelatih
+                ? "PORTAL PELATIH"
+                : "PORTAL ATLET"}
             </h1>
 
             <p
@@ -51,7 +62,11 @@ export default function SidebarHeader({ isCollapsed, toggleCollapse }) {
                 text-md
               "
             >
-              {(user?.fullName ?? "USER").toUpperCase()}
+              {isPelatih
+                ? "PELATIH"
+                : isAdmin
+                ? "ADMIN"
+                : (user?.fullName ?? "USER").toUpperCase()}
             </p>
           </div>
         </div>
