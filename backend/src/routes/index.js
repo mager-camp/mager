@@ -7,6 +7,7 @@ import dashboardRoutes from '../modules/dashboard/dashboard.routes.js';
 import notificationsRoutes from '../modules/notifications/notifications.routes.js';
 import profileRoutes from '../modules/profile/profile.routes.js';
 import coursesRoutes from '../modules/courses/courses.routes.js';
+import adminRoutes from '../modules/admin/admin.routes.js';
 
 const router = Router();
 
@@ -14,8 +15,8 @@ router.use('/auth', authRoutes);
 router.use('/schedules', scheduleRoutes);
 router.use('/activities', activityRoutes);
 router.use(
-    '/workout-logs',
-    workoutLogsRoutes
+  '/workout-logs',
+  workoutLogsRoutes
 );
 router.use('/dashboard', dashboardRoutes);
 router.use(
@@ -24,5 +25,6 @@ router.use(
 );
 router.use('/profile', profileRoutes);
 router.use('/courses', coursesRoutes);
+router.use('/admin', adminRoutes);
 
 export default router;

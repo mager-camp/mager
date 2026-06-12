@@ -1,13 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
 import GuestRoute from "@/routes/GuestRoute";
-import ProtectedRoute from "@/routes/ProtectedRoute";
+import RoleRoute from "@/routes/RoleRoute";
 
 import PublicLayout from "@/layout/PublicLayout";
 import UserLayout from "@/layout/UserLayout";
+import AdminLayout from "@/layout/AdminLayout";
 
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import LandingPage from "@/pages/LandingPage";
+
 import Dashboard from "@/pages/user/Dashboard";
 import Kalender from "@/pages/user/Kalender";
 import Premium from "@/pages/user/Premium";
@@ -15,10 +17,14 @@ import Course from "@/pages/user/Course";
 import Rekap from "@/pages/user/Rekap";
 import Settings from "@/pages/user/Settings";
 import Dukungan from "@/pages/user/Support";
+
 import CoursePage from "@/features/premium/pages/CoursePage";
 import ModulPage from "@/features/premium/pages/ModulPage";
 import FreeCoursePage from "@/features/course/pages/CoursePage";
 import FreeModulPage from "@/features/course/pages/ModulPage";
+
+import DashboardAdmin from "@/pages/admin/Dashboard-admin";
+import UnauthorizedPage from "@/pages/UnauthorizedPage";
 
 export const router = createBrowserRouter([
   {
@@ -47,9 +53,9 @@ export const router = createBrowserRouter([
   {
     path: "/user",
     element: (
-      <ProtectedRoute>
+      <RoleRoute allowedRoles={["USER"]}>
         <UserLayout />
-      </ProtectedRoute>
+      </RoleRoute>
     ),
     children: [
       {
@@ -107,5 +113,25 @@ export const router = createBrowserRouter([
         element: <Dukungan />,
       },
     ],
+  },
+
+  {
+    path: "/admin",
+    element: (
+      <RoleRoute allowedRoles={["ADMIN"]}>
+        <AdminLayout />
+      </RoleRoute>
+    ),
+    children: [
+      {
+        path: "dashboard",
+        element: <DashboardAdmin />,
+      },
+    ],
+  },
+
+  {
+    path: "/unauthorized",
+    element: <UnauthorizedPage />,
   },
 ]);
