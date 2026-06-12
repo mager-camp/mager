@@ -3,11 +3,11 @@ import {
   Calendar,
   Award,
   GraduationCap,
-  TrendingUp,   
-  Settings
+  TrendingUp,
+  Settings,
 } from "lucide-react";
 
-export const navigationItems = [
+export const userNavigationItems = [
   {
     id: "dashboard",
     name: "Dasbor",
@@ -25,14 +25,12 @@ export const navigationItems = [
     name: "Premium",
     icon: Award,
     href: "/user/premium",
-    //badge: "3",
   },
   {
     id: "kursus",
     name: "Kursus",
     icon: GraduationCap,
     href: "/user/course",
-    //badge: "12",
   },
   {
     id: "rekap",
@@ -47,3 +45,15 @@ export const navigationItems = [
     href: "/user/settings",
   },
 ];
+
+export const adminNavigationItems = [
+  {
+    id: "admin-dashboard",
+    name: "Dasbor Admin",
+    icon: LayoutDashboard,
+    href: "/admin/dashboard",
+  },
+];
+
+// biar file lama yang masih import navigationItems tidak error
+export const navigationItems = userNavigationItems;

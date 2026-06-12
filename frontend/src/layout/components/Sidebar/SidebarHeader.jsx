@@ -1,8 +1,26 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
+function getRoleName(user) {
+  const role = user?.role;
+
+  if (typeof role === "string") {
+    return role.toUpperCase();
+  }
+
+  if (typeof role?.name === "string") {
+    return role.name.toUpperCase();
+  }
+
+  return "";
+}
+
 export default function SidebarHeader({ isCollapsed, toggleCollapse }) {
   const { user } = useAuth();
+
+  const roleName = getRoleName(user);
+  const isAdmin = roleName === "ADMIN";
+
   return (
     <div
       className={`
@@ -16,12 +34,12 @@ export default function SidebarHeader({ isCollapsed, toggleCollapse }) {
           <div>
             <h1
               className="
-    text-lg font-bold
-    text-[var(--foreground)]
-    tracking-[0.1em]
-  "
+                text-lg font-bold
+                text-[var(--foreground)]
+                tracking-[0.1em]
+              "
             >
-              PORTAL ATLET
+              {isAdmin ? "PORTAL ADMIN" : "PORTAL ATLET"}
             </h1>
 
             <p
@@ -33,7 +51,7 @@ export default function SidebarHeader({ isCollapsed, toggleCollapse }) {
                 text-md
               "
             >
-              {user?.fullName.toUpperCase()}
+              {(user?.fullName ?? "USER").toUpperCase()}
             </p>
           </div>
         </div>

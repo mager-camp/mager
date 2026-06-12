@@ -1,13 +1,23 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import { useAuth } from "@/contexts/AuthContext";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
+
+function getRoleName(user) {
+  const role = user?.role;
+
+  if (typeof role === "string") {
+    return role.toUpperCase();
+  }
+
+  if (typeof role?.name === "string") {
+    return role.name.toUpperCase();
+  }
+
+  return "";
+}
 
 export default function RoleRoute({ children, allowedRoles = [] }) {
   const { user, loading, isAuthenticated } = useAuth();
-
-  console.log("USER:", user);
-  console.log("ROLE:", user?.role);
-  console.log("ALLOWED:", allowedRoles);
 
   if (loading) {
     return (
@@ -21,9 +31,12 @@ export default function RoleRoute({ children, allowedRoles = [] }) {
     return <Navigate to="/login" replace />;
   }
 
-  const userRole = user?.role;
+  const userRole = getRoleName(user);
+  const normalizedAllowedRoles = allowedRoles.map((role) =>
+    role.toUpperCase()
+  );
 
-  if (!allowedRoles.includes(userRole)) {
+  if (!normalizedAllowedRoles.includes(userRole)) {
     return <Navigate to="/unauthorized" replace />;
   }
 
