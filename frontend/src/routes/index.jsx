@@ -24,6 +24,7 @@ import FreeCoursePage from "@/features/course/pages/CoursePage";
 import FreeModulPage from "@/features/course/pages/ModulPage";
 
 import DashboardAdmin from "@/pages/admin/Dashboard-admin";
+import ManajemenUser from "@/pages/admin/ManajemenUser";
 import UnauthorizedPage from "@/pages/UnauthorizedPage";
 
 export const router = createBrowserRouter([
@@ -126,6 +127,10 @@ export const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <DashboardAdmin />,
+      },
+      {
+        path: "manajemen-user",
+        element: <ManajemenUser />,
       },
     ],
   },

@@ -1,3 +1,4 @@
+// src/layout/components/Sidebar/navigation.js
 import {
   LayoutDashboard,
   Calendar,
@@ -5,8 +6,11 @@ import {
   GraduationCap,
   TrendingUp,
   Settings,
+  CreditCard,
+  Users,
 } from "lucide-react";
 
+// Navigasi untuk role USER biasa
 export const userNavigationItems = [
   {
     id: "dashboard",
@@ -46,14 +50,38 @@ export const userNavigationItems = [
   },
 ];
 
+// Navigasi untuk role ADMIN
 export const adminNavigationItems = [
   {
     id: "admin-dashboard",
-    name: "Dasbor Admin",
+    name: "Dasbor",
     icon: LayoutDashboard,
     href: "/admin/dashboard",
   },
+  {
+    id: "admin-pembayaran",
+    name: "Manajemen Pembayaran",
+    icon: CreditCard,
+    href: "/admin/pembayaran",
+  },
+  {
+    id: "admin-kursus",
+    name: "Manajemen Kursus",
+    icon: GraduationCap,
+    href: "/admin/kursus",
+  },
+  {
+    id: "admin-manajemen-user",
+    name: "Manajemen User",
+    icon: Users,
+    href: "/admin/manajemen-user",
+  },
+  {
+    id: "admin-pengaturan",
+    name: "Pengaturan",
+    icon: Settings,
+    href: "/admin/setting",
+  },
 ];
 
-// biar file lama yang masih import navigationItems tidak error
 export const navigationItems = userNavigationItems;
