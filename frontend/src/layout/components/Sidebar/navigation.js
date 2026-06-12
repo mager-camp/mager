@@ -1,4 +1,3 @@
-// src/layout/components/Sidebar/navigation.js
 import {
   LayoutDashboard,
   Calendar,
@@ -10,7 +9,6 @@ import {
   Users,
 } from "lucide-react";
 
-// Navigasi untuk role USER biasa
 export const userNavigationItems = [
   {
     id: "dashboard",
@@ -50,7 +48,6 @@ export const userNavigationItems = [
   },
 ];
 
-// Navigasi untuk role ADMIN
 export const adminNavigationItems = [
   {
     id: "admin-dashboard",
