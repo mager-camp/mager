@@ -8,6 +8,7 @@ export const getCoursesRepo = (filters = {}) => {
     },
     include: {
       instructor: { include: { user: { select: { fullName: true, profilePicture: true } } } },
+      activity: {select: {name: true}},
       highlights: { orderBy: { order: 'asc' } },
       modules: {
         orderBy: { order: 'asc' },
@@ -23,6 +24,7 @@ export const getCourseByIdRepo = (id) => {
     where: { id, deletedAt: null },
     include: {
       instructor: { include: { user: { select: { fullName: true, profilePicture: true } } } },
+      activity: {select: {name: true}},
       highlights: { orderBy: { order: 'asc' } },
       modules: {
         orderBy: { order: 'asc' },

@@ -63,6 +63,8 @@ model Course {
   id           String            @id @default(uuid())
   createdBy    String
   instructorId String?
+  activityId    String
+  activity      ActivityTemplate @relation(fields: [activityId], references: [id])
   title        String
   description  String?
   about        String?
@@ -79,6 +81,7 @@ model Course {
   highlights   CourseHighlight[]
   payments     Payment[]
   userCourses  UserCourse[]
+  @@index([activityId])
 }
 
 model CourseHighlight {
@@ -175,6 +178,7 @@ model ActivityTemplate {
   description   String?
   isPremiumOnly Boolean      @default(false)
   createdAt     DateTime     @default(now())
+  courses       Course[]
   schedules     UserSchedule[]
 }
 
@@ -231,7 +235,7 @@ model WorkoutLog {
 }
 
 enum CourseType {
-  regular
+  free
   premium
 }
 
