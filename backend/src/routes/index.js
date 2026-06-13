@@ -7,6 +7,7 @@ import dashboardRoutes from '../modules/dashboard/dashboard.routes.js';
 import notificationsRoutes from '../modules/notifications/notifications.routes.js';
 import profileRoutes from '../modules/profile/profile.routes.js';
 import coursesRoutes from '../modules/courses/courses.routes.js';
+import premiumRoutes from '../modules/premium/premium.routes.js';
 import adminRoutes from '../modules/admin/admin.routes.js';
 
 const router = Router();
@@ -25,6 +26,7 @@ router.use(
 );
 router.use('/profile', profileRoutes);
 router.use('/courses', coursesRoutes);
+router.use('/premium', premiumRoutes);
 router.use('/admin', adminRoutes);
 
 export default router;

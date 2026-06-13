@@ -7,7 +7,6 @@ function KursusCard({ item }) {
 
   return (
     <div className="relative w-[250px] h-[350px] shrink-0 rounded shadow-lg overflow-hidden group">
-      {console.log(item)}
       <img
         src={item.thumbnailUrl ?? "/placeholder.webp"}
         alt={item.title}

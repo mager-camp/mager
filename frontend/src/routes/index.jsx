@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import GuestRoute from "@/routes/GuestRoute";
 import RoleRoute from "@/routes/RoleRoute";
+import PremiumGuard from "@/features/premium/guards/PremiumGuard";
 
 import PublicLayout from "@/layout/PublicLayout";
 import UserLayout from "@/layout/UserLayout";
@@ -71,17 +72,13 @@ export const router = createBrowserRouter([
       {
         path: "premium",
         children: [
+          { index: true, element: <Premium /> },
           {
-            index: true,
-            element: <Premium />,
-          },
-          {
-            path: "kursus/:slug",
-            element: <CoursePage />,
-          },
-          {
-            path: "kursus/:slug/modul/:modulId",
-            element: <ModulPage />,
+            element: <PremiumGuard />,
+            children: [
+              { path: "course/:slug", element: <CoursePage /> },
+              { path: "course/:slug/modul/:modulId", element: <ModulPage /> },
+            ],
           },
         ],
       },

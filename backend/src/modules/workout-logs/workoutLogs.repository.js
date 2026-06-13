@@ -56,3 +56,16 @@ export const getScheduleNotesRepo = (scheduleId) => {
     select: { notes: true, startAt: true },
   });
 };
+
+export const getScheduleByIdRepo = (scheduleId) => {
+  return prisma.userSchedule.findUnique({
+    where: { id: scheduleId },
+    select: {
+      id: true,
+      intensity: true,
+      startAt: true,
+      endAt: true,
+      notes: true,
+    },
+  });
+};

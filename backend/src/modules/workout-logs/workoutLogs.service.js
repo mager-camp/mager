@@ -6,11 +6,13 @@ import {
   deleteWorkoutLogRepo,
   completeScheduleRepo,
   getScheduleNotesRepo,
+  getScheduleByIdRepo,
 } from "./workoutLogs.repository.js";
 
-export const createWorkoutLog = async (userId, payload) => {
-  const schedule = await getScheduleNotesRepo(payload.userScheduleId);
+import { generateRecoverySchedules } from '../recovery/recoveryScheduler.service.js';
 
+export const createWorkoutLog = async (userId, payload) => {
+  const schedule = await getScheduleByIdRepo(payload.userScheduleId);
   const durationMinutes = Math.round(
     (Date.now() - new Date(schedule.startAt)) / 60000
   );
@@ -23,7 +25,9 @@ export const createWorkoutLog = async (userId, payload) => {
   });
 
   await completeScheduleRepo(payload.userScheduleId);
-  return data;
+  const recoverySchedules = await generateRecoverySchedules(userId, schedule);
+  
+  return { ...data, recoverySchedules };
 };
 
 export const getWorkoutLogs = async (userId) => {

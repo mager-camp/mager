@@ -290,6 +290,9 @@ enum ActivityType {
   RENANG
   TEMBAK
   OBSTACLE
+  PIJAT
+  MANDI_ES
+  ISTIRAHAT_AKTIF
 }
 
 enum SubModuleType {
