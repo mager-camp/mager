@@ -37,7 +37,7 @@ export default function PengaturanPage() {
         onSubmit={handleSubmit(handleSave)}
         className="
         flex flex-col gap-4
-        p-4 md:p-6
+        p-10 md:p-12
         md:flex-1 md:min-h-0
         md:overflow-y-auto
       "

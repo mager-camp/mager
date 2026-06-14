@@ -5,7 +5,7 @@ export default function ProtokolKeamanan({
   onChangePassword,
 }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
+    <div className="bg-white rounded-sm border border-gray-100 shadow-sm p-6">
       {/* Section title */}
       <div className="flex items-center gap-2 mb-6">
         <ShieldCheck
@@ -36,7 +36,7 @@ export default function ProtokolKeamanan({
               border-[#CBD5E0]
               bg-[#E2E8F0]
               text-gray-500
-              rounded-lg
+              rounded-md
               px-3
               py-2.5
               text-sm
@@ -55,7 +55,7 @@ export default function ProtokolKeamanan({
             w-fit
             px-4
             py-2
-            rounded-lg
+            rounded-sm
             text-sm
             font-semibold
             transition-colors

@@ -39,7 +39,7 @@ export default function CalendarPage() {
   }, [searchParams, events]);
 
   return (
-    <div className="p-4 md:p-6 h-full flex gap-4 overflow-hidden">
+    <div className="p-10 md:p-12 h-full flex gap-4 overflow-hidden">
       {/* Kolom kiri: kalender */}
       <div className="flex-1 min-w-0 bg-white rounded shadow-sm border border-gray-100 p-5 flex flex-col overflow-hidden">
         <CalendarHeader

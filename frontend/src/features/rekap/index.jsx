@@ -8,7 +8,7 @@ export default function RekapLatihanPage() {
   const { activeFilter, setActiveFilter, stats, sessions, isLoading } = useRekapFilter();
 
   return (
-    <div className="p-4 md:p-6 h-full flex flex-col gap-4 overflow-hidden">
+    <div className="p-10 md:p-12 h-full flex flex-col gap-4 overflow-hidden">
 
       {/* Row 1: Judul + Filter */}
       <PageHeader activeFilter={activeFilter} onFilterChange={setActiveFilter} />

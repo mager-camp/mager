@@ -20,7 +20,7 @@ export default function PageHeader({
           type="button"
           onClick={onEdit}
           disabled={isEditing}
-          className={`px-5 py-2 text-xs font-bold rounded-lg border-2 transition-all ${
+          className={`px-5 py-2 text-xs font-bold rounded-sm border-2 transition-all ${
             isEditing
               ? "border-gray-200 text-gray-300 cursor-not-allowed"
               : "border-[#2B6CB0] text-[#2B6CB0] hover:bg-[#EBF8FF]"
@@ -32,7 +32,7 @@ export default function PageHeader({
         <button
           type="submit"
           disabled={!isEditing}
-          className={`px-5 py-2 text-xs font-bold rounded-lg transition-all ${
+          className={`px-5 py-2 text-xs font-bold rounded-sm transition-all ${
             isEditing
               ? "bg-[#ED8936] hover:bg-[#DD6B20] text-white active:scale-95"
               : "bg-gray-200 text-gray-400 cursor-not-allowed"

@@ -4,7 +4,7 @@ import KursusTambahan from "./components/KursusTambahan";
 
 export default function PremiumPage() {
   return (
-    <div className="p-4 md:p-6 h-full flex flex-col gap-4 overflow-y-auto">
+    <div className="p-10 md:p-12 h-full flex flex-col gap-4 overflow-y-auto">
       {/* Page title — flex-shrink-0 */}
       <div className="flex flex-col gap-6">
         {/* Page title */}

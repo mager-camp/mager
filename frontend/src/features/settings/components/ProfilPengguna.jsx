@@ -12,7 +12,7 @@ function InputField({ label, disabled, error, registration, type = "text", place
         disabled={disabled}
         {...registration}
         className={`
-          w-full border-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
+          w-full border-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors
           focus:outline-none focus:ring-1 focus:ring-[#2B6CB0]
           ${disabled
             ? "bg-gray-50 border-gray-200 text-gray-500 cursor-not-allowed"
@@ -37,7 +37,7 @@ export default function ProfilPengguna({
   onFotoChange,
 }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
+    <div className="bg-white rounded-sm border border-gray-100 shadow-sm p-6">
       {/* Section title */}
       <div className="flex items-center gap-2 mb-6">
         <UserCircle size={18} className="text-[#ED8936]" />
@@ -49,7 +49,7 @@ export default function ProfilPengguna({
       <div className="flex flex-col sm:flex-row gap-6 items-start">
         {/* Foto profil */}
         <div className="flex flex-col items-center gap-2 shrink-0">
-          <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-gray-200 bg-gray-100">
+          <div className="w-24 h-24 rounded-lg overflow-hidden border-2 border-gray-200 bg-gray-100">
             {fotoPreview ? (
               <img
                 src={fotoPreview}
