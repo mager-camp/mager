@@ -103,22 +103,22 @@ export function useCalendar() {
   }, [events]);
 
   const addEvent = useCallback(
-    async (payloads) => {
-      try {
-        const results = await Promise.all(payloads.map(createSchedule));
-        setEvents((prev) => [...prev, ...results.map(mapScheduleToEvent)]);
-        showSuccess("Jadwal Berhasil Ditambahkan");
-        await queryClient.invalidateQueries({
-          queryKey: ["dashboard"],
-        });
-        showSuccess("Jadwal Berhasil Ditambahkan");
-      } catch (err) {
-        console.error(err);
-        showError("Gagal menambahkan jadwal");
-      }
-    },
-    [queryClient, showSuccess, showError],
-  );
+  async (payloads) => {
+    // Kirim satu per satu (bukan Promise.all) supaya overlap antar hari dalam
+    // rentang yang sama juga ke-detect, dan error bisa di-throw ke caller
+    const results = [];
+    for (const payload of payloads) {
+      const res = await createSchedule(payload); // ← biarkan throw kalau error
+      results.push(res);
+    }
+
+    setEvents((prev) => [...prev, ...results.map(mapScheduleToEvent)]);
+    showSuccess("Jadwal Berhasil Ditambahkan");
+    queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+  },
+  [queryClient, showSuccess],
+  // ← hapus showError dari sini, error dihandle di AddProgramPanel
+);
 
   const updateEvent = useCallback(
     async (id, { activityId, startTime, endTime, intensity, notes }) => {
