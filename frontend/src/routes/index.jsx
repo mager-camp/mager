@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import GuestRoute from "@/routes/GuestRoute";
 import RoleRoute from "@/routes/RoleRoute";
 import PremiumGuard from "@/features/premium/guards/PremiumGuard";
+import PaymentGuard from "@/features/premium/guards/PaymentGuard";
 
 import PublicLayout from "@/layout/PublicLayout";
 import UserLayout from "@/layout/UserLayout";
@@ -23,6 +24,8 @@ import CoursePage from "@/features/premium/pages/CoursePage";
 import ModulPage from "@/features/premium/pages/ModulPage";
 import FreeCoursePage from "@/features/course/pages/CoursePage";
 import FreeModulPage from "@/features/course/pages/ModulPage";
+import PaymentPage from "@/features/premium/pages/PaymentPage";
+import InvoicePage from "@/features/premium/pages/InvoicePage";
 
 import DashboardAdmin from "@/pages/admin/Dashboard-admin";
 import ManajemenUser from "@/pages/admin/ManajemenUser";
@@ -74,10 +77,23 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <Premium /> },
           {
+            element: <PaymentGuard />,
+            children: [
+              {
+                path: "payment",
+                element: <PaymentPage />,
+              },
+            ],
+          },
+          {
             element: <PremiumGuard />,
             children: [
               { path: "course/:slug", element: <CoursePage /> },
               { path: "course/:slug/modul/:modulId", element: <ModulPage /> },
+              {
+                path: "payment/invoice/:invoiceNumber",
+                element: <InvoicePage />,
+              },
             ],
           },
         ],

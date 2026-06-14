@@ -12,8 +12,8 @@ export default function PremiumGuard() {
     );
   }
 
-  if (!data?.isPremium) {
-    return <Navigate to="/user/premium/payment" replace />;
+  if (data?.isPremium) {
+    return <Navigate to="/user/premium/" replace />;
   }
 
   return <Outlet />;

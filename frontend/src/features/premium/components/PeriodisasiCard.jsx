@@ -74,7 +74,7 @@ export default function PeriodisasiCard() {
             Aktifkan Premium untuk mendapatkan jadwal pemulihan otomatis setelah setiap sesi latihan.
           </p>
           <button
-            onClick={() => navigate("/user/payment")}
+            onClick={() => navigate("/user/premium/payment")}
             className="px-5 py-2 rounded bg-[#ED8936] hover:bg-[#DD6B20] active:scale-[0.98] transition-all text-white text-xs font-black tracking-wider"
           >
             AKTIFKAN PREMIUM
