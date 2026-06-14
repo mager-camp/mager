@@ -3,7 +3,6 @@ import ProfilPengguna from "./components/ProfilPengguna";
 import ProtokolKeamanan from "./components/ProtokolKeamanan";
 import { usePengaturan } from "./hooks/usePengaturan";
 import UbahPasswordModal from "./components/UbahPasswordModal";
-import PengaturanSkeleton from "@/features/settings/components/PengaturanSkeleton";
 
 export default function PengaturanPage() {
   const {
@@ -18,6 +17,7 @@ export default function PengaturanPage() {
     fileInputRef,
 
     handleEdit,
+    handleCancel,
     handleSave,
     handleFotoChange,
 
@@ -27,9 +27,6 @@ export default function PengaturanPage() {
     loading,
   } = usePengaturan();
 
-  if (loading) {
-    return <PengaturanSkeleton />;
-  }
 
   return (
     <>
@@ -42,9 +39,14 @@ export default function PengaturanPage() {
         md:overflow-y-auto
       "
       >
-        <PageHeader isEditing={isEditing} onEdit={handleEdit} />
+        <PageHeader
+          isEditing={isEditing}
+          onEdit={handleEdit}
+          onCancel={handleCancel}
+        />
 
         <ProfilPengguna
+          loading={loading}
           register={register}
           errors={errors}
           isEditing={isEditing}
@@ -54,6 +56,7 @@ export default function PengaturanPage() {
         />
 
         <ProtokolKeamanan
+          loading={loading}
           isEditing={isEditing}
           onChangePassword={() => setOpenPasswordModal(true)}
         />

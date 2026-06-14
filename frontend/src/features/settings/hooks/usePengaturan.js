@@ -18,6 +18,7 @@ export function usePengaturan() {
   const [isEditing, setIsEditing] = useState(false);
   const [fotoPreview, setFotoPreview] = useState(null);
   const fileInputRef = useRef(null);
+  const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
   const form = useForm({
     resolver: zodResolver(profileSchema),
@@ -36,7 +37,7 @@ export function usePengaturan() {
         const response = await getProfile();
 
         const profile = response.data;
-
+        setProfileData(profile);
         form.reset({
           namaLengkap: profile.fullName || "",
           email: profile.email || "",
@@ -75,6 +76,20 @@ export function usePengaturan() {
     }
   }
 
+  function handleCancel() {
+  if (!profileData) return;
+
+  form.reset({
+    namaLengkap: profileData.fullName || "",
+    email: profileData.email || "",
+    noTelepon: profileData.phone || "",
+  });
+
+  setFotoPreview(profileData.profilePicture || null);
+
+  setIsEditing(false);
+}
+
   function handleFotoChange(e) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -104,6 +119,7 @@ export function usePengaturan() {
     fotoPreview,
     fileInputRef,
     handleEdit,
+    handleCancel,
     handleSave,
     handleFotoChange,
 
