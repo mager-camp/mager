@@ -152,7 +152,7 @@ export default function PusatBantuan() {
 
   return (
     <>
-      <div className="bg-[#BEE3F8] rounded-sm p-5 flex flex-col h-full">
+      <div className="bg-[#B8D1E9] rounded-sm p-5 flex flex-col h-full">
         {/* Header */}
         <div className="flex items-start justify-between gap-3 mb-4 flex-shrink-0">
           <div className="flex items-start gap-2">
