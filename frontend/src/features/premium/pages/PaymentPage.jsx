@@ -71,7 +71,7 @@ export default function PaymentPage() {
   }
 
   return (
-    <div className="p-4 md:p-8 h-full overflow-y-auto">
+    <div className="p-10 md:p-12 h-full overflow-y-auto">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl md:text-3xl font-black text-[var(--text-dashboard)] uppercase tracking-tight">

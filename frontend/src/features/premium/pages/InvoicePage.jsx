@@ -60,7 +60,7 @@ export default function InvoicePage() {
   const isPaid = invoice.status === "paid";
 
   return (
-    <div className="p-4 md:p-8 h-full overflow-y-auto flex flex-col items-center">
+    <div className="p-10 md:p-12 h-full overflow-y-auto flex flex-col items-center">
       {/* Top label */}
       <div className="w-full max-w-md mb-4">
         <p className="text-xs text-gray-400 font-semibold">Nota pembelian user PR</p>
