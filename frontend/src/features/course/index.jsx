@@ -7,7 +7,7 @@ import Course from "./components/Course";
 
 export default function CoursePage() {
   return (
-    <div className="p-10 md:p-12 h-full flex flex-col gap-4 overflow-hidden md:overflow-y-auto">
+    <div className="p-10 md:p-12 h-full flex flex-col gap-4 overflow-y-auto">
       {/* Row 1: Sesi Berikutnya + Kesiapan + Peringatan */}
       <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-3 flex-shrink-0">
         {/* Kiri: Next session card full width di mobile, 1fr di desktop */}

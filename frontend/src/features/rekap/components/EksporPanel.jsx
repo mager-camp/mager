@@ -117,7 +117,7 @@ export default function EksporPanel({ sessions = [] }) {
   }
 
   return (
-    <div className="bg-[#EBF8FF] border border-[#BEE3F8] rounded-sm p-5 flex flex-col h-full">
+    <div className="bg-[#EBF8FF] border border-[#BEE3F8] rounded-sm p-5 flex flex-col h-full overflow-y-auto">
       {/* Header */}
       <div className="flex items-center gap-2 mb-3 flex-shrink-0">
         <Download size={16} className="text-[#2B6CB0]" />

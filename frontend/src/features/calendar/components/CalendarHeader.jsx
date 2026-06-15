@@ -9,7 +9,7 @@ export default function CalendarHeader({
   onToday,
 }) {
   return (
-    <div className="flex items-end justify-between mb-4 flex-shrink-0">
+    <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between mb-4 flex-shrink-0">
       {/* Kiri: macrocycle info + bulan */}
       <div>
         <p className="text-[10px] font-bold text-text-primary tracking-widest uppercase mb-1">
@@ -23,7 +23,7 @@ export default function CalendarHeader({
       </div>
 
       {/* Kanan: kontrol navigasi */}
-      <div className="flex items-center gap-2 mb-1">
+      <div className="flex flex-wrap items-center gap-2 mb-1">
         <button
           onClick={onToday}
           className="text-xs font-semibold px-3 py-1.5 rounded border-2 border-border text-text-primary hover:bg-gray-50 transition-colors cursor-pointer"
@@ -32,7 +32,7 @@ export default function CalendarHeader({
         </button>
 
         {/* View toggle */}
-        <div className="flex items-center border-2 border-border rounded overflow-hidden">
+        <div className="hidden md:flex items-center border-2 border-border rounded overflow-hidden">
           <button className="p-1.5 bg-[#2B6CB0] text-white">
             <LayoutGrid size={14} />
           </button>

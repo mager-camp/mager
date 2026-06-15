@@ -1,8 +1,15 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, PlayCircle, BookOpen, Lock, ChevronRight, Clock } from 'lucide-react';
-import { useCourseDetail } from '../hooks/usePremium';
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  ArrowLeft,
+  PlayCircle,
+  BookOpen,
+  Lock,
+  ChevronRight,
+  Clock,
+} from "lucide-react";
+import { useCourseDetail } from "../hooks/usePremium";
 import { useState } from "react";
-import { getYouTubeEmbedUrl } from '@/utils/youtube';
+import { getYouTubeEmbedUrl } from "@/utils/youtube";
 
 function CourseHero({ image, title, introVideoUrl }) {
   const [playing, setPlaying] = useState(false);
@@ -21,17 +28,15 @@ function CourseHero({ image, title, introVideoUrl }) {
         />
       ) : (
         <>
-          <img
-            src={image}
-            alt={title}
-            className="w-full h-full object-cover"
-          />
+          <img src={image} alt={title} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/40" />
           <div
             className="absolute inset-0 flex items-center justify-center cursor-pointer group"
             onClick={() => embedUrl && setPlaying(true)}
           >
-            <div className={`w-16 h-16 md:w-24 md:h-24 rounded-full flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110 ${embedUrl ? 'bg-[#ED8936]/90' : 'bg-gray-500/60'}`}>
+            <div
+              className={`w-16 h-16 md:w-24 md:h-24 rounded-full flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110 ${embedUrl ? "bg-[#ED8936]/90" : "bg-gray-500/60"}`}
+            >
               <PlayCircle size={42} className="text-white" />
             </div>
             {!embedUrl && (
@@ -51,22 +56,26 @@ function ModulRow({ modul, index, onLihatModul }) {
     <div
       className={`flex items-center justify-between px-4 py-3.5 rounded border ${
         modul.locked
-          ? 'border-[var(--border,#e2e8f0)] bg-[var(--bg-card,#f8fafc)]'
-          : 'border-[#2B6CB0]/30 bg-[#EBF8FF]'
+          ? "border-[var(--border,#e2e8f0)] bg-[var(--bg-card,#f8fafc)]"
+          : "border-[#2B6CB0]/30 bg-[#EBF8FF]"
       }`}
     >
       <div className="flex items-center gap-3 min-w-0">
         <span
           className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-black ${
-            modul.locked ? 'bg-gray-200 text-gray-500' : 'bg-[#2B6CB0] text-white'
+            modul.locked
+              ? "bg-gray-200 text-gray-500"
+              : "bg-[#2B6CB0] text-white"
           }`}
         >
-          {String(index + 1).padStart(2, '0')}
+          {String(index + 1).padStart(2, "0")}
         </span>
         <div className="min-w-0">
           <p
             className={`text-sm font-bold leading-tight truncate ${
-              modul.locked ? 'text-[var(--text-secondary,#64748b)]' : 'text-[#1A365D]'
+              modul.locked
+                ? "text-[var(--text-secondary,#64748b)]"
+                : "text-[#1A365D]"
             }`}
           >
             {modul.title}
@@ -109,7 +118,10 @@ export default function CoursePage() {
     return (
       <div className="p-8 text-center text-gray-400">
         <p className="text-lg font-bold">Kursus tidak ditemukan.</p>
-        <button onClick={() => navigate(-1)} className="mt-4 text-sm text-[#2B6CB0] cursor-pointer underline">
+        <button
+          onClick={() => navigate(-1)}
+          className="mt-4 text-sm text-[#2B6CB0] cursor-pointer underline"
+        >
           Kembali
         </button>
       </div>
@@ -119,7 +131,7 @@ export default function CoursePage() {
   const firstUnlocked = course.modules.find((m) => !m.locked);
 
   return (
-    <div className="p-4 md:p-6 flex flex-col gap-5 overflow-y-auto h-full">
+    <div className="p-10 md:p-12 flex flex-col gap-5 overflow-y-auto h-full">
       <button
         onClick={() => navigate(-1)}
         className="flex items-center cursor-pointer gap-1.5 text-sm font-bold text-[var(--text-secondary,#64748b)] hover:text-[#2B6CB0] transition-colors self-start"
@@ -153,7 +165,11 @@ export default function CoursePage() {
         </h1>
         {firstUnlocked && (
           <button
-            onClick={() => navigate(`/user/premium/course/${course.id}/modul/${firstUnlocked.id}`)}
+            onClick={() =>
+              navigate(
+                `/user/premium/course/${course.id}/modul/${firstUnlocked.id}`,
+              )
+            }
             className="cursor-pointer px-5 py-2.5 rounded bg-[#ED8936] hover:bg-[#DD6B20] active:scale-[0.98] transition-all text-white text-xs font-black tracking-wider shadow"
           >
             MULAI KURSUS
@@ -162,10 +178,10 @@ export default function CoursePage() {
       </div>
 
       <CourseHero
-  image={course.thumbnailUrl ?? '/placeholder.webp'}
-  title={course.title}
-  introVideoUrl={course.introVideoUrl}
-/>
+        image={course.thumbnailUrl ?? "/placeholder.webp"}
+        title={course.title}
+        introVideoUrl={course.introVideoUrl}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-5">
         {/* LEFT */}
@@ -186,7 +202,9 @@ export default function CoursePage() {
                       <p className="text-[10px] font-black text-[#1A365D] tracking-wider mb-1">
                         {h.title}
                       </p>
-                      <p className="text-xs text-gray-500 leading-snug">{h.desc}</p>
+                      <p className="text-xs text-gray-500 leading-snug">
+                        {h.desc}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -207,7 +225,9 @@ export default function CoursePage() {
                   modul={m}
                   index={i}
                   onLihatModul={(mod) =>
-                    navigate(`/user/premium/course/${course.id}/modul/${mod.id}`)
+                    navigate(
+                      `/user/premium/course/${course.id}/modul/${mod.id}`,
+                    )
                   }
                 />
               ))}
@@ -220,7 +240,9 @@ export default function CoursePage() {
           <div className="bg-gradient-to-b from-[#1A365D] to-[#2B6CB0] rounded p-5 flex flex-col items-center text-center gap-4 h-fit">
             <div className="w-20 h-20 rounded-xl overflow-hidden border-2 border-white/20 bg-white/10 shrink-0">
               <img
-                src={course.instructor.user.profilePicture ?? '/placeholder.webp'}
+                src={
+                  course.instructor.user.profilePicture ?? "/placeholder.webp"
+                }
                 alt={course.instructor.user.fullName}
                 className="w-full h-full object-cover"
               />

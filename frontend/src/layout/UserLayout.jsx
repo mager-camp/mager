@@ -7,7 +7,7 @@ export default function UserLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-(--background-def)">
+    <div className="h-dvh flex flex-col overflow-hidden bg-(--background-def)">
       <Header />
 
       <div className="flex flex-1 overflow-hidden pt-14">
