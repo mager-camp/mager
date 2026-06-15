@@ -22,3 +22,8 @@ export const logout = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
 };
+
+export const googleLogin = async (credential) => {
+  const { data } = await api.post('/auth/google', { credential });
+  return data;
+};
