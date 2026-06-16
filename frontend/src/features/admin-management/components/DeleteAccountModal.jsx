@@ -1,5 +1,5 @@
-// src/features/admin-management/components/DeactivateAccountModal.jsx
-export default function DeactivateAccountModal({ isOpen, onClose, onConfirm }) {
+// src/features/admin-management/components/DeleteAccountModal.jsx
+export default function DeleteAccountModal({ isOpen, onClose, onConfirm }) {
   if (!isOpen) return null;
 
   return (
@@ -12,7 +12,7 @@ export default function DeactivateAccountModal({ isOpen, onClose, onConfirm }) {
         </div>
 
         <h3 className="mx-auto mb-12 max-w-[390px] text-[26px] font-bold leading-tight text-[#153a59] md:text-[28px]">
-          Yakin ingin menonaktifkan akun ini?
+          Yakin ingin menghapus akun ini?
         </h3>
 
         <div className="flex flex-col items-center justify-center gap-4 font-semibold text-[22px] sm:flex-row sm:gap-14">

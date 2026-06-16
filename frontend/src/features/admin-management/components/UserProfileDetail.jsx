@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { ArrowLeft, Send, Edit3, CreditCard, Clock, User } from "lucide-react";
 import SendMessageModal from "./SendMessageModal";
-import DeactivateAccountModal from "./DeactivateAccountModal";
 
 function formatDate(value, options = {}) {
   if (!value) return "-";
@@ -38,7 +37,6 @@ export default function UserProfileDetail({
   onDeactivateClick,
 }) {
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
-  const [isDeactivateModalOpen, setIsDeactivateModalOpen] = useState(false);
 
   const userData = user || {};
   const activities = userData.activities ?? [];
@@ -46,10 +44,6 @@ export default function UserProfileDetail({
   const accountType = formatAccountType(userData);
   const isInactive = userData.status === "deleted";
 
-  const handleConfirmDeactivate = () => {
-    setIsDeactivateModalOpen(false);
-    onDeactivateClick && onDeactivateClick();
-  };
 
   return (
     <div className="bg-[#f8fafc] min-h-screen font-sans text-slate-800 relative">
@@ -72,7 +66,7 @@ export default function UserProfileDetail({
 
         <button
           type="button"
-          onClick={() => setIsDeactivateModalOpen(true)}
+          onClick={onDeactivateClick}
           disabled={isInactive}
           className="px-5 py-2 bg-[#fff0f0] text-[#e05353] border border-[#fca3a3] rounded-xl font-semibold shadow-sm hover:bg-[#ffe5e5] transition-all text-sm flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
         >
@@ -247,11 +241,6 @@ export default function UserProfileDetail({
         email={userData.email}
       />
 
-      <DeactivateAccountModal
-        isOpen={isDeactivateModalOpen}
-        onClose={() => setIsDeactivateModalOpen(false)}
-        onConfirm={handleConfirmDeactivate}
-      />
     </div>
   );
 }
