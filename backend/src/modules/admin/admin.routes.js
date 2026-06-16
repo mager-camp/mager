@@ -13,6 +13,7 @@ import {
   updateUser,
   deactivateUser,
   activateUser,
+  deleteUser,
   userPayments,
   adminProfile,
   updateProfile,
@@ -37,6 +38,7 @@ router.patch("/users/:id", updateUser);
 router.put("/users/:id", updateUser);
 router.patch("/users/:id/deactivate", deactivateUser);
 router.patch("/users/:id/activate", activateUser);
+router.delete("/users/:id", deleteUser);
 router.get("/users/:id/payments", userPayments);
 
 export default router;

@@ -59,7 +59,7 @@ export const adminNavigationItems = [
     id: "admin-pembayaran",
     name: "Manajemen Pembayaran",
     icon: CreditCard,
-    href: "/admin/pembayaran",
+    href: "/admin/manajemen-pembayaran",
   },
   {
     id: "admin-kursus",
