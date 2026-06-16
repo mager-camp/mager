@@ -1,98 +1,76 @@
 // src/features/course-management/components/CourseStats.jsx
-import React, { useState } from "react";
+import React from "react";
 
-export default function CourseStats() {
-  const [activeTab, setActiveTab] = useState("biasa");
-
+export default function CourseStats({ activeType, onChangeType, totalBiasa, totalPremium }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-12 gap-6 mb-10">
-      {/* Total Kursus (Lebar lebih besar) */}
-      <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm lg:col-span-4 flex flex-col justify-between">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-8">
+      {/* CARD 1: TOTAL KURSUS DENGAN FILTER TAB PILIHAN */}
+      <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm md:col-span-4 flex flex-col justify-between">
         <div>
-          <p className="text-sm font-bold text-slate-700">Total Kursus</p>
-          {/* Toggle Switch */}
-          <div className="flex bg-slate-100 p-1 rounded-lg mt-3 w-fit">
+          <h4 className="text-xs font-bold text-[#1e3240] mb-3">Total Kursus</h4>
+          
+          {/* Pembungkus Tab Pilihan Kursus Biasa vs Premium */}
+          <div className="bg-slate-100 p-1 rounded-xl flex gap-1 w-full max-w-[260px]">
             <button
-              onClick={() => setActiveTab("biasa")}
-              className={`px-3 py-1 text-xs font-semibold rounded-md transition-all ${
-                activeTab === "biasa" ? "bg-[#4a7ca3] text-white shadow-sm" : "text-slate-500"
+              type="button"
+              onClick={() => onChangeType("Biasa")}
+              className={`flex-1 text-center py-1.5 px-3 rounded-lg text-[11px] font-bold transition-all ${
+                activeType === "Biasa"
+                  ? "bg-[#4a7ca3] text-white shadow-xs"
+                  : "text-slate-400 hover:text-slate-600"
               }`}
             >
               Kursus Biasa
             </button>
             <button
-              onClick={() => setActiveTab("premium")}
-              className={`px-3 py-1 text-xs font-semibold rounded-md transition-all ${
-                activeTab === "premium" ? "bg-[#4a7ca3] text-white shadow-sm" : "text-slate-500"
+              type="button"
+              onClick={() => onChangeType("Premium")}
+              className={`flex-1 text-center py-1.5 px-3 rounded-lg text-[11px] font-bold transition-all ${
+                activeType === "Premium"
+                  ? "bg-[#4a7ca3] text-white shadow-xs"
+                  : "text-slate-400 hover:text-slate-600"
               }`}
             >
               Kursus Premium
             </button>
           </div>
         </div>
+
         <div className="mt-6">
-          <h3 className="text-6xl font-black text-[#1e3240] tracking-tight">659</h3>
-          <p className="text-xs text-green-500 font-semibold mt-2 flex items-center gap-1">
-            ↗ +120 bulan ini
-          </p>
+          {/* Angka berganti dinamis sesuai tab aktif */}
+          <h2 className="text-5xl font-black text-[#1e3240] tracking-tight">
+            {activeType === "Biasa" ? totalBiasa : totalPremium}
+          </h2>
+          <p className="text-[11px] font-bold text-green-600 mt-2">▲ +120 bulan ini</p>
         </div>
       </div>
 
-      {/* Grid Kanan untuk Sub-Kategori Sukan */}
-      <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-4 w-full">
-        {/* Obstacle */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
-          <div className="flex justify-between items-start">
-            <p className="text-sm font-bold text-green-600">Obstacle</p>
-          </div>
-          <div className="mt-4">
-            <h4 className="text-4xl font-extrabold text-slate-800">20</h4>
-            <p className="text-[11px] text-green-500 font-medium mt-1">↗ +120 bulan ini</p>
-          </div>
+      {/* CARD MINI KATEGORI DETAIL (OBSTACLE, ANGGAR, TEMBAK, RENANG, LARI) */}
+      <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+          <span className="text-xs font-bold text-green-600">Obstacle</span>
+          <h3 className="text-3xl font-black text-slate-700 mt-3">20</h3>
+          <p className="text-[10px] text-green-600 font-bold mt-1">▲ +120 bulan ini</p>
         </div>
-
-        {/* Anggar */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
-          <div className="flex justify-between items-start">
-            <p className="text-sm font-bold text-indigo-600">Anggar</p>
-          </div>
-          <div className="mt-4">
-            <h4 className="text-4xl font-extrabold text-slate-800">20</h4>
-            <p className="text-[11px] text-indigo-500 font-medium mt-1">↗ +120 bulan ini</p>
-          </div>
+        <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+          <span className="text-xs font-bold text-purple-600">Anggar</span>
+          <h3 className="text-3xl font-black text-slate-700 mt-3">20</h3>
+          <p className="text-[10px] text-green-600 font-bold mt-1">▲ +120 bulan ini</p>
         </div>
-
-        {/* Tembak */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
-          <div className="flex justify-between items-start">
-            <p className="text-sm font-bold text-red-500">Tembak</p>
-          </div>
-          <div className="mt-4">
-            <h4 className="text-4xl font-extrabold text-slate-800">20</h4>
-            <p className="text-[11px] text-red-500 font-medium mt-1">↘ -9 bulan ini</p>
-          </div>
+        <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+          <span className="text-xs font-bold text-red-500">Tembak</span>
+          <h3 className="text-3xl font-black text-red-500 mt-3">20</h3>
+          <p className="text-[10px] text-red-500 font-bold mt-1">▼ -9 bulan ini</p>
         </div>
-
-        {/* Renang */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
-          <div className="flex justify-between items-start">
-            <p className="text-sm font-bold text-blue-500">Renang</p>
-          </div>
-          <div className="mt-4">
-            <h4 className="text-4xl font-extrabold text-slate-800">120</h4>
-            <p className="text-[11px] text-red-500 font-medium mt-1">↘ -12 bulan ini</p>
-          </div>
+        <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+          <span className="text-xs font-bold text-blue-500">Renang</span>
+          <h3 className="text-3xl font-black text-blue-600 mt-3">120</h3>
+          <p className="text-[10px] text-red-500 font-bold mt-1">▼ -12 bulan ini</p>
         </div>
-
-        {/* Lari */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
-          <div className="flex justify-between items-start">
-            <p className="text-sm font-bold text-amber-500">Lari</p>
-          </div>
-          <div className="mt-4">
-            <h4 className="text-4xl font-extrabold text-slate-800">20</h4>
-            <p className="text-[11px] text-green-500 font-medium mt-1">↗ +120 bulan ini</p>
-          </div>
+        <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+          <span className="text-xs font-bold text-orange-500">Lari</span>
+          <h3 className="text-3xl font-black text-slate-700 mt-3">20</h3>
+          <p className="text-[10px] text-green-600 font-bold mt-1">▲ +120 bulan ini</p>
         </div>
       </div>
     </div>
