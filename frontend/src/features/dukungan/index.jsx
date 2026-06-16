@@ -14,7 +14,7 @@ export default function DukunganPage() {
         </div>
 
         {/* Main content: 2 kolom, ngisi sisa tinggi */}
-        <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-4 flex-1 min-h-0">
+        <div className="grid grid-cols-1 xl:grid-cols-[380px_1fr] gap-4 flex-1 xl:min-h-0">
           <LaporkanMasalah />
           <PusatBantuan />
         </div>

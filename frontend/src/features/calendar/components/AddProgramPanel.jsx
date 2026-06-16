@@ -14,7 +14,7 @@ const DEFAULT_VALUES = {
   startTime:    "09:00",
   endTime:      "11:00",
   jenisLatihan: "",
-  intensity:    "medium",
+  intensity:    "MEDIUM",
   targetFokus:  "",
   alarmEnabled: false,
   alarmMinutes: 30, // menit sebelum mulai

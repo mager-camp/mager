@@ -45,7 +45,7 @@ export default function LaporkanMasalah() {
   }
 
   return (
-    <div className="bg-white rounded-sm border border-gray-100 shadow-sm p-6 flex flex-col h-full">
+    <div className="bg-[#D9E7F5] rounded-sm border border-gray-100 shadow-sm p-6 flex flex-col lg:h-full">
       {/* Header */}
       <div className="flex items-center gap-2 mb-5 flex-shrink-0">
         <Headset size={20} className="text-[var(--text-dashboard)]" />
@@ -61,7 +61,7 @@ export default function LaporkanMasalah() {
           <select
             {...register("jenisMasalah")}
             className={`w-full border rounded-md px-3 py-2.5 text-sm text-gray-700 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-[#2B6CB0] ${
-              errors.jenisMasalah ? "border-red-400" : "border-gray-200"
+              errors.jenisMasalah ? "border-red-400" : "border-border"
             }`}
           >
             <option value="">-- Pilih --</option>
@@ -84,7 +84,7 @@ export default function LaporkanMasalah() {
             placeholder="Ringkasan singkat mengenai masalah ini"
             {...register("subjek")}
             className={`w-full border rounded-md px-3 py-2.5 text-sm text-gray-700 bg-gray-50 placeholder:text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#2B6CB0] ${
-              errors.subjek ? "border-red-400" : "border-gray-200"
+              errors.subjek ? "border-red-400" : "border-border"
             }`}
           />
           {errors.subjek && (
@@ -101,7 +101,7 @@ export default function LaporkanMasalah() {
             placeholder="Berikan penjelasan yang mendetail..."
             {...register("deskripsi")}
             className={`flex-1 min-h-[100px] w-full border rounded-md px-3 py-2.5 text-sm text-gray-700 bg-gray-50 placeholder:text-gray-300 resize-none focus:outline-none focus:ring-1 focus:ring-[#2B6CB0] ${
-              errors.deskripsi ? "border-red-400" : "border-gray-200"
+              errors.deskripsi ? "border-red-400" : "border-border"
             }`}
           />
           {errors.deskripsi && (
