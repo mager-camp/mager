@@ -21,7 +21,7 @@ export default function GuestRoute({ children }) {
 
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div className="h-dvh flex items-center justify-center">
         <LoadingSpinner />
       </div>
     );

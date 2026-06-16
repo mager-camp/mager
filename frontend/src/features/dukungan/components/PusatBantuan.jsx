@@ -152,9 +152,9 @@ export default function PusatBantuan() {
 
   return (
     <>
-      <div className="bg-[#B8D1E9] rounded-sm p-5 flex flex-col h-full">
+      <div className="bg-[#B8D1E9] rounded-sm p-5 flex flex-col lg:h-full">
         {/* Header */}
-        <div className="flex items-start justify-between gap-3 mb-4 flex-shrink-0">
+        <div className="flex flex-col xl:flex-row xl:items-start xl:justify-between gap-3 mb-4 flex-shrink-0">
           <div className="flex items-start gap-2">
             <FileQuestion size={26} className="text-[#ED8936]" />
             <h2 className="text-lg font-black text-[#1A365D] leading-snug">

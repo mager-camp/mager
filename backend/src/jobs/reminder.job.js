@@ -1,6 +1,7 @@
 import cron from "node-cron";
 import prisma from "../config/prisma.js";
 import { sendReminderNotification } from "../modules/notifications/services/notification.dispatcher.js";
+import { createReminderNotification } from "../modules/notifications/notifications.service.js";
 
 let isRunning = false;
 
@@ -20,9 +21,9 @@ export const startReminderJob = () => {
       // - status belum completed/skipped
       const schedules = await prisma.userSchedule.findMany({
         where: {
-          alarmEnabled:  true,
-          reminderSent:  false,
-          status:        { notIn: ["completed", "skipped"] },
+          alarmEnabled: true,
+          reminderSent: false,
+          status: { notIn: ["completed", "skipped"] },
           alarmAt: {
             lte: now,
             // Batasi window 1 jam ke belakang biar ga kirim notif
@@ -31,7 +32,7 @@ export const startReminderJob = () => {
           },
         },
         include: {
-          user:     { select: { id: true, fullName: true, phone: true } },
+          user: { select: { id: true, fullName: true, phone: true } },
           activity: { select: { name: true } },
         },
       });
@@ -43,28 +44,37 @@ export const startReminderJob = () => {
       const results = await Promise.allSettled(
         schedules.map(async (schedule) => {
           if (!schedule.user.phone) {
-            console.warn(`⚠️  User ${schedule.user.fullName} tidak punya nomor telepon, skip.`);
-            return;
+            console.warn(
+              `⚠️  ${schedule.user.fullName} tidak punya nomor telepon, skip WA.`,
+            );
+          } else {
+            await sendReminderNotification(schedule);
           }
-
-          await sendReminderNotification(schedule);
+          await createReminderNotification(
+            schedule.user.id,
+            schedule.id,
+            schedule.activity.name,
+            schedule.startAt,
+          );
 
           await prisma.userSchedule.update({
             where: { id: schedule.id },
-            data:  { reminderSent: true },
+            data: { reminderSent: true },
           });
 
-          console.log(`✅ Reminder terkirim ke ${schedule.user.fullName}`);
-        })
+          console.log(`✅ Reminder terkirim: ${schedule.user.fullName}`);
+        }),
       );
 
       // Log yang gagal tanpa crash job
       results.forEach((r, i) => {
         if (r.status === "rejected") {
-          console.error(`❌ Gagal kirim ke ${schedules[i].user.fullName}:`, r.reason?.message);
+          console.error(
+            `❌ Gagal kirim ke ${schedules[i].user.fullName}:`,
+            r.reason?.message,
+          );
         }
       });
-
     } catch (err) {
       console.error("❌ Reminder Job Error:", err.message);
     } finally {

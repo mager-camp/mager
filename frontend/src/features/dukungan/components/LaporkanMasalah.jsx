@@ -45,7 +45,7 @@ export default function LaporkanMasalah() {
   }
 
   return (
-    <div className="bg-[#D9E7F5] rounded-sm border border-gray-100 shadow-sm p-6 flex flex-col h-full">
+    <div className="bg-[#D9E7F5] rounded-sm border border-gray-100 shadow-sm p-6 flex flex-col lg:h-full">
       {/* Header */}
       <div className="flex items-center gap-2 mb-5 flex-shrink-0">
         <Headset size={20} className="text-[var(--text-dashboard)]" />
