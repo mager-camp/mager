@@ -1,3 +1,4 @@
+// src/routes/index.jsx
 import { createBrowserRouter } from "react-router-dom";
 import GuestRoute from "@/routes/GuestRoute";
 import RoleRoute from "@/routes/RoleRoute";
@@ -30,6 +31,8 @@ import InvoicePage from "@/features/premium/pages/InvoicePage";
 import DashboardAdmin from "@/pages/admin/Dashboard-admin";
 import ManajemenUser from "@/pages/admin/ManajemenUser";
 import AdminSetting from "@/pages/admin/AdminSetting";
+import PaymentManagementPage from "@/pages/admin/PaymentManagementPage";
+import ManajemenKursus from "@/pages/admin/ManajemenKursus";
 import UnauthorizedPage from "@/pages/UnauthorizedPage";
 
 export const router = createBrowserRouter([
@@ -145,6 +148,14 @@ export const router = createBrowserRouter([
       {
         path: "manajemen-user",
         element: <ManajemenUser />,
+      },
+      {
+        path: "manajemen-pembayaran", // 👈 2. Path URL yang diakses browser
+        element: <PaymentManagementPage />, // URL akses browser otomatis menjadi: /admin/manajemen-pembayaran
+      },
+      {
+        path: "kursus", // 👈 2. Sesuai dengan isi href navigasi.js kamu
+        element: <ManajemenKursus />,
       },
       {
         path: "setting",

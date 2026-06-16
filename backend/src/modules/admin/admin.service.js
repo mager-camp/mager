@@ -1,7 +1,7 @@
 import { ROLES } from "../../constants/roles.js";
 import { hashPassword } from "../../utils/hash.js";
 import {
-  getDashboardSummaryRepo,
+ getDashboardSummaryRepo,
   getAdminUsersRepo,
   getPremiumUsersRepo,
   getAdminStatisticsRepo,
@@ -11,6 +11,7 @@ import {
   updateAdminUserRepo,
   deactivateAdminUserRepo,
   activateAdminUserRepo,
+  deleteAdminUserRepo,
   getAdminUserPaymentsRepo,
   getAdminProfileRepo,
   updateAdminProfileRepo,
@@ -116,6 +117,23 @@ export const deactivateAdminUser = async (userId) => {
 export const activateAdminUser = async (userId) => {
   await getAdminUserDetail(userId);
   return activateAdminUserRepo(userId);
+};
+
+export const deleteAdminUser = async (userId) => {
+  await getAdminUserDetail(userId);
+
+  try {
+    return await deleteAdminUserRepo(userId);
+  } catch (error) {
+    if (error?.code === "P2003") {
+      throw createHttpError(
+        "User tidak bisa dihapus karena masih terhubung dengan data lain yang wajib dipertahankan",
+        409,
+      );
+    }
+
+    throw error;
+  }
 };
 
 export const getAdminUserPayments = async (userId) => {

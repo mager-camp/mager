@@ -1,3 +1,11 @@
+// frontend\src\features\admin-dashboard\components\StatCardsSection.jsx
+import React from "react";
+
+// Import file aset gambar dekorasi latar belakang
+import OrangIcon from "@/assets/Orang_Icon.png";
+import OrangMerah from "@/assets/Orang_Merah.png";
+import DuitIcon from "@/assets/Duit_Icon.png";
+
 function formatNumber(value) {
   return new Intl.NumberFormat("id-ID").format(value ?? 0);
 }
@@ -65,26 +73,53 @@ export default function StatCardsSection({ summary, loading, error }) {
 
   return (
     <div className="cards-wrapper">
+      {/* CARD 1: TOTAL PENGGUNA */}
       <div className="stat-card card-pengguna">
         <div className="stat-title">Total Pengguna</div>
         <div className="stat-value">{formatNumber(summary?.totalUsers)}</div>
         <GrowthBadge value={summary?.userGrowthPercent} />
+        
+        {/* Gambar Latar Belakang */}
+        <img 
+          src={OrangIcon} 
+          alt="Dekorasi Pengguna" 
+          className="stat-card-bg-icon" 
+        />
       </div>
 
+      {/* CARD 2: TOTAL PENGGUNA PREMIUM */}
       <div className="stat-card card-pengguna">
         <div className="stat-title">Total Pengguna Premium</div>
         <div className="stat-value">
           {formatNumber(summary?.totalPremiumUsers)}
         </div>
         <GrowthBadge value={summary?.premiumGrowthPercent} />
+        
+        {/* Gambar Latar Belakang */}
+        <img 
+          src={OrangMerah} 
+          alt="Dekorasi Premium" 
+          className="stat-card-bg-icon" 
+        />
       </div>
 
-      <div className="stat-card card-pendapatan">
+      {/* CARD 3: TOTAL PENDAPATAN */}
+      <div className="stat-card card-pendapatan" style={{ paddingBottom: "32px" }}>
         <div className="stat-title">Total Pendapatan</div>
         <div className="stat-value">
           {formatCurrency(summary?.totalRevenue)}
         </div>
         <GrowthBadge value={summary?.revenueGrowthPercent} />
+        
+        {/* 🚀 SEKARANG BENERAN NAIK KOCAK:
+          Gambarnya didorong ke atas dengan nilai positif, dan card-nya diberi padding bawah tambahan.
+        */}
+        <img 
+          src={DuitIcon} 
+          alt="Dekorasi Pendapatan" 
+          className="stat-card-bg-icon" 
+          style={{ bottom: "1px", right: "8px", transform: "translateY(-8px)" }}
+        />
       </div>
     </div>
   );

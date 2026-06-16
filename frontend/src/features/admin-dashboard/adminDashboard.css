@@ -47,11 +47,21 @@
 }
 
 .admin-dashboard-page .stat-card {
+  position: relative; /* 👈 Ditambahkan agar ikon background absolute mengacu ke card ini */
+  overflow: hidden; /* 👈 Ditambahkan agar potongan gambar tidak keluar border radius */
   min-height: 128px;
   padding: 18px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+/* 👈 Menaikkan z-index tulisan agar berada di atas gambar dekorasi */
+.admin-dashboard-page .stat-title,
+.admin-dashboard-page .stat-value,
+.admin-dashboard-page .badge-container {
+  position: relative;
+  z-index: 2;
 }
 
 .admin-dashboard-page .stat-title {
@@ -478,7 +488,6 @@
   from {
     background-position: 200% 0;
   }
-
   to {
     background-position: -200% 0;
   }
@@ -574,4 +583,18 @@
   .admin-dashboard-sticky-header {
     padding: 16px;
   }
+}
+
+/* 👈 STYLE BARU UNTUK MENEMPELKAN BAGIAN DEKORASI BACKROUND DI KANAN BAWAH CARD STATISTIK */
+.admin-dashboard-page .stat-card-bg-icon {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 85%;
+  width: auto;
+  object-fit: contain;
+  object-position: right bottom;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.95;
 }

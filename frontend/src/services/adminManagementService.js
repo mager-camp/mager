@@ -20,8 +20,8 @@ export const updateAdminUser = async (userId, payload) => {
   return response.data;
 };
 
-export const deactivateAdminUser = async (userId) => {
-  const response = await api.patch(`/admin/users/${userId}/deactivate`);
+export const deactivateAdminUser = async (userId, payload = {}) => {
+  const response = await api.patch(`/admin/users/${userId}/deactivate`, payload);
   return response.data;
 };
 
@@ -32,5 +32,10 @@ export const activateAdminUser = async (userId) => {
 
 export const getAdminUserPayments = async (userId) => {
   const response = await api.get(`/admin/users/${userId}/payments`);
+  return response.data;
+};
+
+export const deleteAdminUser = async (userId) => {
+  const response = await api.delete(`/admin/users/${userId}`);
   return response.data;
 };

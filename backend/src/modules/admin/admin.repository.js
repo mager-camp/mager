@@ -448,6 +448,47 @@ export const activateAdminUserRepo = (userId) => {
   });
 };
 
+export const deleteAdminUserRepo = async (userId) => {
+  return prisma.$transaction(async (tx) => {
+    const user = await tx.user.findFirst({
+      where: { id: userId, ...allUserWhere },
+      select: { id: true },
+    });
+
+    if (!user) return null;
+
+    await tx.notification.deleteMany({ where: { userId } });
+    await tx.workoutLog.deleteMany({ where: { userId } });
+    await tx.userSchedule.deleteMany({ where: { userId } });
+    await tx.userModuleProgress.deleteMany({ where: { userId } });
+    await tx.userCourse.deleteMany({ where: { userId } });
+    await tx.payment.deleteMany({ where: { userId } });
+    await tx.premiumPayment.deleteMany({ where: { userId } });
+    await tx.supportTicket.deleteMany({ where: { userId } });
+    await tx.adminSetting.deleteMany({ where: { adminId: userId } });
+    await tx.instructor.deleteMany({ where: { userId } });
+
+    const deletedUser = await tx.user.delete({
+      where: { id: userId },
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        phone: true,
+        profilePicture: true,
+        isPremium: true,
+        premiumExpiredAt: true,
+        createdAt: true,
+        updatedAt: true,
+        deletedAt: true,
+        role: { select: { name: true } },
+      },
+    });
+
+    return formatUser(deletedUser);
+  });
+};
+
 export const getAdminUserPaymentsRepo = async (userId) => {
   const items = await prisma.payment.findMany({
     where: { userId },

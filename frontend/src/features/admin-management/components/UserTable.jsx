@@ -20,7 +20,12 @@ function getStatusLabel(status, fallback) {
   return status || "Offline";
 }
 
-export default function UserTable({ data = [], onDeleteTrigger, onEditTrigger, onUserClick }) {
+export default function UserTable({
+  data = [],
+  onDeleteTrigger,
+  onEditTrigger,
+  onUserClick,
+}) {
   return (
     <div className="w-full bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-6">
       <div className="bg-[#4a7ca3] text-white px-4 py-3 font-semibold text-sm">
@@ -40,10 +45,14 @@ export default function UserTable({ data = [], onDeleteTrigger, onEditTrigger, o
               <th className="px-3 py-3 text-center">Aksi</th>
             </tr>
           </thead>
+
           <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
             {!data || data.length === 0 ? (
               <tr>
-                <td colSpan="7" className="text-center py-8 text-slate-400 font-medium">
+                <td
+                  colSpan="7"
+                  className="text-center py-8 text-slate-400 font-medium"
+                >
                   Tidak ada data user.
                 </td>
               </tr>
@@ -52,14 +61,29 @@ export default function UserTable({ data = [], onDeleteTrigger, onEditTrigger, o
                 const currentStatus = getStatusLabel(user.status, user.statusLabel);
 
                 let badgeClass = "bg-slate-100 text-slate-600";
-                if (currentStatus === "Aktif") badgeClass = "bg-green-100 text-green-700 font-semibold";
-                if (currentStatus === "Suspend") badgeClass = "bg-red-100 text-red-700 font-semibold";
-                if (currentStatus === "Offline") badgeClass = "bg-slate-200 text-slate-600";
+                if (currentStatus === "Aktif") {
+                  badgeClass = "bg-green-100 text-green-700 font-semibold";
+                }
+                if (currentStatus === "Suspend") {
+                  badgeClass = "bg-red-100 text-red-700 font-semibold";
+                }
+                if (currentStatus === "Offline") {
+                  badgeClass = "bg-slate-200 text-slate-600";
+                }
 
-                const currentName = user.fullName || user.name || user.nama || "Tanpa Nama";
-                const currentType = user.accountType || user.tipe || (user.plan === "premium" ? "Premium" : "Biasa");
+                const currentName =
+                  user.fullName || user.name || user.nama || "Tanpa Nama";
+
+                const currentType =
+                  user.accountType ||
+                  user.tipe ||
+                  (user.plan === "premium" ? "Premium" : "Biasa");
+
                 const currentPhone = user.phone || user.telp || "-";
-                const currentRegister = formatDate(user.createdAt || user.joinDate || user.registrasi);
+
+                const currentRegister = formatDate(
+                  user.createdAt || user.joinDate || user.registrasi,
+                );
 
                 return (
                   <tr
@@ -71,29 +95,56 @@ export default function UserTable({ data = [], onDeleteTrigger, onEditTrigger, o
                       <div className="flex items-center gap-2">
                         <div className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 border border-slate-200 flex-shrink-0 overflow-hidden">
                           {user.profilePicture || user.avatarUrl ? (
-                            <img src={user.profilePicture || user.avatarUrl} alt={currentName} className="w-full h-full object-cover" />
+                            <img
+                              src={user.profilePicture || user.avatarUrl}
+                              alt={currentName}
+                              className="w-full h-full object-cover"
+                            />
                           ) : (
                             <User className="w-3.5 h-3.5" />
                           )}
                         </div>
-                        <span className="truncate max-w-[150px]" title={currentName}>
+
+                        <span
+                          className="truncate max-w-[150px]"
+                          title={currentName}
+                        >
                           {currentName}
                         </span>
                       </div>
                     </td>
-                    <td className="px-3 py-3 text-slate-600">{currentType}</td>
-                    <td className="px-3 py-3 text-slate-600 break-all max-w-[180px]" title={user.email}>
+
+                    <td className="px-3 py-3 text-slate-600">
+                      {currentType}
+                    </td>
+
+                    <td
+                      className="px-3 py-3 text-slate-600 break-all max-w-[180px]"
+                      title={user.email}
+                    >
                       {user.email || "-"}
                     </td>
-                    <td className="px-3 py-3 text-slate-600 whitespace-nowrap">{currentPhone}</td>
+
+                    <td className="px-3 py-3 text-slate-600 whitespace-nowrap">
+                      {currentPhone}
+                    </td>
+
                     <td className="px-3 py-3 text-center whitespace-nowrap">
-                      <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] ${badgeClass}`}>
+                      <span
+                        className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] ${badgeClass}`}
+                      >
                         {currentStatus}
                       </span>
                     </td>
-                    <td className="px-3 py-3 text-slate-500 whitespace-nowrap">{currentRegister}</td>
 
-                    <td className="px-3 py-3" onClick={(e) => e.stopPropagation()}>
+                    <td className="px-3 py-3 text-slate-500 whitespace-nowrap">
+                      {currentRegister}
+                    </td>
+
+                    <td
+                      className="px-3 py-3"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <div className="flex items-center justify-center gap-3">
                         <button
                           type="button"
@@ -103,12 +154,12 @@ export default function UserTable({ data = [], onDeleteTrigger, onEditTrigger, o
                         >
                           <Edit2 className="w-3.5 h-3.5" />
                         </button>
+
                         <button
                           type="button"
                           onClick={() => onDeleteTrigger && onDeleteTrigger(user.id)}
-                          className="text-red-400 hover:text-red-600 transition-colors p-1 disabled:opacity-40"
-                          disabled={user.status === "deleted"}
-                          title="Nonaktifkan akun"
+                          className="text-red-400 hover:text-red-600 transition-colors p-1"
+                          title="Hapus akun"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
