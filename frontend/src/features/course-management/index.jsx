@@ -1,34 +1,78 @@
-// src/features/course-management/index.jsx
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
 import CourseHeader from "./components/CourseHeader";
 import CourseStats from "./components/CourseStats";
 import CourseTable from "./components/CourseTable";
 
+import { getAdminCourses } from "@/services/adminCourseService";
+
+const formatDate = (value) => {
+  if (!value) return "-";
+
+  return new Intl.DateTimeFormat("id-ID", {
+    weekday: "long",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(new Date(value));
+};
+
+const mapTypeToLabel = (type) => {
+  if (type === "free") return "Biasa";
+  if (type === "premium") return "Premium";
+  return type || "-";
+};
+
+const mapCourseToTable = (course) => {
+  return {
+    id: course.id,
+    user: course.instructor?.user?.fullName || "Admin",
+    name: course.title,
+    category: course.activity?.name || "-",
+    type: mapTypeToLabel(course.type),
+    created: formatDate(course.createdAt),
+    updated: formatDate(course.updatedAt),
+    status: course.deletedAt ? "Selesai" : "Aktif",
+    raw: course,
+  };
+};
+
 export default function CourseManagementFeature() {
-  // Data dummy master kursus
-  const [allCourses] = useState([
-    { id: 1, user: "Zaenal Fahri Nugroho", name: "Latihan Lari Rutin SMKN 1 ....", category: "Lari", type: "Premium", created: "Kamis, 12/07/2026", updated: "Sabtu, 14/07/2026", status: "Aktif" },
-    { id: 2, user: "Sari Dewi Putri", name: "Kursus Anggar Tingkat Dasar", category: "Anggar", type: "Biasa", created: "Senin, 15/07/2026", updated: "Rabu, 17/07/2026", status: "Aktif" },
-    { id: 3, user: "Budi Santoso", name: "Pelatihan Renang Kecepatan", category: "Renang", type: "Premium", created: "Selasa, 16/07/2026", updated: "Kamis, 18/07/2026", status: "Aktif" },
-    { id: 4, user: "Dewi Lestari", name: "Latihan Nembak Profesional", category: "Nembak", type: "Biasa", created: "Rabu, 17/07/2026", updated: "Jumat, 19/07/2026", status: "Selesai" },
-    { id: 5, user: "Agus Prasetyo", name: "Kursus Obstacle Challenge", category: "Obstacle", type: "Premium", created: "Kamis, 18/07/2026", updated: "Sabtu, 20/07/2026", status: "Aktif" },
-    { id: 6, user: "Rina Marlina", name: "Pelatihan Lari Jarak Jauh", category: "Lari", type: "Biasa", created: "Jumat, 19/07/2026", updated: "Minggu, 21/07/2026", status: "Selesai" }
-  ]);
-
-  // State untuk memilah tab Kursus (Biasa / Premium)
   const [activeCourseType, setActiveCourseType] = useState("Biasa");
-
-  // State BARU untuk memilah status (Semua / Aktif / Selesai)
   const [statusFilter, setStatusFilter] = useState("Semua");
 
-  // Logika filter bertingkat (Tipe Tab DAN Status Dropdown)
+  const courseQuery = useQuery({
+    queryKey: ["admin-courses"],
+    queryFn: getAdminCourses,
+  });
+
+  const allCourses = useMemo(() => {
+    return (courseQuery.data || []).map(mapCourseToTable);
+  }, [courseQuery.data]);
+
+  const totalBiasa = allCourses.filter((item) => item.type === "Biasa").length;
+  const totalPremium = allCourses.filter((item) => item.type === "Premium").length;
+
+  const categoryStats = useMemo(() => {
+    const result = {};
+
+    allCourses.forEach((course) => {
+      const key = course.category || "-";
+      result[key] = (result[key] || 0) + 1;
+    });
+
+    return result;
+  }, [allCourses]);
+
   const filteredCourses = allCourses.filter((course) => {
-    // 1. Cocokkan tipe tab (Biasa / Premium)
-    const matchType = course.type.toLowerCase() === activeCourseType.toLowerCase();
-    
-    // 2. Cocokkan dengan dropdown status (Semua / Aktif / Selesai)
-    const matchStatus = statusFilter === "Semua" || course.status.toLowerCase() === statusFilter.toLowerCase();
-    
+    const matchType =
+      course.type.toLowerCase() === activeCourseType.toLowerCase();
+
+    const matchStatus =
+      statusFilter === "Semua" ||
+      course.status.toLowerCase() === statusFilter.toLowerCase();
+
     return matchType && matchStatus;
   });
 
@@ -36,21 +80,33 @@ export default function CourseManagementFeature() {
     <main className="w-full min-h-screen bg-[#f8fafc] px-6 py-8 md:px-12 lg:px-16">
       <div className="max-w-7xl mx-auto">
         <CourseHeader />
-        
-        <CourseStats 
-          activeType={activeCourseType} 
+
+        {courseQuery.error && (
+          <div className="mb-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-red-600">
+            Data kursus gagal dimuat: {courseQuery.error.message}
+          </div>
+        )}
+
+        <CourseStats
+          activeType={activeCourseType}
           onChangeType={setActiveCourseType}
-          totalBiasa={659}
-          totalPremium={341}
+          totalBiasa={totalBiasa}
+          totalPremium={totalPremium}
+          categoryStats={categoryStats}
         />
-        
-        {/* Oper state filter status ke komponen tabel */}
-        <CourseTable 
-          courses={filteredCourses} 
-          currentStatusFilter={statusFilter}
-          onStatusFilterChange={setStatusFilter}
-          activeTypeLabel={activeCourseType}
-        />
+
+        {courseQuery.isLoading ? (
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 text-sm text-slate-400 font-semibold">
+            Memuat data kursus...
+          </div>
+        ) : (
+          <CourseTable
+            courses={filteredCourses}
+            currentStatusFilter={statusFilter}
+            onStatusFilterChange={setStatusFilter}
+            activeTypeLabel={activeCourseType}
+          />
+        )}
       </div>
     </main>
   );

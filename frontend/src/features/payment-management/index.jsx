@@ -1,79 +1,229 @@
-// src/features/payment-management/index.jsx
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 import PaymentHeader from "./components/PaymentHeader";
 import PaymentStats from "./components/PaymentStats";
 import PaymentTable from "./components/PaymentTable";
 import ActiveMethods from "./components/ActiveMethods";
 
-export default function PaymentManagementFeature() {
-  // 1. Data transaksi bawaan lengkap dengan variasi status (Sukses, Pending, Gagal)
-  const [transactions] = useState([
-    { id: "#10284", name: "Zaenal Fahri Nugroho", email: "zaenalfahrinugroho@gmail.com", package: "Paket 1 bulan", method: "BCA", price: "Rp 250.000", status: "Sukses", date: "Selasa, 12/08/2026", time: "12.09 WIB" },
-    { id: "#10285", name: "Dewi Sartika", email: "dewi.sartika88@yahoo.com", package: "Paket 3 bulan", method: "Mandiri", price: "Rp 700.000", status: "Sukses", date: "Rabu, 13/08/2026", time: "09.30 WIB" },
-    { id: "#10286", name: "Arif Rahman", email: "arif.rahman@gmail.com", package: "Paket 6 bulan", method: "BRI", price: "Rp 1.200.000", status: "Pending", date: "Kamis, 14/08/2026", time: "15.45 WIB" },
-    { id: "#10287", name: "Rian Hidayat", email: "rian.hid@gmail.com", package: "Paket 1 bulan", method: "OVO", price: "Rp 250.000", status: "Gagal", date: "Jumat, 15/08/2026", time: "19.00 WIB" },
-  ]);
+import {
+  getAdminPaymentSummary,
+  getAdminPaymentTransactions,
+  getAdminPaymentMethods,
+  createAdminPaymentMethod,
+  updateAdminPaymentMethod,
+  deleteAdminPaymentMethod,
+} from "@/services/adminPaymentService";
 
-  // 2. State untuk menyimpan filter status transaksi yang dipilih (Default: "Semua")
+const formatCurrency = (value) => {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0,
+  }).format(value ?? 0);
+};
+
+const formatDate = (value) => {
+  if (!value) return "-";
+
+  return new Intl.DateTimeFormat("id-ID", {
+    weekday: "long",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(new Date(value));
+};
+
+const formatTime = (value) => {
+  if (!value) return "-";
+
+  return new Intl.DateTimeFormat("id-ID", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZoneName: "short",
+  }).format(new Date(value));
+};
+
+const mapStatusToLabel = (status) => {
+  if (status === "paid") return "Sukses";
+  if (status === "pending") return "Pending";
+  if (status === "failed") return "Gagal";
+  if (status === "refunded") return "Refund";
+  return status || "-";
+};
+
+const mapLabelToStatus = (label) => {
+  if (label === "Sukses") return "paid";
+  if (label === "Pending") return "pending";
+  if (label === "Gagal") return "failed";
+  if (label === "Refund") return "refunded";
+  return "all";
+};
+
+const mapTransactionToTable = (item) => {
+  return {
+    id: item.invoiceNumber,
+    name: item.userName,
+    email: item.userEmail,
+    package: item.packageLabel,
+    method: item.paymentMethod || "-",
+    price: formatCurrency(item.amount),
+    status: mapStatusToLabel(item.status),
+    date: formatDate(item.createdAt),
+    time: formatTime(item.createdAt),
+  };
+};
+
+const mapMethodToCard = (item) => {
+  const isBank = item.category === "bank_transfer";
+
+  return {
+    id: item.id,
+    title: isBank ? "Virtual Account" : "E-Wallet",
+    description: `${item.name}${item.accountNumber ? ` (${item.accountNumber})` : ""}`,
+    raw: item,
+  };
+};
+
+export default function PaymentManagementFeature() {
+  const queryClient = useQueryClient();
+
   const [statusFilter, setStatusFilter] = useState("Semua");
 
-  // 3. State penampung card metode pembayaran aktif
-  const [activeMethodsList, setActiveMethodsList] = useState([
-    { id: "init-1", title: "Virtual Account", description: "BCA, Mandiri, BNI" },
-    { id: "init-2", title: "E-Wallet", description: "Dana, OVO, GoPay" }
-  ]);
+  const apiStatus = mapLabelToStatus(statusFilter);
 
-  // Logika memilah data transaksi berdasarkan dropdown status
-  const filteredTransactions = transactions.filter((tx) => {
-    if (statusFilter === "Semua") return true;
-    return tx.status.toLowerCase() === statusFilter.toLowerCase();
+  const summaryQuery = useQuery({
+    queryKey: ["admin-payments", "summary"],
+    queryFn: getAdminPaymentSummary,
   });
 
-  const handleAddNewMethod = (newMethod) => {
-    setActiveMethodsList((prev) => [
-      ...prev,
-      {
-        id: `method-${Date.now()}`,
-        title: newMethod.jenis === "Bank" ? "Virtual Account" : newMethod.jenis,
-        description: `${newMethod.bank} (${newMethod.nomor})`
-      }
-    ]);
+  const transactionQuery = useQuery({
+    queryKey: ["admin-payments", "transactions", apiStatus],
+    queryFn: () => getAdminPaymentTransactions(apiStatus),
+  });
+
+  const methodQuery = useQuery({
+    queryKey: ["admin-payments", "methods"],
+    queryFn: getAdminPaymentMethods,
+  });
+
+  const createMethodMutation = useMutation({
+    mutationFn: createAdminPaymentMethod,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["admin-payments", "methods"],
+      });
+    },
+  });
+
+  const updateMethodMutation = useMutation({
+    mutationFn: ({ id, payload }) => updateAdminPaymentMethod(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["admin-payments", "methods"],
+      });
+    },
+  });
+
+  const deleteMethodMutation = useMutation({
+    mutationFn: deleteAdminPaymentMethod,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["admin-payments", "methods"],
+      });
+    },
+  });
+
+  const transactions = useMemo(() => {
+    return (transactionQuery.data?.items || []).map(mapTransactionToTable);
+  }, [transactionQuery.data]);
+
+  const activeMethodsList = useMemo(() => {
+    return (methodQuery.data?.items || []).map(mapMethodToCard);
+  }, [methodQuery.data]);
+
+  const handleAddNewMethod = async (newMethod) => {
+    const payload = {
+      name: newMethod.bank,
+      category: newMethod.jenis === "Bank" ? "bank_transfer" : "ewallet",
+      accountNumber: newMethod.nomor,
+      accountName: "MAGER",
+      isActive: true,
+    };
+
+    await createMethodMutation.mutateAsync(payload);
   };
 
-  const handleUpdateExistingMethod = (updatedData) => {
-    setActiveMethodsList((prev) =>
-      prev.map((item) =>
-        item.id === updatedData.id
-          ? {
-              ...item,
-              title: updatedData.jenis === "Bank" ? "Virtual Account" : updatedData.jenis,
-              description: `${updatedData.bank} (${updatedData.nomor})`
-            }
-          : item
-      )
-    );
+  const handleUpdateExistingMethod = async (updatedData) => {
+    const payload = {
+      name: updatedData.bank,
+      category: updatedData.jenis === "Bank" ? "bank_transfer" : "ewallet",
+      accountNumber: updatedData.nomor,
+      accountName: "MAGER",
+      isActive: true,
+    };
+
+    await updateMethodMutation.mutateAsync({
+      id: updatedData.id,
+      payload,
+    });
   };
+
+  const handleDeleteExistingMethod = async (id) => {
+    await deleteMethodMutation.mutateAsync(id);
+  };
+
+  const isLoading =
+    summaryQuery.isLoading ||
+    transactionQuery.isLoading ||
+    methodQuery.isLoading;
+
+  const errorMessage =
+    summaryQuery.error?.message ||
+    transactionQuery.error?.message ||
+    methodQuery.error?.message;
 
   return (
     <main className="w-full min-h-screen bg-[#f8fafc] px-6 py-8 md:px-12 lg:px-16">
       <div className="max-w-7xl mx-auto">
         <PaymentHeader />
-        <PaymentStats />
-        
-        {/* Kirim state filter dan fungsinya ke PaymentTable agar dropdown-nya 
-          bisa mengubah isi tabel transaksi secara realtime 
-        */}
-        <PaymentTable 
-          transactions={filteredTransactions} 
-          currentFilter={statusFilter}
-          onFilterChange={setStatusFilter}
+
+        {errorMessage && (
+          <div className="mb-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-red-600">
+            Data pembayaran gagal dimuat: {errorMessage}
+          </div>
+        )}
+
+        <PaymentStats
+          summary={summaryQuery.data}
+          loading={summaryQuery.isLoading}
         />
-        
-        <ActiveMethods 
-          methods={activeMethodsList} 
-          onAddMethod={handleAddNewMethod} 
-          onUpdateMethod={handleUpdateExistingMethod} 
-        />
+
+        {isLoading ? (
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 text-sm text-slate-400 font-semibold">
+            Memuat data pembayaran...
+          </div>
+        ) : (
+          <>
+            <PaymentTable
+              transactions={transactions}
+              currentFilter={statusFilter}
+              onFilterChange={setStatusFilter}
+            />
+
+            <ActiveMethods
+              methods={activeMethodsList}
+              onAddMethod={handleAddNewMethod}
+              onUpdateMethod={handleUpdateExistingMethod}
+              onDeleteMethod={handleDeleteExistingMethod}
+              isSaving={
+                createMethodMutation.isPending ||
+                updateMethodMutation.isPending
+              }
+              isDeleting={deleteMethodMutation.isPending}
+            />
+          </>
+        )}
       </div>
     </main>
   );

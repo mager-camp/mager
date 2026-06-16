@@ -323,32 +323,41 @@ export default function CourseTable({ courses, currentStatusFilter, onStatusFilt
         </div>
       )}
 
-      {/* POP-UP 2: NOTIFIKASI SUKSES (TULISAN DI TENGAH & UKURAN 90PX) */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-3xl p-8 w-full max-w-xl shadow-xl flex flex-col items-center text-center">
-            
-            {/* Lingkaran Centang Hijau */}
-            <div className="w-16 h-16 border-4 border-[#00cd3c] rounded-full flex items-center justify-center mb-6">
-              <svg className="w-9 h-9 text-[#00cd3c]" fill="none" stroke="currentColor" strokeWidth="4" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
+      {/* POP-UP 2: NOTIFIKASI SUKSES DOWNLOAD KURSUS */}
+        {showSuccessModal && (
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-3xl p-8 w-full max-w-sm shadow-xl flex flex-col items-center text-center">
+              
+              <div className="w-16 h-16 border-4 border-[#00cd3c] rounded-full flex items-center justify-center mb-6">
+                <svg
+                  className="w-9 h-9 text-[#00cd3c]"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+
+              <h3 className="text-[#102d42] font-bold text-lg leading-snug px-4 mb-8">
+                File laporan sudah berhasil<br />di download
+              </h3>
+
+              <button
+                type="button"
+                onClick={() => setShowSuccessModal(false)}
+                className="w-full bg-[#ff6347] hover:bg-[#e05338] text-white font-bold py-3 rounded-xl text-sm transition-all max-w-[180px]"
+              >
+                Kembali
+              </button>
             </div>
-
-            <h3 className="text-[#102d42] font-black text-[90px] text-center leading-none tracking-tight mb-8 w-full">
-              File laporan sudah berhasil di download
-            </h3>
-
-            <button
-              type="button"
-              onClick={() => setShowSuccessModal(false)}
-              className="w-full bg-[#ff6347] hover:bg-[#e05338] text-white font-bold py-3 rounded-xl text-sm transition-all max-w-[180px]"
-            >
-              Kembali
-            </button>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }
