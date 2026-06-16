@@ -10,6 +10,7 @@ import coursesRoutes from '../modules/courses/courses.routes.js';
 import premiumRoutes from '../modules/premium/premium.routes.js';
 import premiumPaymentRoutes from '../modules/premium/payment/premium.payment.routes.js';
 import supportRoutes from '../modules/support/support.routes.js';
+import readinessRoutes from "../modules/readiness/readiness.routes.js";
 import adminRoutes from '../modules/admin/admin.routes.js';
 
 const router = Router();
@@ -31,6 +32,7 @@ router.use('/courses', coursesRoutes);
 router.use('/premium', premiumRoutes);
 router.use('/premium-payment', premiumPaymentRoutes);
 router.use('/support', supportRoutes);
+router.use("/readiness", readinessRoutes);
 router.use('/admin', adminRoutes);
 
 export default router;
