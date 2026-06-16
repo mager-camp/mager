@@ -6,47 +6,50 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 
 import { programSchema } from "../constants/programSchema";
-import { JENIS_LATIHAN_OPTIONS, INTENSITY_OPTIONS } from "../constants/calendarData";
+import {
+  JENIS_LATIHAN_OPTIONS,
+  INTENSITY_OPTIONS,
+} from "../constants/calendarData";
 import { formatDate } from "../utils/dateUtils";
 
 const DEFAULT_VALUES = {
-  dateRange:    { from: new Date(), to: new Date() },
-  startTime:    "09:00",
-  endTime:      "11:00",
+  dateRange: { from: new Date(), to: new Date() },
+  startTime: "09:00",
+  endTime: "11:00",
   jenisLatihan: "",
-  intensity:    "MEDIUM",
-  targetFokus:  "",
+  intensity: "MEDIUM",
+  targetFokus: "",
   alarmEnabled: false,
   alarmMinutes: 30, // menit sebelum mulai
 };
 
 const DAY_PICKER_CLASS_NAMES = {
-  months:          "w-full",
-  caption:         "relative py-2 text-center",
-  caption_label:   "font-bold text-base flex justify-center items-center",
-  table:           "w-full border-collapse",
-  head_row:        "flex",
-  row:             "flex w-full mt-1",
-  head_cell:       "text-center text-xs text-gray-400 font-semibold",
-  cell:            "relative text-center p-0",
-  day:             "h-10 w-20 rounded-xl hover:bg-blue-50 transition font-medium",
-  day_selected:    "bg-[#2B6CB0] text-white hover:bg-[#2B6CB0]",
+  months: "w-full",
+  caption: "relative py-2 text-center",
+  caption_label: "font-bold text-base flex justify-center items-center",
+  table: "w-full border-collapse",
+  head_row: "flex",
+  row: "flex w-full mt-1",
+  head_cell: "text-center text-xs text-gray-400 font-semibold",
+  cell: "relative text-center p-0",
+  day: "h-10 w-20 rounded-xl hover:bg-blue-50 transition font-medium",
+  day_selected: "bg-[#2B6CB0] text-white hover:bg-[#2B6CB0]",
   day_range_start: "bg-[#2B6CB0] text-white rounded-xl",
-  day_range_end:   "bg-[#2B6CB0] text-white rounded-xl",
-  day_range_middle:"bg-blue-100 text-[#2B6CB0]",
-  day_today:       "border-2 border-[#2B6CB0]",
+  day_range_end: "bg-[#2B6CB0] text-white rounded-xl",
+  day_range_middle: "bg-blue-100 text-[#2B6CB0]",
+  day_today: "border-2 border-[#2B6CB0]",
 };
 
 const ALARM_OPTIONS = [
   { label: "15 menit sebelum", value: 15 },
   { label: "30 menit sebelum", value: 30 },
-  { label: "1 jam sebelum",    value: 60 },
-  { label: "2 jam sebelum",    value: 120 },
+  { label: "1 jam sebelum", value: 60 },
+  { label: "2 jam sebelum", value: 120 },
 ];
 
 export default function AddProgramPanel({ onAddEvent }) {
   const [isDateModalOpen, setIsDateModalOpen] = useState(false);
-  const [submitError,     setSubmitError]     = useState(null);
+  const [submitError, setSubmitError] = useState(null);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -63,9 +66,9 @@ export default function AddProgramPanel({ onAddEvent }) {
     defaultValues: DEFAULT_VALUES,
   });
 
-  const dateRange      = watch("dateRange");
+  const dateRange = watch("dateRange");
   const selectedIntensity = watch("intensity");
-  const alarmEnabled   = watch("alarmEnabled");
+  const alarmEnabled = watch("alarmEnabled");
 
   async function onSubmit(data) {
     setSubmitError(null);
@@ -84,13 +87,13 @@ export default function AddProgramPanel({ onAddEvent }) {
     }
 
     const current = new Date(data.dateRange.from);
-    const end     = new Date(data.dateRange.to);
+    const end = new Date(data.dateRange.to);
     const payloads = [];
 
     while (current <= end) {
       const dateStr = formatDate(current);
       const startAt = new Date(`${dateStr}T${data.startTime}`);
-      const endAt   = new Date(`${dateStr}T${data.endTime}`);
+      const endAt = new Date(`${dateStr}T${data.endTime}`);
 
       // ── FE validation: jam selesai harus setelah jam mulai ───────────────
       if (endAt <= startAt) {
@@ -105,15 +108,15 @@ export default function AddProgramPanel({ onAddEvent }) {
       }
 
       payloads.push({
-        activityId:   selectedActivity.activityId,
-        scheduledAt:  new Date(`${dateStr}T12:00:00`).toISOString(),
-        startAt:      startAt.toISOString(),
-        endAt:        endAt.toISOString(),
-        intensity:    data.intensity.toLowerCase(),
-        programType:  selectedActivity.programType,
-        notes:        data.targetFokus || undefined,
+        activityId: selectedActivity.activityId,
+        scheduledAt: new Date(`${dateStr}T12:00:00`).toISOString(),
+        startAt: startAt.toISOString(),
+        endAt: endAt.toISOString(),
+        intensity: data.intensity.toLowerCase(),
+        programType: selectedActivity.programType,
+        notes: data.targetFokus || undefined,
         alarmEnabled: data.alarmEnabled,
-        alarmAt:      alarmAt?.toISOString() ?? undefined,
+        alarmAt: alarmAt?.toISOString() ?? undefined,
       });
 
       current.setDate(current.getDate() + 1);
@@ -124,14 +127,17 @@ export default function AddProgramPanel({ onAddEvent }) {
       reset(DEFAULT_VALUES);
     } catch (err) {
       // Error dari BE (overlap, past date, dll) ditampilkan di sini
-      const msg = err?.response?.data?.message ?? err?.message ?? "Gagal menambahkan jadwal.";
+      const msg =
+        err?.response?.data?.message ??
+        err?.message ??
+        "Gagal menambahkan jadwal.";
       setSubmitError(msg);
     }
   }
 
   function setPresetRange(days) {
     const from = new Date();
-    const to   = new Date();
+    const to = new Date();
     to.setDate(to.getDate() + days - 1);
     setValue("dateRange", { from, to });
   }
@@ -209,11 +215,15 @@ export default function AddProgramPanel({ onAddEvent }) {
           >
             <option value="">-- Pilih jenis --</option>
             {JENIS_LATIHAN_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>{opt.label}</option>
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
             ))}
           </select>
           {errors.jenisLatihan && (
-            <p className="text-[10px] text-red-500 mt-0.5">{errors.jenisLatihan.message}</p>
+            <p className="text-[10px] text-red-500 mt-0.5">
+              {errors.jenisLatihan.message}
+            </p>
           )}
         </div>
 
@@ -228,7 +238,9 @@ export default function AddProgramPanel({ onAddEvent }) {
               <button
                 key={opt}
                 type="button"
-                onClick={() => setValue("intensity", opt, { shouldValidate: true })}
+                onClick={() =>
+                  setValue("intensity", opt, { shouldValidate: true })
+                }
                 className={`flex-1 py-2 text-xs font-bold transition-colors ${
                   selectedIntensity === opt
                     ? "bg-[var(--text-dashboard)] text-white"
@@ -266,7 +278,9 @@ export default function AddProgramPanel({ onAddEvent }) {
               className="w-full border border-gray-200 rounded px-2.5 py-2 text-xs font-semibold text-[var(--text-primary)] bg-[var(--background)] focus:outline-none"
             >
               {ALARM_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>{opt.label}</option>
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
               ))}
             </select>
           )}
@@ -314,29 +328,52 @@ export default function AddProgramPanel({ onAddEvent }) {
           <div className="relative bg-white rounded shadow-[0_20px_60px_rgba(0,0,0,0.15)] p-6 w-[380px] max-w-[95vw]">
             <div className="flex items-center justify-between mb-5">
               <div>
-                <h3 className="font-bold text-lg text-gray-800">Pilih Tanggal</h3>
-                <p className="text-xs text-gray-500">Tentukan rentang program latihan</p>
+                <h3 className="font-bold text-lg text-gray-800">
+                  Pilih Tanggal
+                </h3>
+                <p className="text-xs text-gray-500">
+                  Tentukan rentang program latihan
+                </p>
               </div>
-              <button type="button" onClick={() => setIsDateModalOpen(false)} className="h-8 w-8 rounded-full hover:bg-gray-100">✕</button>
+              <button
+                type="button"
+                onClick={() => setIsDateModalOpen(false)}
+                className="h-8 w-8 rounded-full hover:bg-gray-100"
+              >
+                ✕
+              </button>
             </div>
 
             <div className="mb-4 p-3 rounded border bg-slate-50">
-              <div className="text-[10px] uppercase font-bold text-gray-500">Rentang Dipilih</div>
+              <div className="text-[10px] uppercase font-bold text-gray-500">
+                Rentang Dipilih
+              </div>
               <div className="mt-1 text-sm font-semibold text-gray-800">
-                {dateRange?.from ? dateRange.from.toLocaleDateString("id-ID") : "--"}
+                {dateRange?.from
+                  ? dateRange.from.toLocaleDateString("id-ID")
+                  : "--"}
                 {"  →  "}
-                {dateRange?.to ? dateRange.to.toLocaleDateString("id-ID") : "--"}
+                {dateRange?.to
+                  ? dateRange.to.toLocaleDateString("id-ID")
+                  : "--"}
               </div>
             </div>
 
             <div className="flex gap-2 mb-4">
-              {[{ label: "7 Hari", days: 7 }, { label: "14 Hari", days: 14 }, { label: "30 Hari", days: 30 }].map(
-                ({ label, days }) => (
-                  <button key={days} type="button" onClick={() => setPresetRange(days)} className="px-3 py-1.5 text-xs font-semibold rounded border hover:bg-gray-50">
-                    {label}
-                  </button>
-                )
-              )}
+              {[
+                { label: "7 Hari", days: 7 },
+                { label: "14 Hari", days: 14 },
+                { label: "30 Hari", days: 30 },
+              ].map(({ label, days }) => (
+                <button
+                  key={days}
+                  type="button"
+                  onClick={() => setPresetRange(days)}
+                  className="px-3 py-1.5 text-xs font-semibold rounded border hover:bg-gray-50"
+                >
+                  {label}
+                </button>
+              ))}
             </div>
 
             <DayPicker
@@ -350,10 +387,30 @@ export default function AddProgramPanel({ onAddEvent }) {
             />
 
             <div className="mt-5 flex justify-between">
-              <button type="button" onClick={() => setValue("dateRange", { from: undefined, to: undefined })} className="px-4 py-2 rounded border text-sm font-medium hover:bg-gray-50">Reset</button>
+              <button
+                type="button"
+                onClick={() =>
+                  setValue("dateRange", { from: undefined, to: undefined })
+                }
+                className="px-4 py-2 rounded border text-sm font-medium hover:bg-gray-50"
+              >
+                Reset
+              </button>
               <div className="flex gap-2">
-                <button type="button" onClick={() => setIsDateModalOpen(false)} className="px-4 py-2 rounded border text-sm font-medium">Batal</button>
-                <button type="button" onClick={() => setIsDateModalOpen(false)} className="px-4 py-2 rounded bg-[#2B6CB0] text-white text-sm font-semibold">Simpan</button>
+                <button
+                  type="button"
+                  onClick={() => setIsDateModalOpen(false)}
+                  className="px-4 py-2 rounded border text-sm font-medium"
+                >
+                  Batal
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsDateModalOpen(false)}
+                  className="px-4 py-2 rounded bg-[#2B6CB0] text-white text-sm font-semibold"
+                >
+                  Simpan
+                </button>
               </div>
             </div>
           </div>

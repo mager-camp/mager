@@ -27,14 +27,20 @@ export const getScheduleByIdRepo = (id, userId) => {
   });
 };
 
-export const updateScheduleRepo = (id, userId, data) => {
-  return prisma.userSchedule.update({
-    where: { id, userId },
-    data,
-    include: { activity: true },
+export const updateScheduleRepo = (id, userId, payload) =>
+  prisma.userSchedule.update({
+    where: {
+      id,
+      userId,
+    },
+    data: {
+      ...payload,
+    },
+    include: {
+      activity: true,
+    },
   });
-};
-
+  
 export const deleteScheduleRepo = (id, userId) => {
   return prisma.userSchedule.delete({
     where: { id, userId },
@@ -49,11 +55,35 @@ export const checkOverlapRepo = (userId, startAt, endAt, excludeId = null) => {
       userId,
       status: { notIn: ["completed", "skipped"] }, // jadwal selesai/skip ga dihitung
       ...(excludeId && { id: { not: excludeId } }),
-      AND: [
-        { startAt: { lt: endAt } },
-        { endAt:   { gt: startAt } },
-      ],
+      AND: [{ startAt: { lt: endAt } }, { endAt: { gt: startAt } }],
     },
-    select: { id: true, startAt: true, endAt: true, activity: { select: { name: true } } },
+    select: {
+      id: true,
+      startAt: true,
+      endAt: true,
+      activity: { select: { name: true } },
+    },
+  });
+};
+
+export const checkOverlapForUpdateRepo = async (
+  scheduleId,
+  userId,
+  start,
+  end,
+) => {
+  return prisma.userSchedule.findFirst({
+    where: {
+      userId,
+      id: {
+        not: scheduleId,
+      },
+      startAt: {
+        lt: end,
+      },
+      endAt: {
+        gt: start,
+      },
+    },
   });
 };
