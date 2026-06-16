@@ -104,18 +104,21 @@ export default function StatCardsSection({ summary, loading, error }) {
       </div>
 
       {/* CARD 3: TOTAL PENDAPATAN */}
-      <div className="stat-card card-pendapatan">
+      <div className="stat-card card-pendapatan" style={{ paddingBottom: "32px" }}>
         <div className="stat-title">Total Pendapatan</div>
         <div className="stat-value">
           {formatCurrency(summary?.totalRevenue)}
         </div>
         <GrowthBadge value={summary?.revenueGrowthPercent} />
         
-        {/* Gambar Latar Belakang */}
+        {/* 🚀 SEKARANG BENERAN NAIK KOCAK:
+          Gambarnya didorong ke atas dengan nilai positif, dan card-nya diberi padding bawah tambahan.
+        */}
         <img 
           src={DuitIcon} 
           alt="Dekorasi Pendapatan" 
           className="stat-card-bg-icon" 
+          style={{ bottom: "1px", right: "8px", transform: "translateY(-8px)" }}
         />
       </div>
     </div>

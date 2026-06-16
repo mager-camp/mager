@@ -1,12 +1,11 @@
 // src/features/admin-management/components/EditUserProfile.jsx
-import { useEffect, useState } from "react";
-import { Eye, EyeOff, Camera } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
+import { Eye, EyeOff, Camera, ChevronDown } from "lucide-react";
 
 export default function EditUserProfile({
   user,
   onBack,
   onSave,
-  onDeactivateClick,
 }) {
   const [previewImage, setPreviewImage] = useState(null);
   const [formData, setFormData] = useState({
@@ -20,7 +19,12 @@ export default function EditUserProfile({
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const isInactive = user?.status === "deleted";
+  // ==========================================
+  // 🎯 STATE & REF DROPDOWN CUSTOM (STATUS AKUN)
+  // ==========================================
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const accountOptions = ["Premium", "Biasa"];
 
   useEffect(() => {
     setPreviewImage(user?.profilePicture || user?.avatarUrl || null);
@@ -34,6 +38,17 @@ export default function EditUserProfile({
       profilePicture: user?.profilePicture || user?.avatarUrl || null,
     });
   }, [user]);
+
+  // Efek untuk menutup dropdown otomatis saat klik di luar area dropdown
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -50,6 +65,14 @@ export default function EditUserProfile({
     };
 
     reader.readAsDataURL(file);
+  };
+
+  const handleSelectAccountType = (value) => {
+    setFormData((prev) => ({
+      ...prev,
+      accountType: value,
+    }));
+    setIsDropdownOpen(false);
   };
 
   const handleSubmit = (event) => {
@@ -77,8 +100,8 @@ export default function EditUserProfile({
         Edit Profile User
       </h1>
 
-      <div className="max-w-4xl mx-auto bg-white rounded-3xl border border-slate-200 shadow-sm p-8 md:p-12">
-        <form onSubmit={handleSubmit} className="space-y-8">
+      <div className="max-w-4xl mx-auto bg-white rounded-3xl border border-slate-200 shadow-sm p-8 md:p-12 overflow-visible">
+        <form onSubmit={handleSubmit} className="space-y-8 overflow-visible">
           <div className="flex justify-center mb-6">
             <div className="relative w-28 h-28">
               <div className="w-full h-full bg-[#10b981]/10 rounded-full flex items-center justify-center border-2 border-slate-200 overflow-hidden shadow-inner bg-slate-100">
@@ -107,7 +130,7 @@ export default function EditUserProfile({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 overflow-visible">
             <div className="flex flex-col gap-2">
               <label className="text-xs font-bold text-[#4a7ca3] uppercase tracking-wide">
                 Nama Lengkap
@@ -164,24 +187,46 @@ export default function EditUserProfile({
               />
             </div>
 
-            <div className="flex flex-col gap-2">
+            {/* =========================================================================
+                ✨ DROPDOWN CUSTOM: STATUS AKUN (PREMIUM / BIASA)
+               ========================================================================= */}
+            <div className="flex flex-col gap-2 relative" ref={dropdownRef}>
               <label className="text-xs font-bold text-[#4a7ca3] uppercase tracking-wide">
                 Status Akun
               </label>
 
-              <select
-                value={formData.accountType}
-                onChange={(event) =>
-                  setFormData({
-                    ...formData,
-                    accountType: event.target.value,
-                  })
-                }
-                className="w-full px-4 py-3 rounded-xl border border-slate-300 font-semibold text-[#1e3240] focus:outline-none focus:border-[#4a7ca3] focus:ring-1 focus:ring-[#4a7ca3] transition-all bg-white"
+              <button
+                type="button"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-slate-300 font-semibold text-[#1e3240] bg-white text-left focus:outline-none focus:border-[#4a7ca3] focus:ring-1 focus:ring-[#4a7ca3] transition-all"
               >
-                <option value="Premium">Premium</option>
-                <option value="Biasa">Biasa</option>
-              </select>
+                <span>{formData.accountType}</span>
+                <ChevronDown
+                  className={`w-4 h-4 text-slate-400 transition-transform ${
+                    isDropdownOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {/* Box Floating Menu Dropdown */}
+              {isDropdownOpen && (
+                <div className="absolute top-[calc(100%+4px)] left-0 w-full bg-white border border-slate-200 rounded-xl shadow-xl py-1 z-50 animate-scale-up">
+                  {accountOptions.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => handleSelectAccountType(option)}
+                      className={`w-full text-left px-4 py-2.5 text-sm font-semibold transition-colors ${
+                        formData.accountType === option
+                          ? "text-[#4a7ca3] bg-slate-50"
+                          : "text-slate-600 hover:bg-slate-50/80"
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col gap-2 relative">
@@ -219,6 +264,7 @@ export default function EditUserProfile({
             </div>
           </div>
 
+          {/* Sisa 2 Tombol Utama Aktif */}
           <div className="flex flex-col sm:flex-row justify-center gap-4 pt-6">
             <button
               type="button"
@@ -226,15 +272,6 @@ export default function EditUserProfile({
               className="w-full sm:w-44 py-3 bg-[#ff6b57] hover:bg-[#e05643] text-white font-bold rounded-xl shadow-sm transition-all text-center text-sm"
             >
               Kembali
-            </button>
-
-            <button
-              type="button"
-              onClick={onDeactivateClick}
-              disabled={isInactive}
-              className="w-full sm:w-44 py-3 bg-[#fff0f0] text-[#e05353] border border-[#fca3a3] font-bold rounded-xl shadow-sm hover:bg-[#ffe5e5] transition-all text-center text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Nonaktifkan Akun
             </button>
 
             <button
