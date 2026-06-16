@@ -6,46 +6,92 @@ import tembakImg from "../../../assets/tembak.png";
 import renangImg from "../../../assets/renang.png";
 import lariImg from "../../../assets/lari.png";
 
+const emptyStat = {
+  total: 0,
+  currentMonth: 0,
+  previousMonth: 0,
+  monthlyDelta: 0,
+};
+
+const getTypeKey = (activeType) => {
+  return activeType === "Premium" ? "premium" : "free";
+};
+
+const getTrendClass = (delta) => {
+  if (delta < 0) return "text-[#d23b3b]";
+  return "text-[#17a934]";
+};
+
+const getTrendIcon = (delta) => {
+  if (delta < 0) return "↘";
+  return "↗";
+};
+
+const getTrendText = (delta) => {
+  const sign = delta > 0 ? "+" : "";
+  return `${sign}${delta} bulan ini`;
+};
+
+function TrendLabel({ delta = 0, className = "" }) {
+  return (
+    <p
+      className={`text-[10px] font-bold mt-1 flex items-center gap-1 ${getTrendClass(
+        delta
+      )} ${className}`}
+    >
+      <span className="text-sm leading-none">{getTrendIcon(delta)}</span>
+      <span>{getTrendText(delta)}</span>
+    </p>
+  );
+}
+
 export default function CourseStats({
   activeType,
   onChangeType,
-  totalBiasa,
-  totalPremium,
-  categoryStats = {},
+  stats,
+  isLoading = false,
 }) {
+  const typeKey = getTypeKey(activeType);
+
+  const totalBiasa = stats?.types?.free?.total ?? 0;
+  const totalPremium = stats?.types?.premium?.total ?? 0;
+
+  const activeTypeStats = stats?.types?.[typeKey] || emptyStat;
+  const activeCategoryStats = stats?.categories?.[typeKey] || {};
+
   const categoriesData = [
     {
       name: "OBSTACLE",
       label: "Obstacle",
-      count: categoryStats.OBSTACLE || 0,
+      stat: activeCategoryStats.OBSTACLE || emptyStat,
       color: "text-[#199454]",
       img: obstacleImg,
     },
     {
       name: "ANGGAR",
       label: "Anggar",
-      count: categoryStats.ANGGAR || 0,
+      stat: activeCategoryStats.ANGGAR || emptyStat,
       color: "text-[#644FB7]",
       img: anggarImg,
     },
     {
       name: "TEMBAK",
       label: "Tembak",
-      count: categoryStats.TEMBAK || 0,
+      stat: activeCategoryStats.TEMBAK || emptyStat,
       color: "text-[#E64950]",
       img: tembakImg,
     },
     {
       name: "RENANG",
       label: "Renang",
-      count: categoryStats.RENANG || 0,
+      stat: activeCategoryStats.RENANG || emptyStat,
       color: "text-[#3C7CC5]",
       img: renangImg,
     },
     {
       name: "LARI",
       label: "Lari",
-      count: categoryStats.LARI || 0,
+      stat: activeCategoryStats.LARI || emptyStat,
       color: "text-[#F88841]",
       img: lariImg,
     },
@@ -88,12 +134,17 @@ export default function CourseStats({
 
         <div className="mt-3 text-center flex flex-col items-center justify-center">
           <h2 className="text-[90px] font-bold text-[#133957] tracking-tight leading-none my-2">
-            {activeType === "Biasa" ? totalBiasa : totalPremium}
+            {isLoading
+              ? "..."
+              : activeType === "Biasa"
+              ? totalBiasa
+              : totalPremium}
           </h2>
 
-          <p className="text-[10px] text-[#00cd3c] font-bold mt-0.5 flex items-center justify-center gap-0.5 w-full">
-            Data real dari database
-          </p>
+          <TrendLabel
+            delta={activeTypeStats.monthlyDelta}
+            className="justify-center w-full"
+          />
         </div>
       </div>
 
@@ -108,12 +159,13 @@ export default function CourseStats({
             </span>
 
             <div className="mt-3 z-10">
-              <h3 className={`text-3xl font-black ${cat.color} tracking-tight leading-none`}>
-                {cat.count}
+              <h3
+                className={`text-3xl font-black ${cat.color} tracking-tight leading-none`}
+              >
+                {isLoading ? "..." : cat.stat.total}
               </h3>
-              <p className="text-[10px] font-bold mt-1 flex items-center gap-0.5 text-slate-400">
-                Jumlah kursus
-              </p>
+
+              <TrendLabel delta={cat.stat.monthlyDelta} />
             </div>
 
             <div className="absolute right-3 bottom-3 w-20 h-20 flex items-center justify-center opacity-90 pointer-events-none">

@@ -5,6 +5,11 @@ export const getAdminCourses = async () => {
   return response.data.data;
 };
 
+export const getAdminCourseStats = async () => {
+  const response = await api.get("/courses/stats");
+  return response.data.data;
+};
+
 export const getActivities = async () => {
   const response = await api.get("/activities");
   return response.data.data;

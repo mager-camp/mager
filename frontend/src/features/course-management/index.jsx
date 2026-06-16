@@ -5,7 +5,10 @@ import CourseHeader from "./components/CourseHeader";
 import CourseStats from "./components/CourseStats";
 import CourseTable from "./components/CourseTable";
 
-import { getAdminCourses } from "@/services/adminCourseService";
+import {
+  getAdminCourses,
+  getAdminCourseStats,
+} from "@/services/adminCourseService";
 
 const formatDate = (value) => {
   if (!value) return "-";
@@ -47,23 +50,14 @@ export default function CourseManagementFeature() {
     queryFn: getAdminCourses,
   });
 
+  const courseStatsQuery = useQuery({
+    queryKey: ["admin-courses", "stats"],
+    queryFn: getAdminCourseStats,
+  });
+
   const allCourses = useMemo(() => {
     return (courseQuery.data || []).map(mapCourseToTable);
   }, [courseQuery.data]);
-
-  const totalBiasa = allCourses.filter((item) => item.type === "Biasa").length;
-  const totalPremium = allCourses.filter((item) => item.type === "Premium").length;
-
-  const categoryStats = useMemo(() => {
-    const result = {};
-
-    allCourses.forEach((course) => {
-      const key = course.category || "-";
-      result[key] = (result[key] || 0) + 1;
-    });
-
-    return result;
-  }, [allCourses]);
 
   const filteredCourses = allCourses.filter((course) => {
     const matchType =
@@ -76,23 +70,25 @@ export default function CourseManagementFeature() {
     return matchType && matchStatus;
   });
 
+  const errorMessage =
+    courseQuery.error?.message || courseStatsQuery.error?.message;
+
   return (
     <main className="w-full min-h-screen bg-[#f8fafc] px-6 py-8 md:px-12 lg:px-16">
       <div className="max-w-7xl mx-auto">
         <CourseHeader />
 
-        {courseQuery.error && (
+        {errorMessage && (
           <div className="mb-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-red-600">
-            Data kursus gagal dimuat: {courseQuery.error.message}
+            Data kursus gagal dimuat: {errorMessage}
           </div>
         )}
 
         <CourseStats
           activeType={activeCourseType}
           onChangeType={setActiveCourseType}
-          totalBiasa={totalBiasa}
-          totalPremium={totalPremium}
-          categoryStats={categoryStats}
+          stats={courseStatsQuery.data}
+          isLoading={courseStatsQuery.isLoading}
         />
 
         {courseQuery.isLoading ? (
