@@ -1,5 +1,5 @@
 import { AlertTriangle } from "lucide-react";
-import { useTodaySchedules } from "@/features/dashboard/hooks/useDashboard";
+import { useTodaySchedules } from "@/features/user/dashboard/hooks/useDashboard";
 
 const RECOVERY_MESSAGES = {
   RENANG: "Tingkat hidrasi menurun setelah berenang. Minumlah 500 ml larutan elektrolit sebelum sesi berikutnya.",

@@ -1,2 +1,2 @@
-import PengaturanPage from "@/features/settings/index";
+import PengaturanPage from "@/features/user/settings/index";
 export default PengaturanPage;

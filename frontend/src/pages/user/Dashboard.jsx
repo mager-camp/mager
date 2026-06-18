@@ -1,2 +1,2 @@
-import Dashboard from "@/features/dashboard";
+import Dashboard from "@/features/user/dashboard";
 export default Dashboard;

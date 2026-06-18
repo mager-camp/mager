@@ -2,8 +2,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import GuestRoute from "@/routes/GuestRoute";
 import RoleRoute from "@/routes/RoleRoute";
-import PremiumGuard from "@/features/premium/guards/PremiumGuard";
-import PaymentGuard from "@/features/premium/guards/PaymentGuard";
+import PremiumGuard from "@/features/user/premium/guards/PremiumGuard";
+import PaymentGuard from "@/features/user/premium/guards/PaymentGuard";
 
 import PublicLayout from "@/layout/PublicLayout";
 import UserLayout from "@/layout/UserLayout";
@@ -21,12 +21,12 @@ import Rekap from "@/pages/user/Rekap";
 import Settings from "@/pages/user/Settings";
 import Dukungan from "@/pages/user/Support";
 
-import CoursePage from "@/features/premium/pages/CoursePage";
-import ModulPage from "@/features/premium/pages/ModulPage";
-import FreeCoursePage from "@/features/course/pages/CoursePage";
-import FreeModulPage from "@/features/course/pages/ModulPage";
-import PaymentPage from "@/features/premium/pages/PaymentPage";
-import InvoicePage from "@/features/premium/pages/InvoicePage";
+import CoursePage from "@/features/user/premium/pages/CoursePage";
+import ModulPage from "@/features/user/premium/pages/ModulPage";
+import FreeCoursePage from "@/features/user/course/pages/CoursePage";
+import FreeModulPage from "@/features/user/course/pages/ModulPage";
+import PaymentPage from "@/features/user/premium/pages/PaymentPage";
+import InvoicePage from "@/features/user/premium/pages/InvoicePage";
 
 import DashboardAdmin from "@/pages/admin/Dashboard-admin";
 import ManajemenUser from "@/pages/admin/ManajemenUser";

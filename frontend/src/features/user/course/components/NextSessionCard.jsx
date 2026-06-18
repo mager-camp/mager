@@ -1,6 +1,6 @@
 import { MapPin, Zap, Clock } from "lucide-react";
 import { useCountdownTo } from "../hooks/useCountdownTo";
-import { useNextSession } from "@/features/dashboard/hooks/useDashboard"; // sesuaikan path
+import { useNextSession } from "@/features/user/dashboard/hooks/useDashboard"; // sesuaikan path
 import { useNavigate } from "react-router-dom";
 
 const INTENSITY_LABEL = {

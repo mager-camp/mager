@@ -1,5 +1,5 @@
 import { Zap } from "lucide-react";
-import { useReadiness } from "@/features/readiness/hooks/useReadiness";
+import { useReadiness } from "@/features/user/readiness/hooks/useReadiness";
 
 
 export default function WelcomeCard({ name = "Martin" }) {

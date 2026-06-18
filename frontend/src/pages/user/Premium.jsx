@@ -1,2 +1,2 @@
-import PremiumPage from "@/features/premium/index";
+import PremiumPage from "@/features/user/premium/index";
 export default PremiumPage;

@@ -1,2 +1,2 @@
-import RekapLatihanPage from "@/features/rekap/index";
+import RekapLatihanPage from "@/features/user/rekap/index";
 export default RekapLatihanPage;

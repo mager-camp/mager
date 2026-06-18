@@ -1,7 +1,7 @@
-import WelcomeCard from "@/features/dashboard/components/WelcomeCard";
-import NextSessionCard from "@/features/dashboard/components/NextSessionCard";
-import TodayGoals from "@/features/dashboard/components/TodayGoals";
-import WeeklyVolumeChart from "@/features/dashboard/components/WeeklyVolumeChart";
+import WelcomeCard from "@/features/user/dashboard/components/WelcomeCard";
+import NextSessionCard from "@/features/user/dashboard/components/NextSessionCard";
+import TodayGoals from "@/features/user/dashboard/components/TodayGoals";
+import WeeklyVolumeChart from "@/features/user/dashboard/components/WeeklyVolumeChart";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function Dashboard() {

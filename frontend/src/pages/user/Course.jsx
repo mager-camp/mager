@@ -1,2 +1,2 @@
-import CoursePage from "@/features/course/index";
+import CoursePage from "@/features/user/course/index";
 export default CoursePage;

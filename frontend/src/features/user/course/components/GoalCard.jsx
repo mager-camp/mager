@@ -2,7 +2,7 @@ import { BowArrow, Swords, Construction, Activity } from "lucide-react";
 import { FaRunning } from "react-icons/fa";
 import { PiPersonSimpleSwimFill } from "react-icons/pi";
 
-import { useTodaySchedules } from "@/features/dashboard/hooks/useDashboard"; // sesuaikan path
+import { useTodaySchedules } from "@/features/user/dashboard/hooks/useDashboard"; // sesuaikan path
 
 const ICON_MAP = {
   RENANG: PiPersonSimpleSwimFill,
