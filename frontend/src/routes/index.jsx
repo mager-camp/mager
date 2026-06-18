@@ -36,6 +36,8 @@ import ManajemenKursus from "@/pages/admin/ManajemenKursus";
 import UnauthorizedPage from "@/pages/UnauthorizedPage";
 
 import DashboardPelatihPage from "@/pages/pelatih/Dashboard";
+import PlCalendarPage from "@/pages/pelatih/Kalender";
+import Athlete from "@/features/pelatih/athletes/index";
 
 export const router = createBrowserRouter([
   {
@@ -146,6 +148,22 @@ export const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <DashboardPelatihPage />,
+      },
+      {
+        path: "calendar",
+        element: <PlCalendarPage />,
+      },
+      {
+        path: "manajemen-user",
+        element: <Athlete />,
+      },
+      {
+        path: "setting",
+        element: <Settings />,
+      },
+      {
+        path: "support",
+        element: <Dukungan />,
       },
     ],
   },
