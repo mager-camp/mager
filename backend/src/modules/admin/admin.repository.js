@@ -125,6 +125,23 @@ const formatScheduleActivity = (schedule) => ({
   intensity: schedule.intensity,
 });
 
+const formatActivityName = (value) => {
+  if (!value) return "Tanpa kategori";
+
+  const labels = {
+    OBSTACLE: "Obstacle",
+    LARI: "Lari",
+    TEMBAK: "Tembak",
+    ANGGAR: "Anggar",
+    RENANG: "Renang",
+    PIJAT: "Pijat",
+    MANDI_ES: "Mandi Es",
+    ISTIRAHAT_AKTIF: "Istirahat Aktif",
+  };
+
+  return labels[value] || String(value).replaceAll("_", " ");
+};
+
 export const getDashboardSummaryRepo = async () => {
   const now = new Date();
   const thisMonthStart = startOfMonth(now);
@@ -143,7 +160,10 @@ export const getDashboardSummaryRepo = async () => {
   ] = await prisma.$transaction([
     prisma.user.count({ where: activeUserWhere }),
     prisma.user.count({ where: { ...activeUserWhere, isPremium: true } }),
-    prisma.payment.aggregate({ where: { status: "paid" }, _sum: { amount: true } }),
+    prisma.payment.aggregate({
+      where: { status: "paid" },
+      _sum: { amount: true },
+    }),
     prisma.user.count({
       where: { ...activeUserWhere, createdAt: { gte: thisMonthStart } },
     }),
@@ -187,7 +207,10 @@ export const getDashboardSummaryRepo = async () => {
     totalUsers,
     totalPremiumUsers,
     totalRevenue: Number(totalRevenue._sum.amount || 0),
-    userGrowthPercent: calculateGrowthPercent(currentMonthUsers, previousMonthUsers),
+    userGrowthPercent: calculateGrowthPercent(
+      currentMonthUsers,
+      previousMonthUsers,
+    ),
     premiumGrowthPercent: calculateGrowthPercent(
       currentMonthPremiumUsers,
       previousMonthPremiumUsers,
@@ -250,10 +273,11 @@ export const getPremiumUsersRepo = async () => {
 };
 
 export const getAdminStatisticsRepo = async () => {
-  const [premiumUsers, regularUsers, courseDistribution, paymentStatusDistribution] =
+  const [premiumUsers, regularUsers, courses, paymentStatusDistribution] =
     await prisma.$transaction([
       prisma.user.count({ where: { ...activeUserWhere, isPremium: true } }),
       prisma.user.count({ where: { ...activeUserWhere, isPremium: false } }),
+
       prisma.course.findMany({
         where: { deletedAt: null },
         orderBy: { createdAt: "desc" },
@@ -261,21 +285,60 @@ export const getAdminStatisticsRepo = async () => {
           id: true,
           title: true,
           type: true,
-          _count: { select: { userCourses: true, payments: true } },
+          activity: {
+            select: {
+              name: true,
+              category: true,
+            },
+          },
+          _count: {
+            select: {
+              userCourses: true,
+              payments: true,
+            },
+          },
         },
       }),
-      prisma.payment.groupBy({ by: ["status"], _count: { _all: true } }),
+
+      prisma.payment.groupBy({
+        by: ["status"],
+        _count: { _all: true },
+      }),
     ]);
 
-  return {
-    userComposition: { premium: premiumUsers, regular: regularUsers },
-    courseDistribution: courseDistribution.map((course) => ({
-      id: course.id,
-      name: course.title,
+  const courseMap = new Map();
+
+  courses.forEach((course) => {
+    const activityName = formatActivityName(course.activity?.name);
+    const current = courseMap.get(activityName);
+
+    if (current) {
+      current.totalCourses += 1;
+      current.totalEnrollments += course._count.userCourses;
+      current.totalPayments += course._count.payments;
+      return;
+    }
+
+    courseMap.set(activityName, {
+      id: course.activity?.name || course.id,
+      name: activityName,
       type: course.type,
+      totalCourses: 1,
       totalEnrollments: course._count.userCourses,
       totalPayments: course._count.payments,
-    })),
+    });
+  });
+
+  return {
+    userComposition: {
+      premium: premiumUsers,
+      regular: regularUsers,
+    },
+
+    courseDistribution: Array.from(courseMap.values()).sort(
+      (a, b) => b.totalCourses - a.totalCourses,
+    ),
+
     paymentStatusDistribution: paymentStatusDistribution.map((item) => ({
       status: item.status,
       total: item._count._all,
@@ -363,12 +426,12 @@ export const getAdminUserDetailRepo = async (userId) => {
     formatPayment({ ...payment, user }),
   );
   const activities = user.schedules.map(formatScheduleActivity);
-  const latestPaid = payments.find((payment) => payment.status === "paid") || payments[0];
+  const latestPaid =
+    payments.find((payment) => payment.status === "paid") || payments[0];
 
   return {
     ...formattedUser,
-    favoriteCourse:
-      latestPaid?.packageName || activities[0]?.name || "-",
+    favoriteCourse: latestPaid?.packageName || activities[0]?.name || "-",
     paymentMethod: latestPaid?.paymentMethod || "-",
     expiryDate: user.premiumExpiredAt,
     payments,
@@ -445,6 +508,47 @@ export const activateAdminUserRepo = (userId) => {
       deletedAt: true,
       role: { select: { name: true } },
     },
+  });
+};
+
+export const deleteAdminUserRepo = async (userId) => {
+  return prisma.$transaction(async (tx) => {
+    const user = await tx.user.findFirst({
+      where: { id: userId, ...allUserWhere },
+      select: { id: true },
+    });
+
+    if (!user) return null;
+
+    await tx.notification.deleteMany({ where: { userId } });
+    await tx.workoutLog.deleteMany({ where: { userId } });
+    await tx.userSchedule.deleteMany({ where: { userId } });
+    await tx.userModuleProgress.deleteMany({ where: { userId } });
+    await tx.userCourse.deleteMany({ where: { userId } });
+    await tx.payment.deleteMany({ where: { userId } });
+    await tx.premiumPayment.deleteMany({ where: { userId } });
+    await tx.supportTicket.deleteMany({ where: { userId } });
+    await tx.adminSetting.deleteMany({ where: { adminId: userId } });
+    await tx.instructor.deleteMany({ where: { userId } });
+
+    const deletedUser = await tx.user.delete({
+      where: { id: userId },
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        phone: true,
+        profilePicture: true,
+        isPremium: true,
+        premiumExpiredAt: true,
+        createdAt: true,
+        updatedAt: true,
+        deletedAt: true,
+        role: { select: { name: true } },
+      },
+    });
+
+    return formatUser(deletedUser);
   });
 };
 
@@ -528,8 +632,12 @@ export const updateAdminProfileRepo = async (adminId, payload) => {
   if (payload.nama !== undefined) userData.fullName = payload.nama;
   if (payload.email !== undefined) userData.email = payload.email;
   if (payload.phone !== undefined) userData.phone = payload.phone;
-  if (payload.profilePicture !== undefined) userData.profilePicture = payload.profilePicture;
-  if (payload.avatarUrl !== undefined) userData.profilePicture = payload.avatarUrl;
+  if (payload.profilePicture !== undefined) {
+    userData.profilePicture = payload.profilePicture;
+  }
+  if (payload.avatarUrl !== undefined) {
+    userData.profilePicture = payload.avatarUrl;
+  }
 
   const settingData = {};
   if (payload.notif_email !== undefined) {

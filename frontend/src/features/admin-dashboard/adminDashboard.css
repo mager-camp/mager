@@ -47,11 +47,20 @@
 }
 
 .admin-dashboard-page .stat-card {
+  position: relative;
+  overflow: hidden;
   min-height: 128px;
   padding: 18px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.admin-dashboard-page .stat-title,
+.admin-dashboard-page .stat-value,
+.admin-dashboard-page .badge-container {
+  position: relative;
+  z-index: 2;
 }
 
 .admin-dashboard-page .stat-title {
@@ -573,5 +582,110 @@
 @media (max-width: 768px) {
   .admin-dashboard-sticky-header {
     padding: 16px;
+  }
+}
+
+.admin-dashboard-page .stat-card-bg-icon {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 85%;
+  width: auto;
+  object-fit: contain;
+  object-position: right bottom;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.95;
+}
+
+/* ============================= */
+/* FIX CHART STATISTIK DASHBOARD */
+/* ============================= */
+
+.admin-dashboard-page .statistic-card {
+  min-height: 294px;
+}
+
+.admin-dashboard-page .statistic-card .chart-container {
+  min-height: 230px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.admin-dashboard-page .statistic-card .chart-box-fix {
+  width: min(230px, 100%);
+  height: 230px;
+}
+
+.admin-dashboard-page .statistic-card .chart-legends-horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 16px;
+  width: 100%;
+  margin-top: 14px;
+}
+
+.admin-dashboard-page .statistic-card .kursus-legend-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 128px));
+  justify-content: center;
+  align-items: start;
+  gap: 12px 26px;
+  width: 100%;
+  max-width: 310px;
+  margin: 16px auto 0;
+}
+
+.admin-dashboard-page .statistic-card .legend-item {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #24415f;
+}
+
+.admin-dashboard-page .statistic-card .legend-box {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.admin-dashboard-page .statistic-card .legend-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.admin-dashboard-page .statistic-card .user-regular {
+  background: #749bc2;
+}
+
+.admin-dashboard-page .statistic-card .user-premium {
+  background: #e88d67;
+}
+
+@media (max-width: 420px) {
+  .admin-dashboard-page .statistic-card .chart-container {
+    min-height: 205px;
+  }
+
+  .admin-dashboard-page .statistic-card .chart-box-fix {
+    width: 200px;
+    height: 200px;
+  }
+
+  .admin-dashboard-page .statistic-card .kursus-legend-grid {
+    grid-template-columns: 1fr;
+    max-width: 220px;
+    gap: 10px;
   }
 }

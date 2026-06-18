@@ -1,6 +1,13 @@
 import { UserCircle } from "lucide-react";
 
-function InputField({ label, disabled, error, registration, type = "text", placeholder }) {
+function InputField({
+  label,
+  disabled,
+  error,
+  registration,
+  type = "text",
+  placeholder,
+}) {
   return (
     <div className="flex flex-col gap-1">
       <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
@@ -12,18 +19,17 @@ function InputField({ label, disabled, error, registration, type = "text", place
         disabled={disabled}
         {...registration}
         className={`
-          w-full border-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
+          w-full border-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors
           focus:outline-none focus:ring-1 focus:ring-[#2B6CB0]
-          ${disabled
-            ? "bg-gray-50 border-gray-200 text-gray-500 cursor-not-allowed"
-            : "bg-white border-border text-gray-800"
+          ${
+            disabled
+              ? "bg-gray-50 border-gray-200 text-gray-500 cursor-not-allowed"
+              : "bg-white border-border text-gray-800"
           }
           ${error ? "border-red-400 focus:ring-red-400" : ""}
         `}
       />
-      {error && (
-        <p className="text-[10px] text-red-500">{error.message}</p>
-      )}
+      {error && <p className="text-[10px] text-red-500">{error.message}</p>}
     </div>
   );
 }
@@ -35,9 +41,38 @@ export default function ProfilPengguna({
   fotoPreview,
   fileInputRef,
   onFotoChange,
+  loading,
 }) {
+  if (loading) {
+    return (
+      <div className="bg-white rounded-sm border border-gray-100 shadow-sm p-6 animate-pulse">
+        <div className="flex items-center gap-2 mb-6">
+          <div className="w-5 h-5 bg-gray-200 rounded" />
+          <div className="h-4 w-40 bg-gray-200 rounded" />
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-6 items-start">
+          {/* Foto */}
+          <div className="flex flex-col items-center gap-2 shrink-0">
+            <div className="w-24 h-24 rounded-lg bg-gray-200" />
+            <div className="h-3 w-24 bg-gray-200 rounded" />
+          </div>
+
+          {/* Form */}
+          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+            {[1, 2, 3].map((item) => (
+              <div key={item} className="flex flex-col gap-2">
+                <div className="h-3 w-24 bg-gray-200 rounded" />
+                <div className="h-11 w-full bg-gray-200 rounded-md" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
+    <div className="bg-white rounded-sm border border-gray-100 shadow-sm p-6">
       {/* Section title */}
       <div className="flex items-center gap-2 mb-6">
         <UserCircle size={18} className="text-[#ED8936]" />
@@ -49,7 +84,7 @@ export default function ProfilPengguna({
       <div className="flex flex-col sm:flex-row gap-6 items-start">
         {/* Foto profil */}
         <div className="flex flex-col items-center gap-2 shrink-0">
-          <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-gray-200 bg-gray-100">
+          <div className="w-24 h-24 rounded-lg overflow-hidden border-2 border-gray-200 bg-gray-100">
             {fotoPreview ? (
               <img
                 src={fotoPreview}

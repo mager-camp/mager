@@ -1,39 +1,9 @@
 import { Zap } from "lucide-react";
-import { useTodaySchedules } from "../hooks/useDashboard";
+import { useReadiness } from "@/features/readiness/hooks/useReadiness";
 
-function getDominantIntensity(schedules) {
-  if (!schedules?.length) return null;
-  const priority = { heavy: 3, medium: 2, light: 1 };
-  return schedules.reduce((max, s) =>
-    (priority[s.intensity] ?? 0) > (priority[max] ?? 0) ? s.intensity : max,
-    schedules[0].intensity
-  );
-}
-
-const INTENSITY_CONFIG = {
-  null: {
-    message: "Tidak ada latihan hari ini. Gunakan waktu ini untuk istirahat dan pemulihan.",
-    readiness: 60,
-  },
-  light: {
-    message: "Beban latihan hari ini ringan. Fokus pada teknik dan pemulihan aktif.",
-    readiness: 75,
-  },
-  medium: {
-    message: "Beban latihan Anda sudah optimal. Hari ini adalah hari dengan intensitas sedang.",
-    readiness: 85,
-  },
-  heavy: {
-    message: "Hari ini intensitas tinggi. Pastikan nutrisi dan hidrasi Anda sudah cukup.",
-    readiness: 92,
-  },
-};
 
 export default function WelcomeCard({ name = "Martin" }) {
-  const { data: schedules = [], isLoading } = useTodaySchedules();
-
-  const intensity = getDominantIntensity(schedules);
-  const config    = INTENSITY_CONFIG[intensity] ?? INTENSITY_CONFIG[null];
+  const { data, isLoading } = useReadiness();
 
   return (
     <div className="h-full bg-white rounded-sm p-6 flex items-center justify-between shadow-lg border border-gray-100">
@@ -45,7 +15,7 @@ export default function WelcomeCard({ name = "Martin" }) {
           <div className="h-4 w-64 bg-gray-100 rounded animate-pulse mt-1" />
         ) : (
           <p className="text-[var(--text-primary)] text-sm leading-relaxed">
-            {config.message}
+            {data?.message}
           </p>
         )}
       </div>
@@ -65,7 +35,7 @@ export default function WelcomeCard({ name = "Martin" }) {
           ) : (
             <>
               <span className="text-4xl font-extrabold text-[var(--text-dashboard)]">
-                {config.readiness}
+                {data?.score}
               </span>
               <span className="text-2xl font-bold text-[var(--text-dashboard)] mb-1">%</span>
             </>

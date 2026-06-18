@@ -11,7 +11,7 @@ import {
   updateScheduleSchema,
 } from "./schedules.validation.js";
 
-export const create = async (req, res, next) => {
+export const create = async (req, res, next) => {  
   try {
     const payload = createScheduleSchema.parse(req.body);
 

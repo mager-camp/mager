@@ -2,7 +2,7 @@ import RegisterForm from "./components/RegisterForm";
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-screen w-full relative flex items-center justify-center overflow-hidden py-8">
+    <div className="min-h-dvh w-full relative flex items-center justify-center overflow-hidden py-8">
 
       {/* Background gradient — sama kayak login */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#C8D8E8] via-[#D8E6F0] to-[#B8CCE0]" />

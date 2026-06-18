@@ -2,11 +2,7 @@ import LoginForm from "./components/LoginForm";
 
 export default function LoginPage() {
   return (
-    /*
-      Background: gradient abu-abu biru muda + silhouette athlete overlay
-      Persis kaya di design — pakai pseudo gradient layer
-    */
-    <div className="min-h-screen w-full relative flex items-center justify-center overflow-hidden">
+    <div className="min-h-dvh w-full relative flex items-center justify-center overflow-hidden">
 
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#C8D8E8] via-[#D8E6F0] to-[#B8CCE0]" />

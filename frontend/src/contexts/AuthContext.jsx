@@ -10,6 +10,8 @@ import {
   logout as logoutService,
 } from "@/services/authService";
 
+import { queryClient } from "@/providers/QueryProvider";
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -48,14 +50,14 @@ export const AuthProvider = ({ children }) => {
   // login helper
   const login = (userData, token) => {
     localStorage.setItem("token", token);
-
+    queryClient.clear();
     setUser(userData);
   };
 
   // logout helper
   const logout = () => {
     logoutService();
-
+    queryClient.clear();
     setUser(null);
   };
 

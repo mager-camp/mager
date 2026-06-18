@@ -1,8 +1,15 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, PlayCircle, Dumbbell, CheckCircle, Clock } from "lucide-react";
-import { KURSUS_DETAIL } from "../constants/premiumData";
+import {
+  ArrowLeft,
+  PlayCircle,
+  Dumbbell,
+  CheckCircle,
+  Clock,
+} from "lucide-react";
+import { useCourseDetail, useCompleteModule } from "../hooks/usePremium";
+import { useState, useEffect } from "react";
+import { getYouTubeEmbedUrl } from "@/utils/youtube";
 
-// ─── Type badge ─────────────────────────────────────────────────────────────
 function TypeBadge({ type }) {
   if (type === "drill") {
     return (
@@ -20,7 +27,6 @@ function TypeBadge({ type }) {
   );
 }
 
-// ─── Single sub-modul row ─────────────────────────────────────────────────────
 function SubModulRow({ sub, index, isActive, onClick }) {
   return (
     <button
@@ -31,7 +37,6 @@ function SubModulRow({ sub, index, isActive, onClick }) {
           : "bg-[var(--bg-card,#f8fafc)] hover:bg-[#EBF8FF] border border-[var(--border,#e2e8f0)]"
       }`}
     >
-      {/* index / play icon */}
       <div
         className={`shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-xs font-black ${
           isActive
@@ -46,28 +51,22 @@ function SubModulRow({ sub, index, isActive, onClick }) {
         )}
       </div>
 
-      {/* info */}
       <div className="flex-1 min-w-0">
         <p
-          className={`text-sm font-bold leading-tight ${
-            isActive ? "text-white" : "text-[var(--text-dashboard)]"
-          }`}
+          className={`text-sm font-bold leading-tight ${isActive ? "text-white" : "text-[var(--text-dashboard)]"}`}
         >
           {sub.title}
         </p>
-        <div className="flex items-center gap-2 mt-1">
+        {sub.durasi && (
           <span
-            className={`flex items-center gap-1 text-[11px] ${
-              isActive ? "text-blue-200" : "text-gray-400"
-            }`}
+            className={`flex items-center gap-1 text-[11px] mt-1 ${isActive ? "text-blue-200" : "text-gray-400"}`}
           >
             <Clock size={10} />
             {sub.durasi}
           </span>
-        </div>
+        )}
       </div>
 
-      {/* type badge */}
       {!isActive && <TypeBadge type={sub.type} />}
       {isActive && (
         <span className="text-[9px] font-black text-blue-200 tracking-wider shrink-0">
@@ -78,15 +77,32 @@ function SubModulRow({ sub, index, isActive, onClick }) {
   );
 }
 
-// ─── Main ModulPage ───────────────────────────────────────────────────────────
 export default function ModulPage() {
   const { slug, modulId } = useParams();
   const navigate = useNavigate();
+  const { data: course, isLoading } = useCourseDetail(slug);
+  const { mutate: completeModule } = useCompleteModule(slug);
+  const [activeSubId, setActiveSubId] = useState(null);
 
-  const kursus = KURSUS_DETAIL[slug];
-  const modul = kursus?.modul.find((m) => String(m.id) === String(modulId));
+  const modul = course?.modules.find((m) => m.id === modulId);
+  const activeSub =
+    modul?.subModules.find((s) => s.id === activeSubId) ?? modul?.subModules[0];
 
-  if (!kursus || !modul) {
+  useEffect(() => {
+    if (modul?.subModules[0]) {
+      setActiveSubId(modul.subModules[0].id);
+    }
+  }, [modulId]);
+
+  if (isLoading) {
+    return (
+      <div className="p-8 flex items-center justify-center h-full">
+        <p className="text-sm text-gray-400">Memuat modul...</p>
+      </div>
+    );
+  }
+
+  if (!course || !modul) {
     return (
       <div className="p-8 text-center text-gray-400">
         <p className="text-lg font-bold">Modul tidak ditemukan.</p>
@@ -100,12 +116,23 @@ export default function ModulPage() {
     );
   }
 
-  // first sub is "active" / playing by default
-  const activeSubId = modul.subModul[0]?.id;
+  const currentIdx = course.modules.findIndex((m) => m.id === modulId);
+  const nextModul = course.modules[currentIdx + 1];
+
+  const handleComplete = () => {
+    completeModule(modul.id, {
+      onSuccess: () => {
+        if (nextModul && !nextModul.locked) {
+          navigate(`/user/premium/course/${slug}/modul/${nextModul.id}`);
+        } else {
+          navigate(`/user/premium/course/${slug}`);
+        }
+      },
+    });
+  };
 
   return (
-    <div className="p-4 md:p-6 flex flex-col gap-5 overflow-y-auto h-full">
-      {/* ── Back ── */}
+    <div className="p-10 md:p-12 flex flex-col gap-5 overflow-y-auto h-full">
       <button
         onClick={() => navigate(-1)}
         className="flex items-center gap-1.5 text-sm font-bold cursor-pointer text-[var(--text-secondary,#64748b)] hover:text-[#2B6CB0] transition-colors self-start"
@@ -114,44 +141,64 @@ export default function ModulPage() {
         Kembali ke Kursus
       </button>
 
-      {/* ── Course breadcrumb ── */}
       <div>
         <p className="text-[11px] font-black text-[#ED8936] tracking-widest uppercase mb-1">
-          {kursus.kategori} · {kursus.title}
+          {course.title}
         </p>
         <h1 className="text-xl md:text-2xl font-black text-[var(--text-dashboard)] leading-tight">
           {modul.title}
         </h1>
         <p className="text-sm text-gray-400 mt-1">
-          {modul.subModul.length} Pelajaran · {modul.durasi}
+          {modul.subModules.length} Pelajaran
+          {modul.durasi ? ` · ${modul.durasi}` : ""}
         </p>
       </div>
 
-      {/* ── Video placeholder ── */}
-      <div className="relative w-full aspect-video rounded overflow-hidden bg-[#0f1923] flex items-center justify-center shadow-lg">
-        <img
-          src={kursus.image}
-          alt={modul.title}
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
-        />
-        <div className="relative z-10 flex flex-col items-center gap-3">
-          <div className="w-16 h-16 rounded-full bg-[#ED8936] flex items-center justify-center shadow-xl cursor-pointer hover:scale-110 transition-transform">
-            <PlayCircle size={34} className="text-white" />
-          </div>
-          <p className="text-white text-sm font-bold opacity-80">
-            {modul.subModul[0]?.title}
-          </p>
-        </div>
-
-        {/* top-left label */}
-        <div className="absolute top-3 left-3 z-10 flex items-center gap-2">
+      {/* Video player / placeholder */}
+      {/* Video player */}
+      <div className="relative w-full aspect-video rounded overflow-hidden min-h-[240px] sm:min-h-[320px] md:min-h-[420px] bg-[#0f1923] shadow-lg">
+        {getYouTubeEmbedUrl(activeSub?.videoUrl) ? (
+          <iframe
+            key={activeSub.id}
+            src={getYouTubeEmbedUrl(activeSub.videoUrl)}
+            title={activeSub.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="absolute inset-0 w-full h-full"
+          />
+        ) : activeSub?.videoUrl ? (
+          <video
+            key={activeSub.id}
+            src={activeSub.videoUrl}
+            controls
+            autoPlay
+            className="absolute inset-0 w-full h-full object-contain bg-black"
+          />
+        ) : (
+          <>
+            <img
+              src={course.thumbnailUrl ?? "/placeholder.webp"}
+              alt={modul.title}
+              className="absolute inset-0 w-full h-full object-cover opacity-40"
+            />
+            <div className="relative z-10 flex flex-col items-center justify-center h-full gap-3">
+              <div className="w-16 h-16 rounded-full bg-[#ED8936] flex items-center justify-center shadow-xl">
+                <PlayCircle size={34} className="text-white" />
+              </div>
+              <p className="text-white text-sm font-bold opacity-80">
+                {activeSub?.title}
+              </p>
+            </div>
+          </>
+        )}
+        <div className="absolute top-3 left-3 z-10 pointer-events-none">
           <span className="text-[10px] font-black px-2.5 py-1 rounded bg-[#ED8936] text-white tracking-wider">
-            MODUL {String(modulId).padStart(2, "0")}
+            MODUL {String(currentIdx + 1).padStart(2, "0")}
           </span>
         </div>
       </div>
 
-      {/* ── Sub-modul list ── */}
+      {/* Sub-modul list */}
       <div>
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-black text-[var(--text-dashboard)] tracking-wide uppercase">
@@ -159,50 +206,42 @@ export default function ModulPage() {
           </h2>
           <div className="flex items-center gap-1 text-[11px] text-gray-400">
             <CheckCircle size={12} className="text-green-500" />
-            0 / {modul.subModul.length} selesai
+            {modul.completed ? modul.subModules.length : 0} /{" "}
+            {modul.subModules.length} selesai
           </div>
         </div>
-
         <div className="flex flex-col gap-2.5">
-          {modul.subModul.map((sub, i) => (
+          {modul.subModules.map((sub, i) => (
             <SubModulRow
               key={sub.id}
               sub={sub}
               index={i}
-              isActive={sub.id === activeSubId}
-              onClick={() => {
-                // hook up your video player logic here
-                console.log("Play:", sub.title);
-              }}
+              isActive={sub.id === activeSub?.id}
+              onClick={() => setActiveSubId(sub.id)}
             />
           ))}
         </div>
       </div>
 
-      {/* ── Next modul CTA (if not last) ── */}
-      {(() => {
-        const currentIdx = kursus.modul.findIndex((m) => String(m.id) === String(modulId));
-        const nextModul = kursus.modul[currentIdx + 1];
-        if (!nextModul || nextModul.locked) return null;
-        return (
-          <div className="mt-2 p-4 rounded-lg bg-gradient-to-r from-[#2B6CB0] to-[#1A4A7A] flex items-center justify-between gap-3">
-            <div>
-              <p className="text-[10px] font-black text-blue-200 tracking-widest uppercase mb-0.5">
-                Modul Berikutnya
-              </p>
-              <p className="text-sm font-bold text-white">{nextModul.title}</p>
-            </div>
-            <button
-              onClick={() =>
-                navigate(`user/premium/kursus/${slug}/modul/${nextModul.id}`)
-              }
-              className="shrink-0 px-4 py-2 rounded bg-[#ED8936] hover:bg-[#DD6B20] text-white text-xs font-black tracking-wider transition-colors"
-            >
-              LANJUT
-            </button>
+      {/* Complete / Next CTA */}
+      {!modul.completed && (
+        <div className="mt-2 p-4 rounded-lg bg-gradient-to-r from-[#2B6CB0] to-[#1A4A7A] flex items-center justify-between gap-3">
+          <div>
+            <p className="text-[10px] font-black text-blue-200 tracking-widest uppercase mb-0.5">
+              {nextModul ? "Selesaikan & Lanjut" : "Selesaikan Modul"}
+            </p>
+            <p className="text-sm font-bold text-white">
+              {nextModul ? nextModul.title : "Tandai modul ini selesai"}
+            </p>
           </div>
-        );
-      })()}
+          <button
+            onClick={handleComplete}
+            className="shrink-0 px-4 py-2 rounded bg-[#ED8936] hover:bg-[#DD6B20] text-white text-xs font-black tracking-wider transition-colors"
+          >
+            {nextModul ? "LANJUT" : "SELESAI"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

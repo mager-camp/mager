@@ -3,15 +3,35 @@ import { ShieldCheck } from "lucide-react";
 export default function ProtokolKeamanan({
   isEditing,
   onChangePassword,
+  loading,
 }) {
+  if (loading) {
+    return (
+      <div className="bg-white rounded-sm border border-gray-100 shadow-sm p-6 animate-pulse">
+        {/* Header */}
+        <div className="flex items-center gap-2 mb-6">
+          <div className="w-[18px] h-[18px] bg-gray-200 rounded" />
+          <div className="h-4 w-40 bg-gray-200 rounded" />
+        </div>
+
+        {/* Content */}
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <div className="h-3 w-20 bg-gray-200 rounded" />
+            <div className="h-11 w-full bg-gray-200 rounded-md" />
+          </div>
+
+          <div className="h-10 w-36 bg-gray-200 rounded-sm" />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
+    <div className="bg-white rounded-sm border border-gray-100 shadow-sm p-6">
       {/* Section title */}
       <div className="flex items-center gap-2 mb-6">
-        <ShieldCheck
-          size={18}
-          className="text-[#ED8936]"
-        />
+        <ShieldCheck size={18} className="text-[#ED8936]" />
 
         <h2 className="text-base font-black text-gray-900 uppercase tracking-wide">
           Keamanan Akun
@@ -36,7 +56,7 @@ export default function ProtokolKeamanan({
               border-[#CBD5E0]
               bg-[#E2E8F0]
               text-gray-500
-              rounded-lg
+              rounded-md
               px-3
               py-2.5
               text-sm
@@ -55,7 +75,7 @@ export default function ProtokolKeamanan({
             w-fit
             px-4
             py-2
-            rounded-lg
+            rounded-sm
             text-sm
             font-semibold
             transition-colors

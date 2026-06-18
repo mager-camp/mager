@@ -78,9 +78,6 @@ export default function WeeklyVolumeChart() {
       {/* Header */}
       <div className="flex items-center justify-between mb-5 flex-shrink-0">
         <h3 className="font-bold text-gray-900 text-lg">Volume Mingguan</h3>
-        <button className="text-gray-400 hover:text-gray-600 transition-colors">
-          <MoreVertical size={18} />
-        </button>
       </div>
 
       {/* Chart */}

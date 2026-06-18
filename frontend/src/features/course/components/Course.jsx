@@ -16,8 +16,20 @@ function KursusCard({ item }) {
 
       <div className="absolute bottom-0 left-0 right-0 z-10 p-3 md:p-4 flex flex-col justify-end min-h-[240px]">
         <div className="flex items-center gap-2 mb-3">
-          <span className="bg-[#1A365D] text-white text-[9px] md:text-[10px] font-black px-2.5 py-1 rounded">
-            GRATIS
+          <span
+            className="
+            bg-[#1A365D] text-white
+              text-[9px] md:text-[10px]
+              font-black
+              px-2.5 py-1
+              rounded
+            "
+          >
+            {item.activity.name}
+          </span>
+          <span className="bg-white text-[#1A365D] text-[9px] md:text-[10px] font-black px-2.5 py-1 rounded flex items-center gap-1">
+            <GraduationCap size={8} />
+            {item.type.toUpperCase()}
           </span>
         </div>
 

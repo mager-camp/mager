@@ -109,6 +109,25 @@ function ViewMode({ event, onClose, onDelete, onEditClick, onStatusChange }) {
             </div>
           )}
 
+          {/* Alarm */}
+          {event.alarmEnabled && event.alarmAt && (
+            <div className="bg-gray-50 rounded px-4 py-3 flex items-center justify-between">
+              <div>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                  Alarm
+                </p>
+                <p className="text-sm font-bold text-gray-800">
+                  {new Date(event.alarmAt).toLocaleTimeString("id-ID", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
+              </div>
+
+              <div className="text-xs font-bold text-orange-500">Aktif</div>
+            </div>
+          )}
+
           {/* Catatan */}
           {event.notes && (
             <div>
@@ -198,18 +217,43 @@ function EditMode({ event, onClose, onBack, onSave }) {
   const [endTime, setEndTime] = useState(event.endTime.replace(".", ":"));
   const [intensity, setIntensity] = useState(event.intensity ?? "MEDIUM");
   const [notes, setNotes] = useState(event.notes ?? "");
+  const [alarmEnabled, setAlarmEnabled] = useState(event.alarmEnabled ?? false);
+  const [submitError, setSubmitError] = useState("");
+
+const [alarmAt, setAlarmAt] = useState(
+  event.alarmAt
+    ? new Date(event.alarmAt).toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })
+    : ""
+);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSave() {
-    setIsSubmitting(true);
-    await onSave(event.id, {
-      activityId: selectedActivity.activityId,
-      startTime,
-      endTime,
-      intensity,
-      notes,
-    });
-    setIsSubmitting(false);
+    try {
+      setSubmitError("");
+      setIsSubmitting(true);
+
+      await onSave(event.id, {
+        activityId: selectedActivity.activityId,
+        startTime,
+        endTime,
+        intensity,
+        notes,
+        alarmEnabled,
+        alarmAt,
+      });
+
+      onBack();
+    } catch (err) {
+      setSubmitError(
+        err?.response?.data?.message ?? "Gagal menyimpan perubahan.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -311,6 +355,32 @@ function EditMode({ event, onClose, onBack, onSave }) {
           </select>
         </div>
 
+        <div className="bg-gray-50 rounded px-4 py-3">
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={alarmEnabled}
+              onChange={(e) => setAlarmEnabled(e.target.checked)}
+            />
+            <span className="text-sm font-semibold">Aktifkan Alarm</span>
+          </label>
+        </div>
+
+        {alarmEnabled && (
+          <div className="bg-gray-50 rounded px-4 py-3">
+            <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              Waktu Alarm
+            </label>
+
+            <input
+              type="time"
+              value={alarmAt}
+              onChange={(e) => setAlarmAt(e.target.value)}
+              className="w-full bg-transparent text-sm font-bold text-gray-800 focus:outline-none"
+            />
+          </div>
+        )}
+
         {/* Catatan */}
         <div className="bg-gray-50 rounded px-4 py-3">
           <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
@@ -328,6 +398,11 @@ function EditMode({ event, onClose, onBack, onSave }) {
 
       {/* Footer — sama persis kayak ViewMode */}
       <div className="px-5 pb-5 flex flex-col gap-2">
+        {submitError && (
+          <div className="mx-5 mb-3 px-3 py-2 rounded bg-red-50 border border-red-200">
+            <p className="text-xs text-red-600 font-medium">{submitError}</p>
+          </div>
+        )}
         <button
           onClick={handleSave}
           disabled={isSubmitting}

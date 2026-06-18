@@ -61,7 +61,7 @@ export default function Sidebar({
       <aside
         className={`
     fixed left-0 z-40 border-r-2 border-border
-    top-14 h-[calc(100vh-3.5rem)]
+    top-14 h-[calc(100dvh-3.5rem)]
     bg-[var(--background)]
     flex flex-col
     transition-all duration-300

@@ -10,7 +10,7 @@ export default function Dashboard() {
     name ? name.charAt(0).toUpperCase() + name.slice(1) : "User";
   
   return (
-    <div className="h-screen flex flex-col gap-4 p-4 md:p-6 overflow-auto">
+    <div className="h-full flex flex-col gap-4 p-10 md:p-12 overflow-auto">
       {/* ROW 1 (fixed height) */}
       <div className="shrink-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2">
@@ -30,7 +30,7 @@ export default function Dashboard() {
       </div>
 
       {/* ROW 3 (FLEX FILL AREA - CHART ONLY) */}
-      <div className="flex-1 min-h-[280px] mb-15">
+      <div className="flex-1 min-h-[280px]">
         <WeeklyVolumeChart />
       </div>
     </div>

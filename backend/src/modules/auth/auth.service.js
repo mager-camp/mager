@@ -11,6 +11,12 @@ import {
   hashPassword,
   comparePassword
 } from '../../utils/hash.js';
+import { OAuth2Client } from 'google-auth-library';
+import { findOrCreateGoogleUser } from './auth.repository.js';
+
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 export const registerUser = async (payload) => {
   const existingUser = await findUserByEmail(payload.email);
 
@@ -73,4 +79,37 @@ export const getCurrentUser = async (userId) => {
   }
 
   return user;
+};
+
+export const googleAuth = async (credential) => {
+  const ticket = await googleClient.verifyIdToken({
+    idToken: credential,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  });
+
+  const payload = ticket.getPayload();
+
+  if (!payload?.email) throw new Error('Invalid Google token');
+
+  const user = await findOrCreateGoogleUser({
+    email: payload.email,
+    fullName: payload.name ?? payload.email,
+    profilePicture: payload.picture ?? null,
+  });
+
+  const token = signToken({
+    id: user.id,
+    email: user.email,
+    role: user.role.name,
+  });
+
+  return {
+    user: {
+      id: user.id,
+      email: user.email,
+      fullName: user.fullName,
+      role: user.role.name,
+    },
+    token,
+  };
 };

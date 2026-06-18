@@ -5,6 +5,7 @@ import {
   GraduationCap,
   TrendingUp,
   Settings,
+  CreditCard,
   Users,
 } from "lucide-react";
 
@@ -50,9 +51,33 @@ export const userNavigationItems = [
 export const adminNavigationItems = [
   {
     id: "admin-dashboard",
-    name: "Dasbor Admin",
+    name: "Dasbor",
     icon: LayoutDashboard,
     href: "/admin/dashboard",
+  },
+  {
+    id: "admin-pembayaran",
+    name: "Manajemen Pembayaran",
+    icon: CreditCard,
+    href: "/admin/manajemen-pembayaran",
+  },
+  {
+    id: "admin-kursus",
+    name: "Manajemen Kursus",
+    icon: GraduationCap,
+    href: "/admin/kursus",
+  },
+  {
+    id: "admin-manajemen-user",
+    name: "Manajemen User",
+    icon: Users,
+    href: "/admin/manajemen-user",
+  },
+  {
+    id: "admin-pengaturan",
+    name: "Pengaturan",
+    icon: Settings,
+    href: "/admin/setting",
   },
 ];
 

@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, Headset } from "lucide-react";
 import { JENIS_MASALAH_OPTIONS } from "../constants/dukunganData";
-import { Headset } from "lucide-react";
+import api from "@/lib/api";
+import { useFeedback } from "@/hooks/useFeedback";
+
 
 const schema = z.object({
   jenisMasalah: z.string().min(1, "Pilih jenis masalah"),
@@ -13,7 +15,9 @@ const schema = z.object({
 });
 
 export default function LaporkanMasalah() {
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted,   setSubmitted]   = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+  const { showSuccess, showError } = useFeedback();
 
   const {
     register,
@@ -25,15 +29,23 @@ export default function LaporkanMasalah() {
     defaultValues: { jenisMasalah: "", subjek: "", deskripsi: "" },
   });
 
-  function onSubmit(data) {
-    console.log("Laporan:", data);
-    setSubmitted(true);
-    reset();
-    setTimeout(() => setSubmitted(false), 4000);
+  async function onSubmit(data) {
+    setSubmitError(null);
+    try {
+      await api.post("/support", data);
+      setSubmitted(true);
+      reset();
+      setTimeout(() => setSubmitted(false), 5000);
+      showSuccess("Laporan berhasil dikirim! Tim kami akan segera meninjau.");
+    } catch (err) {
+      setSubmitError(
+        err?.response?.data?.message ?? "Gagal mengirim laporan. Coba lagi."
+      );
+    }
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 flex flex-col h-full">
+    <div className="bg-[#D9E7F5] rounded-sm border border-gray-100 shadow-sm p-6 flex flex-col lg:h-full">
       {/* Header */}
       <div className="flex items-center gap-2 mb-5 flex-shrink-0">
         <Headset size={20} className="text-[var(--text-dashboard)]" />
@@ -48,8 +60,8 @@ export default function LaporkanMasalah() {
           </label>
           <select
             {...register("jenisMasalah")}
-            className={`w-full border rounded-lg px-3 py-2.5 text-sm text-gray-700 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-[#2B6CB0] ${
-              errors.jenisMasalah ? "border-red-400" : "border-gray-200"
+            className={`w-full border rounded-md px-3 py-2.5 text-sm text-gray-700 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-[#2B6CB0] ${
+              errors.jenisMasalah ? "border-red-400" : "border-border"
             }`}
           >
             <option value="">-- Pilih --</option>
@@ -71,8 +83,8 @@ export default function LaporkanMasalah() {
             type="text"
             placeholder="Ringkasan singkat mengenai masalah ini"
             {...register("subjek")}
-            className={`w-full border rounded-lg px-3 py-2.5 text-sm text-gray-700 bg-gray-50 placeholder:text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#2B6CB0] ${
-              errors.subjek ? "border-red-400" : "border-gray-200"
+            className={`w-full border rounded-md px-3 py-2.5 text-sm text-gray-700 bg-gray-50 placeholder:text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#2B6CB0] ${
+              errors.subjek ? "border-red-400" : "border-border"
             }`}
           />
           {errors.subjek && (
@@ -88,8 +100,8 @@ export default function LaporkanMasalah() {
           <textarea
             placeholder="Berikan penjelasan yang mendetail..."
             {...register("deskripsi")}
-            className={`flex-1 min-h-[100px] w-full border rounded-lg px-3 py-2.5 text-sm text-gray-700 bg-gray-50 placeholder:text-gray-300 resize-none focus:outline-none focus:ring-1 focus:ring-[#2B6CB0] ${
-              errors.deskripsi ? "border-red-400" : "border-gray-200"
+            className={`flex-1 min-h-[100px] w-full border rounded-md px-3 py-2.5 text-sm text-gray-700 bg-gray-50 placeholder:text-gray-300 resize-none focus:outline-none focus:ring-1 focus:ring-[#2B6CB0] ${
+              errors.deskripsi ? "border-red-400" : "border-border"
             }`}
           />
           {errors.deskripsi && (
@@ -97,21 +109,21 @@ export default function LaporkanMasalah() {
           )}
         </div>
 
-        {/* Success */}
-        {submitted && (
-          <p className="text-xs text-green-600 font-semibold flex items-center gap-1.5">
-            <CheckCircle size={13} /> Laporan berhasil dikirim!
-          </p>
+        {/* Error */}
+        {submitError && (
+          <div className="bg-red-50 border border-red-200 rounded-md px-3 py-2.5">
+            <p className="text-xs text-red-600 font-semibold">{submitError}</p>
+          </div>
         )}
 
         {/* Submit */}
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full flex items-center justify-center gap-2 py-3 bg-[#ED8936] hover:bg-[#DD6B20] active:scale-95 transition-all text-white text-xs font-black rounded-lg tracking-wider"
+          className="w-full flex items-center justify-center gap-2 py-3 bg-[#ED8936] hover:bg-[#DD6B20] disabled:opacity-60 active:scale-95 transition-all text-white text-xs font-black rounded-md tracking-wider"
         >
           <Send size={14} />
-          KIRIM LAPORAN
+          {isSubmitting ? "Mengirim..." : "KIRIM LAPORAN"}
         </button>
       </form>
     </div>

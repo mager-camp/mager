@@ -53,7 +53,7 @@ export default function UbahPasswordModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-xl">
+      <div className="w-full max-w-md bg-white rounded-sm shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b">
           <div className="flex items-center gap-2">
@@ -90,7 +90,7 @@ export default function UbahPasswordModal({
               name="currentPassword"
               value={formData.currentPassword}
               onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-md px-3 py-2"
               required
             />
           </div>
@@ -105,7 +105,7 @@ export default function UbahPasswordModal({
               name="newPassword"
               value={formData.newPassword}
               onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-md px-3 py-2"
               required
             />
           </div>
@@ -120,7 +120,7 @@ export default function UbahPasswordModal({
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-md px-3 py-2"
               required
             />
           </div>
@@ -135,7 +135,7 @@ export default function UbahPasswordModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-lg border"
+              className="px-4 py-2 rounded-md border"
             >
               Batal
             </button>
@@ -143,7 +143,7 @@ export default function UbahPasswordModal({
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 rounded-lg bg-[#ED8936] text-white hover:bg-[#DD6B20]"
+              className="px-4 py-2 rounded-md bg-[#ED8936] text-white hover:bg-[#DD6B20]"
             >
               {loading
                 ? "Menyimpan..."

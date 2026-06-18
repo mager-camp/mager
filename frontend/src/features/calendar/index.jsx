@@ -39,9 +39,9 @@ export default function CalendarPage() {
   }, [searchParams, events]);
 
   return (
-    <div className="p-4 md:p-6 h-full flex gap-4 overflow-hidden">
+    <div className="p-10 md:p-12 min-h-full flex flex-col lg:flex-row gap-4 overflow-y-auto">
       {/* Kolom kiri: kalender */}
-      <div className="flex-1 min-w-0 bg-white rounded shadow-sm border border-gray-100 p-5 flex flex-col overflow-hidden">
+      <div className="flex-1 min-w-0 bg-white rounded shadow-sm border border-gray-100 p-5 md:p-5 flex flex-col overflow-hidden">
         <CalendarHeader
           monthName={monthName}
           year={year}
@@ -59,7 +59,7 @@ export default function CalendarPage() {
       </div>
 
       {/* Kolom kanan: panel tambah program */}
-      <div className="w-[260px] shrink-0 flex flex-col">
+      <div className="w-full lg:w-[260px] shrink-0 flex flex-col">
         <AddProgramPanel onAddEvent={addEvent} />
       </div>
 

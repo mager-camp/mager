@@ -20,4 +20,6 @@ export const programSchema = z.object({
   }),
 
   targetFokus: z.string().max(300).optional(),
+  alarmEnabled: z.boolean().default(false),          
+  alarmMinutes: z.number().default(30),   
 });

@@ -8,7 +8,7 @@ export const COURSE_KEYS = {
 
 
 const getFreeCourses = async () => {
-  const { data } = await api.get('/courses', { params: { type: 'regular' } });
+  const { data } = await api.get('/courses', { params: { type: 'free' } });
   return data.data;
 };
 

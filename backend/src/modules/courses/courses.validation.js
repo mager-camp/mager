@@ -5,7 +5,7 @@ export const createCourseSchema =
     title: z.string().min(3),
     description: z.string(),
     type: z.enum([
-      'regular',
+      'free',
       'premium'
     ]),
   });

@@ -8,6 +8,7 @@ import {
   updateAdminUser,
   deactivateAdminUser,
   activateAdminUser,
+  deleteAdminUser,
   getAdminUserPayments,
   getAdminProfile,
   updateAdminProfile,
@@ -85,6 +86,14 @@ export const deactivateUser = async (req, res, next) => {
 export const activateUser = async (req, res, next) => {
   try {
     ok(res, await activateAdminUser(req.params.id), "User berhasil diaktifkan");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  try {
+    ok(res, await deleteAdminUser(req.params.id), "User berhasil dihapus permanen");
   } catch (error) {
     next(error);
   }

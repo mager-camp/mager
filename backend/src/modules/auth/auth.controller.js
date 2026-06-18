@@ -1,7 +1,8 @@
 import {
   registerUser,
   loginUser,
-  getCurrentUser
+  getCurrentUser,
+  googleAuth,
 } from './auth.service.js';
 
 import {
@@ -57,6 +58,19 @@ export const me = async (req, res, next) => {
       success: true,
       data: user
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const googleLogin = async (req, res, next) => {
+  try {
+    const { credential } = req.body;
+    if (!credential) throw new Error('No credential provided');
+
+    const result = await googleAuth(credential);
+
+    res.json({ success: true, data: result });
   } catch (error) {
     next(error);
   }

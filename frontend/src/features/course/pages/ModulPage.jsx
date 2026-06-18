@@ -133,7 +133,7 @@ export default function ModulPage() {
   };
 
   return (
-    <div className="p-4 md:p-6 flex flex-col gap-5 overflow-y-auto h-full">
+    <div className="p-10 md:p-12 flex flex-col gap-5 overflow-y-auto h-full">
       <button
         onClick={() => navigate(-1)}
         className="flex items-center gap-1.5 text-sm font-bold cursor-pointer text-[var(--text-secondary,#64748b)] hover:text-[#2B6CB0] transition-colors self-start"
@@ -157,7 +157,7 @@ export default function ModulPage() {
 
       {/* Video player / placeholder */}
       {/* Video player */}
-      <div className="relative w-full aspect-video rounded overflow-hidden bg-[#0f1923] shadow-lg">
+      <div className="relative w-full aspect-video rounded overflow-hidden min-h-[240px] sm:min-h-[320px] md:min-h-[420px] bg-[#0f1923] shadow-lg">
         {getYouTubeEmbedUrl(activeSub?.videoUrl) ? (
           <iframe
             key={activeSub.id}

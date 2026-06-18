@@ -1,29 +1,38 @@
 import { useLocation } from "react-router-dom";
 import SidebarItem from "./SidebarItem";
+
 import {
   adminNavigationItems,
   userNavigationItems,
   pelatihNavigationItems,
 } from "./navigation";
 
+function getRoleName(user) {
+  const role = user?.role;
+
+  if (typeof role === "string") {
+    return role.toUpperCase();
+  }
+
+  if (typeof role?.name === "string") {
+    return role.name.toUpperCase();
+  }
+
+  return null;
+}
+
 export default function SidebarNav({ isCollapsed }) {
   const location = useLocation();
 
-  const isPelatihRoute =
-    location.pathname.startsWith("/pelatih");
+let items = userNavigationItems;
 
-  const isAdminRoute =
-    location.pathname.startsWith("/admin");
+if (location.pathname.startsWith("/admin")) {
+  items = adminNavigationItems;
+}
 
-  let items = userNavigationItems;
-
-  if (isAdminRoute) {
-    items = adminNavigationItems;
-  }
-
-  if (isPelatihRoute) {
-    items = pelatihNavigationItems;
-  }
+if (location.pathname.startsWith("/pelatih")) {
+  items = pelatihNavigationItems;
+}
 
   return (
     <nav className="flex-1 px-3 py-4">

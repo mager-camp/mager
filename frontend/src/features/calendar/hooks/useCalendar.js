@@ -38,6 +38,8 @@ function mapScheduleToEvent(s) {
     intensity: s.intensity,
     notes: s.notes ?? null,
     status: s.status ?? "scheduled",
+    alarmEnabled: s.alarmEnabled ?? false,
+    alarmAt: s.alarmAt ?? null,
   };
 }
 
@@ -104,44 +106,72 @@ export function useCalendar() {
 
   const addEvent = useCallback(
     async (payloads) => {
-      try {
-        const results = await Promise.all(payloads.map(createSchedule));
-        setEvents((prev) => [...prev, ...results.map(mapScheduleToEvent)]);
-        showSuccess("Jadwal Berhasil Ditambahkan");
-        await queryClient.invalidateQueries({
-          queryKey: ["dashboard"],
-        });
-        showSuccess("Jadwal Berhasil Ditambahkan");
-      } catch (err) {
-        console.error(err);
-        showError("Gagal menambahkan jadwal");
+      // Kirim satu per satu (bukan Promise.all) supaya overlap antar hari dalam
+      // rentang yang sama juga ke-detect, dan error bisa di-throw ke caller
+      const results = [];
+      for (const payload of payloads) {
+        const res = await createSchedule(payload); // ← biarkan throw kalau error
+        results.push(res);
       }
+
+      setEvents((prev) => [...prev, ...results.map(mapScheduleToEvent)]);
+      showSuccess("Jadwal Berhasil Ditambahkan");
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     },
-    [queryClient, showSuccess, showError],
+    [queryClient, showSuccess],
+    // ← hapus showError dari sini, error dihandle di AddProgramPanel
   );
 
   const updateEvent = useCallback(
-    async (id, { activityId, startTime, endTime, intensity, notes }) => {
-      try {
-        const dateStr = events.find((ev) => ev.id === id)?.date;
-        const res = await updateSchedule(id, {
-          ...(activityId && { activityId }),
-          startAt: new Date(`${dateStr}T${startTime}`).toISOString(),
-          endAt: new Date(`${dateStr}T${endTime}`).toISOString(),
-          intensity: intensity.toLowerCase(),
-          notes: notes || undefined,
-        });
-        setEvents((prev) =>
-          prev.map((ev) => (ev.id === id ? mapScheduleToEvent(res) : ev)),
-        );
-        showSuccess("Jadwal berhasil diupdate");
-        queryClient.invalidateQueries({ queryKey: ["dashboard"] });
-      } catch (err) {
-        console.error(err);
-        showError("Gagal mengupdate jadwal");
+    async (
+      id,
+      {
+        activityId,
+        startTime,
+        endTime,
+        intensity,
+        notes,
+        alarmEnabled,
+        alarmAt,
+      },
+    ) => {
+      const dateStr = events.find((ev) => ev.id === id)?.date;
+
+      const payload = {
+        ...(activityId && { activityId }),
+
+        startAt: new Date(`${dateStr}T${startTime}`).toISOString(),
+
+        endAt: new Date(`${dateStr}T${endTime}`).toISOString(),
+
+        intensity: intensity.toLowerCase(),
+
+        notes: notes || undefined,
+
+        alarmEnabled,
+      };
+
+      if (alarmEnabled && alarmAt) {
+        payload.alarmAt = new Date(`${dateStr}T${alarmAt}`).toISOString();
+      } else {
+        payload.alarmAt = null;
       }
+
+      const res = await updateSchedule(id, payload);
+      console.log("UPDATE RES", res);
+      setEvents((prev) =>
+        prev.map((ev) => (ev.id === id ? mapScheduleToEvent(res) : ev)),
+      );
+
+      queryClient.invalidateQueries({
+        queryKey: ["dashboard"],
+      });
+
+      showSuccess("Jadwal berhasil diupdate");
+
+      return res;
     },
-    [events, showSuccess, showError],
+    [events, queryClient, showSuccess],
   );
 
   const updateStatus = useCallback(
