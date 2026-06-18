@@ -14,7 +14,6 @@ import readinessRoutes from "../modules/readiness/readiness.routes.js";
 import adminRoutes from '../modules/admin/admin.routes.js';
 import adminPaymentRoutes from "../modules/admin-payments/adminPayments.routes.js";
 import pldashRoutes from '../modules/pl-dashboard/pl-dash.routes.js';
-import athletesRouter from '../modules/athletes/athletes.routes.js';
 
 const router = Router();
 
@@ -39,6 +38,5 @@ router.use("/readiness", readinessRoutes);
 router.use('/admin', adminRoutes);
 router.use("/admin-payments", adminPaymentRoutes);
 router.use('/pl-dashboard', pldashRoutes);
-router.use('/athletes', athletesRouter);
 
 export default router;

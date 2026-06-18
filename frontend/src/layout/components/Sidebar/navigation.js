@@ -92,25 +92,7 @@ export const instructorNavigationItems = [
     id: "pelatih-kalender",
     name: "Kalender",
     icon: Calendar,
-    href: "/pelatih/calendar",
-  },
-{
-    id: "pelatih-kursus",
-    name: "Manajemen Kursus",
-    icon: GraduationCap,
-    href: "/pelatih/kursus",
-  },
-  {
-    id: "pelatih-user",
-    name: "Manajemen User",
-    icon: Users,
-    href: "/pelatih/manajemen-user",
-  },
-  {
-    id: "pelatih-pengaturan",
-    name: "Pengaturan",
-    icon: Settings,
-    href: "/pelatih/setting",
+    href: "/pelatih/kalender",
   },
 ];
 

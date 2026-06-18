@@ -22,15 +22,7 @@ export default function SidebarFooter({ isCollapsed }) {
   const { user, logout } = useAuth();
 
   const roleName = getRoleName(user);
-
-  const SUPPORT_ROLES = ["ATLET", "INSTRUCTOR"];
-  const showSupport = SUPPORT_ROLES.includes(roleName);
-
-  const SUPPORT_ROUTE = {
-    ATLET: "/user/support",
-    INSTRUCTOR: "/pelatih/support",
-  };
-  const supportPath = SUPPORT_ROUTE[roleName];
+  const isAdmin = roleName === "ADMIN";
 
   const supportActive = location.pathname === "/user/support";
 
@@ -40,9 +32,9 @@ export default function SidebarFooter({ isCollapsed }) {
 
   return (
     <div className="py-3 px-5 border-t-2 border-[var(--border)]">
-      {showSupport && supportPath && (
+      {!isAdmin && (
         <Link
-          to={supportPath}
+          to="/user/support"
           className={`
             w-full flex items-center
             rounded-sm px-3 py-3
