@@ -32,6 +32,8 @@ import DaftarAtlet from "@/pages/pelatih/DaftarAtlet";
 import ManajemenJadwal from "@/pages/pelatih/ManajemenJadwal";
 import ManajemenKursus from "@/pages/pelatih/ManajemenKursus";
 import PengaturanPelatih from "@/pages/pelatih/Pengaturan";
+import ProfileAtlet from "@/pages/pelatih/ProfileAtlet";
+import TambahModul from "@/pages/pelatih/TambahModul";
 
 export const router = createBrowserRouter([
   {
@@ -124,7 +126,11 @@ export const router = createBrowserRouter([
 
 {
   path: "/pelatih",
-  element: <PelatihLayout />,
+  element: (
+    <RoleRoute allowedRoles={["PELATIH"]}>
+      <PelatihLayout />
+    </RoleRoute>
+  ),
   children: [
     {
       path: "dashboard",
@@ -139,8 +145,16 @@ export const router = createBrowserRouter([
       element: <ManajemenKursus />,
     },
     {
+      path: "kursus/tambah",
+      element: <TambahModul />,
+    },
+    {
       path: "atlet",
       element: <DaftarAtlet />,
+    },
+    {
+      path: "atlet/:id",
+      element: <ProfileAtlet />,
     },
     {
       path: "pengaturan",

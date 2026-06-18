@@ -8,6 +8,7 @@ import notificationsRoutes from '../modules/notifications/notifications.routes.j
 import profileRoutes from '../modules/profile/profile.routes.js';
 import coursesRoutes from '../modules/courses/courses.routes.js';
 import adminRoutes from '../modules/admin/admin.routes.js';
+import pelatihRoutes from "../modules/pelatih/pelatih.routes.js";
 
 const router = Router();
 
@@ -26,5 +27,5 @@ router.use(
 router.use('/profile', profileRoutes);
 router.use('/courses', coursesRoutes);
 router.use('/admin', adminRoutes);
-
+router.use("/pelatih", pelatihRoutes);
 export default router;

@@ -55,6 +55,8 @@ export default function LoginForm() {
 
       if (roleName === "ADMIN") {
         navigate("/admin/dashboard", { replace: true });
+      } else if (roleName === "PELATIH") {
+        navigate("/pelatih/dashboard", { replace: true });
       } else {
         navigate("/user/dashboard", { replace: true });
       }
