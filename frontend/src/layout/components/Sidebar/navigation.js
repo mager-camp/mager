@@ -110,7 +110,7 @@ export const instructorNavigationItems = [
     id: "pelatih-pengaturan",
     name: "Pengaturan",
     icon: Settings,
-    href: "/pelatih/setting",
+    href: "/pelatih/settings",
   },
 ];
 

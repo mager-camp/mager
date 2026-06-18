@@ -24,7 +24,7 @@ export default function SidebarNav({ isCollapsed }) {
   const roleName = getRoleName(user);
   const navigationByRole = {
     ADMIN: adminNavigationItems,
-    ATLET: userNavigationItems,
+    USER: userNavigationItems,
     INSTRUCTOR: instructorNavigationItems,
   };
 

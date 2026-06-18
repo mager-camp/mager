@@ -6,7 +6,7 @@ function StatCard({ icon: Icon, iconBg, iconColor, label, children }) {
       <div className={`absolute right-3 top-3 w-10 h-10 rounded-lg ${iconBg} flex items-center justify-center opacity-20`}>
         <Icon size={20} className={iconColor} />
       </div>
-      <p className="text-sm font-bold text-[var(--text-dashboard)] uppercase tracking-widest mb-3">
+      <p className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-widest mb-3">
         {label}
       </p>
       {children}
@@ -39,7 +39,7 @@ export default function SummaryCards({ stats, isLoading }) {
         iconColor="text-blue-600"
         label="Total Atlet"
       >
-        <p className="text-3xl font-black">{totalAtlet}</p>
+        <p className="text-3xl text-[var(--text-dashboard)] font-black">{totalAtlet}</p>
         <p className="text-xs text-gray-400 mt-1">atlet terdaftar</p>
       </StatCard>
 
@@ -50,7 +50,7 @@ export default function SummaryCards({ stats, isLoading }) {
         iconColor="text-green-600"
         label="Total Course"
       >
-        <p className="text-3xl font-black">{totalCourse}</p>
+        <p className="text-3xl text-[var(--text-dashboard)] font-black">{totalCourse}</p>
         <p className="text-xs text-gray-400 mt-1">course aktif</p>
       </StatCard>
 
@@ -61,7 +61,7 @@ export default function SummaryCards({ stats, isLoading }) {
         iconColor="text-orange-500"
         label="Total Schedule"
       >
-        <p className="text-3xl font-black">{totalSchedule}</p>
+        <p className="text-3xl text-[var(--text-dashboard)] font-black">{totalSchedule}</p>
         <p className="text-xs text-gray-400 mt-1">jadwal dibuat</p>
       </StatCard>
 

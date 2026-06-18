@@ -158,7 +158,7 @@ export const router = createBrowserRouter([
         element: <Athlete />,
       },
       {
-        path: "setting",
+        path: "settings",
         element: <Settings />,
       },
       {
