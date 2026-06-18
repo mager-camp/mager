@@ -7,6 +7,7 @@ import {
   completeScheduleRepo,
   getScheduleNotesRepo,
   getScheduleByIdRepo,
+  getAllWorkoutLogsRepo,
 } from "./workoutLogs.repository.js";
 
 import { generateRecoverySchedules } from '../recovery/recoveryScheduler.service.js';
@@ -50,4 +51,8 @@ export const updateWorkoutLog = async (id, payload) => {
 
 export const deleteWorkoutLog = async (id) => {
   return deleteWorkoutLogRepo(id);
+};
+
+export const getAllWorkoutLogs = async () => {
+  return getAllWorkoutLogsRepo();
 };

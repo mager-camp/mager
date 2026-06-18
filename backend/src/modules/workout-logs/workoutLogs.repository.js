@@ -69,3 +69,29 @@ export const getScheduleByIdRepo = (scheduleId) => {
     },
   });
 };
+
+export const getAllWorkoutLogsRepo = () => {
+  return prisma.workoutLog.findMany({
+    where: {
+      user: {
+        roleId: 2,
+      },
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          fullName: true,
+        },
+      },
+      userSchedule: {
+        include: {
+          activity: true,
+        },
+      },
+    },
+    orderBy: {
+      completedAt: "desc",
+    },
+  });
+};

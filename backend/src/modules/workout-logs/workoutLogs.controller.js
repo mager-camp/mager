@@ -4,6 +4,7 @@ import {
   getWorkoutLogById,
   updateWorkoutLog,
   deleteWorkoutLog,
+  getAllWorkoutLogs,
 } from "./workoutLogs.service.js";
 
 import {
@@ -71,6 +72,19 @@ export const remove = async (req, res, next) => {
     res.json({
       success: true,
       message: "Workout log deleted",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getAllForAdmin = async (req, res, next) => {
+  try {
+    const data = await getAllWorkoutLogs();
+
+    res.json({
+      success: true,
+      data,
     });
   } catch (error) {
     next(error);

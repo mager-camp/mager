@@ -35,6 +35,8 @@ import PaymentManagementPage from "@/pages/admin/PaymentManagementPage";
 import ManajemenKursus from "@/pages/admin/ManajemenKursus";
 import UnauthorizedPage from "@/pages/UnauthorizedPage";
 
+import DashboardPelatihPage from "@/pages/pelatih/Dashboard";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -129,6 +131,21 @@ export const router = createBrowserRouter([
       {
         path: "support",
         element: <Dukungan />,
+      },
+    ],
+  },
+
+  {
+    path: "/pelatih",
+    element: (
+      <RoleRoute allowedRoles={["INSTRUCTOR"]}>
+        <UserLayout />
+      </RoleRoute>
+    ),
+    children: [
+      {
+        path: "dashboard",
+        element: <DashboardPelatihPage />,
       },
     ],
   },

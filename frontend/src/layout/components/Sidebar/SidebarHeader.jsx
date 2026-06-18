@@ -19,7 +19,11 @@ export default function SidebarHeader({ isCollapsed, toggleCollapse }) {
   const { user } = useAuth();
 
   const roleName = getRoleName(user);
-  const isAdmin = roleName === "ADMIN";
+  const portalTitle = {
+  ADMIN: "PORTAL ADMIN",
+  ATLET: "PORTAL ATLET",
+  INSTRUCTOR: "PORTAL PELATIH",
+  }[roleName] || "PORTAL";
 
   return (
     <div
@@ -39,7 +43,7 @@ export default function SidebarHeader({ isCollapsed, toggleCollapse }) {
                 tracking-[0.1em]
               "
             >
-              {isAdmin ? "PORTAL ADMIN" : "PORTAL ATLET"}
+              {portalTitle}
             </h1>
 
             <p

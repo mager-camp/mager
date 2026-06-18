@@ -81,4 +81,19 @@ export const adminNavigationItems = [
   },
 ];
 
+export const instructorNavigationItems = [
+  {
+    id: "pelatih-dashboard",
+    name: "Dasbor",
+    icon: LayoutDashboard,
+    href: "/pelatih/dashboard",
+  },
+{
+    id: "pelatih-kalender",
+    name: "Kalender",
+    icon: Calendar,
+    href: "/pelatih/kalender",
+  },
+];
+
 export const navigationItems = userNavigationItems;

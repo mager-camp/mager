@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import SidebarItem from "./SidebarItem";
-import { adminNavigationItems, userNavigationItems } from "./navigation";
+import { adminNavigationItems, userNavigationItems, instructorNavigationItems } from "./navigation";
 
 function getRoleName(user) {
   const role = user?.role;
@@ -22,8 +22,13 @@ export default function SidebarNav({ isCollapsed }) {
   const { user } = useAuth();
 
   const roleName = getRoleName(user);
-  const items =
-    roleName === "ADMIN" ? adminNavigationItems : userNavigationItems;
+  const navigationByRole = {
+    ADMIN: adminNavigationItems,
+    ATLET: userNavigationItems,
+    INSTRUCTOR: instructorNavigationItems,
+  };
+
+  const items = navigationByRole[roleName] || [];
 
   return (
     <nav className="flex-1 px-3 py-4">

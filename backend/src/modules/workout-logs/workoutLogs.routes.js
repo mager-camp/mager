@@ -6,13 +6,15 @@ import {
   getAll,
   getById,
   update,
-  remove
+  remove,
+  getAllForAdmin,
 } from './workoutLogs.controller.js';
 
 const router = Router();
 
 router.use(authMiddleware);
 
+router.get("/admin", getAllForAdmin);
 router.post('/', create);
 router.get('/', getAll);
 router.get('/:id', getById);

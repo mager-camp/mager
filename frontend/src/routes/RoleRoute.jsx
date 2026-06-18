@@ -32,9 +32,7 @@ export default function RoleRoute({ children, allowedRoles = [] }) {
   }
 
   const userRole = getRoleName(user);
-  const normalizedAllowedRoles = allowedRoles.map((role) =>
-    role.toUpperCase()
-  );
+  const normalizedAllowedRoles = allowedRoles.map((role) => role.toUpperCase());
 
   if (!normalizedAllowedRoles.includes(userRole)) {
     return <Navigate to="/unauthorized" replace />;

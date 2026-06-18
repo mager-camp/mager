@@ -34,6 +34,10 @@ export default function GuestRoute({ children }) {
       return <Navigate to="/admin/dashboard" replace />;
     }
 
+    if (roleName === "INSTRUCTOR") {
+      return <Navigate to="/pelatih/dashboard" replace />;
+    }
+
     return <Navigate to="/user/dashboard" replace />;
   }
 

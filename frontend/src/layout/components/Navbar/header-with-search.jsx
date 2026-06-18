@@ -234,8 +234,21 @@ export function Header() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const role = getRoleName(user);
-  const isAdmin = role === "ADMIN";
 
+  const routesByRole = {
+    ADMIN: {
+      settings: "/admin/setting",
+      support: null,
+    },
+    ATLET: {
+      settings: "/user/settings",
+      support: "/user/support",
+    },
+    INSTRUCTOR: {
+      settings: "/pelatih/settings",
+      support: "/pelatih/support",
+    },
+  };
   const { notifications, unreadCount, markAll, markOne } = useNotifications();
   const { query, setQuery, results, isLoading } = useSearch();
 
@@ -339,12 +352,12 @@ export function Header() {
           </div>
 
           {/* Help — route by role */}
-          {!isAdmin && (
+          {routesByRole[role]?.support && (
             <Button
               size="icon"
               variant="ghost"
               className="hidden md:flex"
-              onClick={() => navigate("/user/support")}
+              onClick={() => navigate(routesByRole[role].support)}
             >
               <CircleHelpIcon className="size-5" />
             </Button>
@@ -355,9 +368,7 @@ export function Header() {
             size="icon"
             variant="ghost"
             className="hidden md:flex"
-            onClick={() =>
-              navigate(isAdmin ? "/admin/setting" : "/user/settings")
-            }
+            onClick={() => navigate(routesByRole[role].settings)}
           >
             <UserCircle2Icon className="size-5" />
           </Button>
