@@ -23,11 +23,11 @@ export default function SidebarFooter({ isCollapsed }) {
 
   const roleName = getRoleName(user);
 
-  const SUPPORT_ROLES = ["ATLET", "INSTRUCTOR"];
+  const SUPPORT_ROLES = ["USER", "INSTRUCTOR"];
   const showSupport = SUPPORT_ROLES.includes(roleName);
 
   const SUPPORT_ROUTE = {
-    ATLET: "/user/support",
+    USER: "/user/support",
     INSTRUCTOR: "/pelatih/support",
   };
   const supportPath = SUPPORT_ROUTE[roleName];

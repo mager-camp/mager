@@ -117,9 +117,9 @@ export default function AthleteTable() {
       </div>
 
       {/* TABLE WRAPPER */}
-      <div className="bg-white border p-5 border-gray-100 rounded-sm shadow-sm overflow-hidden flex flex-1 h-full flex-col">
+      <div className="bg-white border p-5 border-gray-100 rounded-sm shadow-sm overflow-hidden flex flex-1 h-full flex-col ">
         <div className="overflow-auto min-h-0">
-          <div className="min-w-[750px]">
+          <div >
             <table className=" w-full border-collapse">
               {/* HEADER */}
               <thead className="sticky top-0 z-10 bg-white">

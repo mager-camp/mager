@@ -37,7 +37,8 @@ import UnauthorizedPage from "@/pages/UnauthorizedPage";
 
 import DashboardPelatihPage from "@/pages/pelatih/Dashboard";
 import PlCalendarPage from "@/pages/pelatih/Kalender";
-import Athlete from "@/features/pelatih/athletes/index";
+import Athlete from "@/pages/pelatih/Athlete";
+import CourseManagement from "@/pages/pelatih/Course";
 
 export const router = createBrowserRouter([
   {
@@ -156,6 +157,10 @@ export const router = createBrowserRouter([
       {
         path: "manajemen-user",
         element: <Athlete />,
+      },
+      {
+        path: "course",
+        element: <CourseManagement />,
       },
       {
         path: "settings",

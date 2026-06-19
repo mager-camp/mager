@@ -240,7 +240,7 @@ export function Header() {
       settings: "/admin/setting",
       support: null,
     },
-    ATLET: {
+    USER: {
       settings: "/user/settings",
       support: "/user/support",
     },

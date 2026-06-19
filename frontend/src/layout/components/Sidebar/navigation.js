@@ -98,7 +98,7 @@ export const instructorNavigationItems = [
     id: "pelatih-kursus",
     name: "Manajemen Kursus",
     icon: GraduationCap,
-    href: "/pelatih/kursus",
+    href: "/pelatih/course",
   },
   {
     id: "pelatih-user",
