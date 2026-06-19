@@ -119,7 +119,7 @@ export default function AthleteTable() {
       {/* TABLE WRAPPER */}
       <div className="bg-white border p-5 border-gray-100 rounded-sm shadow-sm overflow-hidden flex flex-1 h-full flex-col ">
         <div className="overflow-auto min-h-0">
-          <div >
+          <div>
             <table className=" w-full border-collapse">
               {/* HEADER */}
               <thead className="sticky top-0 z-10 bg-white">
@@ -227,18 +227,22 @@ export default function AthleteTable() {
                         </td>
 
                         {/* Readiness */}
-                        <td className="py-4 pr-4 min-w-[140px]">
+                        <td className="py-4 pr-8 min-w-0">
                           {score !== null ? (
-                            <div className="flex items-center gap-2">
-                              <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                            <div className="relative group flex-1">
+                              <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
                                 <div
                                   className={`h-full ${cfg?.bar}`}
                                   style={{ width: `${score}%` }}
                                 />
                               </div>
-                              <span className="text-xs font-bold text-gray-600 w-8 text-right">
-                                {score}
-                              </span>
+
+                              {/* Tooltip */}
+                              <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                <div className="px-2 py-1 text-xs font-bold text-white bg-gray-800 rounded">
+                                  Score: {score}
+                                </div>
+                              </div>
                             </div>
                           ) : (
                             <span className="text-xs text-gray-300">—</span>

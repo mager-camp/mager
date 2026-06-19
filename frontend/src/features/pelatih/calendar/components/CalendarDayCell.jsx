@@ -44,6 +44,7 @@ export default function CalendarDayCell({
               endTime={ev.endTime}
               color={ev.color}
               isRestDay={ev.isRestDay}
+              userName={ev.userName}
             />
           </button>
         ))}

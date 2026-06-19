@@ -6,35 +6,19 @@ const COLOR_MAP = {
   gray: "bg-gray-100 text-gray-500 border-gray-200",
 };
 
-export default function EventChip({
-  title,
-  startTime,
-  endTime,
-  color = "blue",
-  isRestDay,
-}) {
-  if (isRestDay) {
-    return (
-      <div className="text-[9px] font-bold text-[#C05621] uppercase tracking-wider text-center mt-1">
-        Rest Day
-      </div>
-    );
-  }
+export default function EventChip({ title, startTime, endTime, color = "blue", isRestDay, userName }) {
+  if (isRestDay) return <div className="text-[9px] font-bold text-[#C05621] uppercase tracking-wider text-center mt-1">Rest Day</div>;
 
   return (
-    <div
-      className={`
-    flex items-center gap-1 px-1.5 py-0.5 rounded
-    border text-[9px] font-semibold truncate
-    ${COLOR_MAP[color] ?? COLOR_MAP.blue}
-  `}
-    >
-      <span className="truncate">{title}</span>
-
-      {startTime && endTime && (
-        <span className="opacity-60 shrink-0">
-          {startTime}-{endTime}
+    <div className={`flex items-center gap-1 px-1.5 py-0.5 rounded border text-[9px] font-semibold truncate ${COLOR_MAP[color] ?? COLOR_MAP.blue}`}>
+      {userName && (
+        <span className="shrink-0 font-black opacity-70">
+          {userName.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase()}
         </span>
+      )}
+      <span className="truncate">{title}</span>
+      {startTime && endTime && (
+        <span className="opacity-60 shrink-0">{startTime}-{endTime}</span>
       )}
     </div>
   );

@@ -7,7 +7,7 @@ export default function AthletesPage() {
       <div className="flex items-center gap-3">
         <Users size={28} className="text-[#ED8936]" />
         <div>
-          <h1 className="text-xl font-black text-[var(--text-dashboard)]">Daftar Atlet</h1>
+          <h1 className="text-xl font-black text-[var(--text-dashboard)]">DAFTAR ATLET</h1>
           <p className="text-sm text-gray-400">Monitor kesiapan latihan seluruh atlet</p>
         </div>
       </div>

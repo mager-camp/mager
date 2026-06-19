@@ -10,6 +10,7 @@ import {
 } from "@/services/scheduleService";
 import { formatDate, formatTime } from "../utils/dateUtils";
 import { useQueryClient } from "@tanstack/react-query";
+import api from "@/lib/api";
 
 const ACTIVITY_TYPE_TO_COLOR = {
   LARI: "green",
@@ -40,10 +41,12 @@ function mapScheduleToEvent(s) {
     status: s.status ?? "scheduled",
     alarmEnabled: s.alarmEnabled ?? false,
     alarmAt: s.alarmAt ?? null,
+    userName: s.user?.fullName ?? null,
+    userId: s.user?.id ?? null,
   };
 }
 
-export function useCalendar() {
+export function useCalendar({ isInstructor = false } = {}) {
   const { showSuccess, showError } = useFeedback();
   const queryClient = useQueryClient();
   const today = new Date();
@@ -59,12 +62,18 @@ export function useCalendar() {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     async function fetchData() {
-      const data = await getSchedules();
+      let data;
+      if (isInstructor) {
+        const res = await api.get("/schedules/instructor/all-schedules");
+        data = res.data.data;
+      } else {
+        data = await getSchedules();
+      }
       setEvents(data.map(mapScheduleToEvent));
       setIsLoading(false);
     }
     fetchData();
-  }, []);
+  }, [isInstructor]);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -174,6 +183,24 @@ export function useCalendar() {
     [events, queryClient, showSuccess],
   );
 
+  const assignEvent = useCallback(
+    async (payloads, targetUserId) => {
+      const results = [];
+      for (const payload of payloads) {
+        const { data } = await api.post(
+          `/schedules/instructor/assign/${targetUserId}`,
+          payload,
+        );
+        results.push(data.data);
+      }
+      // Jadwal yang di-assign ke atlet lain TIDAK muncul di kalender instructor
+      // Cukup tampilkan success
+      showSuccess(`${results.length} jadwal berhasil di-assign ke atlet`);
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+    },
+    [queryClient, showSuccess],
+  );
+
   const updateStatus = useCallback(
     async (id, status) => {
       try {
@@ -245,5 +272,6 @@ export function useCalendar() {
     removeEvent,
     isLoading,
     events,
+    assignEvent,
   };
 }

@@ -80,6 +80,16 @@ function ViewMode({ event, onClose, onDelete, onEditClick, onStatusChange }) {
         {/* Body */}
         <div className="px-5 py-4 flex flex-col gap-4">
           {/* Waktu & Jenis */}
+            {event.userName && (
+              <div className="bg-blue-50 rounded px-4 py-3">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                  Atlet
+                </p>
+                <p className="text-sm font-bold text-[#2B6CB0]">
+                  {event.userName}
+                </p>
+              </div>
+            )}
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-gray-50 rounded px-4 py-3">
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
@@ -220,15 +230,15 @@ function EditMode({ event, onClose, onBack, onSave }) {
   const [alarmEnabled, setAlarmEnabled] = useState(event.alarmEnabled ?? false);
   const [submitError, setSubmitError] = useState("");
 
-const [alarmAt, setAlarmAt] = useState(
-  event.alarmAt
-    ? new Date(event.alarmAt).toLocaleTimeString("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      })
-    : ""
-);
+  const [alarmAt, setAlarmAt] = useState(
+    event.alarmAt
+      ? new Date(event.alarmAt).toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        })
+      : "",
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSave() {

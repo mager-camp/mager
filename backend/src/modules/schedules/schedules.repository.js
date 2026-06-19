@@ -1,5 +1,4 @@
 import prisma from "../../config/prisma.js";
-
 export const createScheduleRepo = (data) => {
   return prisma.userSchedule.create({
     data,
@@ -85,5 +84,35 @@ export const checkOverlapForUpdateRepo = async (
         gt: start,
       },
     },
+  });
+};
+
+export const getAthletesRepo = () => {
+  return prisma.user.findMany({
+    where: {
+      role: { name: "user" },
+      deletedAt: null,
+    },
+    select: {
+      id:             true,
+      fullName:       true,
+      email:          true,
+      profilePicture: true,
+    },
+    orderBy: { fullName: "asc" },
+  });
+};
+ 
+
+export const getAllAthletesSchedulesRepo = () => {
+  return prisma.userSchedule.findMany({
+    where: {
+      user: { role: { name: "user" } },
+    },
+    include: {
+      activity: true,
+      user: { select: { id: true, fullName: true } },
+    },
+    orderBy: { startAt: "asc" },
   });
 };
