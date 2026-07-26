@@ -41,7 +41,7 @@ export default function CalendarPage() {
   return (
     <div className="p-10 md:p-12 h-full flex flex-col lg:flex-row gap-4 overflow-y-auto">
       {/* Kolom kiri: kalender */}
-      <div className="flex-1 min-w-0 bg-white rounded shadow-sm border border-gray-100 p-5 md:p-5 flex flex-col overflow-hidden">
+      <div className="lg:flex-1 min-w-0 bg-white rounded shadow-sm border border-gray-100 p-5 md:p-5 flex flex-col lg:min-h-0 lg:overflow-hidden">
         <CalendarHeader
           monthName={monthName}
           year={year}

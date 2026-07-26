@@ -66,7 +66,7 @@ export default function CalendarGrid({
 
   return (
     <div className="flex flex-col flex-1 min-h-0 overflow-x-auto">
-      <div className="min-w-[700px] flex flex-col flex-1 min-h-0">
+      <div className="min-w-[700px] flex flex-col flex-1 min-h-[300px] lg:min-h-0">
         {/* Header hari */}
         <div className="grid grid-cols-7 border-b border-gray-200 flex-shrink-0">
           {DAY_LABELS.map((label) => (
