@@ -12,7 +12,7 @@ export default function AthletesPage() {
         </div>
       </div>
 
-      <div className="flex w-full gap-4 flex-1 min-h-0">
+      <div className="flex w-full gap-4 lg:flex-1 lg:min-h-0 min-w-0">
         <AthleteTable />
       </div>
 

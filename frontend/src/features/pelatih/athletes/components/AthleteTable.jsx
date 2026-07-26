@@ -80,7 +80,7 @@ export default function AthleteTable() {
   }, [athletes, search, levelFilter, sortDir]);
 
   return (
-    <div className="flex flex-col gap-5 flex-1 min-h-0">
+    <div className="flex flex-col gap-5 lg:flex-1 lg:min-h-0 min-w-0"> 
       {/* CARDS */}
       <ReadinessCards counts={counts} isLoading={isLoading} />
 
@@ -117,8 +117,8 @@ export default function AthleteTable() {
       </div>
 
       {/* TABLE WRAPPER */}
-      <div className="bg-white border p-5 border-gray-100 rounded-sm shadow-sm overflow-hidden flex flex-1 h-full flex-col ">
-        <div className="overflow-auto min-h-0">
+      <div className="bg-white border p-5 border-gray-100 rounded-sm shadow-sm flex flex-col lg:flex-1 lg:h-full lg:overflow-hidden min-w-0">
+        <div className="overflow-auto lg:min-h-0 min-w-0">
           <div>
             <table className=" w-full border-collapse">
               {/* HEADER */}
