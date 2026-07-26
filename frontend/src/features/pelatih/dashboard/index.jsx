@@ -17,10 +17,8 @@ export default function DashboardPelatihPage() {
 
       <SummaryCards stats={stats} isLoading={loadingStats} />
 
-      <div className="flex flex-row gap-4 xl:min-h-0 xl:flex-1">
-        <div className="w-full xl:flex-1 min-w-0">
+      <div className="flex flex-col gap-4 h-full lg:flex-1 lg:min-h-0 min-w-0">
           <SessionTable sessions={sessions} isLoading={loadingLogs} />
-        </div>
       </div>
 
     </div>
