@@ -74,6 +74,7 @@ export const checkOverlapForUpdateRepo = async (
   return prisma.userSchedule.findFirst({
     where: {
       userId,
+      status: { notIn: ["completed", "skipped"] }, // jadwal selesai/skip ga dihitung
       id: {
         not: scheduleId,
       },
