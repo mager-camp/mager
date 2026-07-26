@@ -6,10 +6,9 @@ import mager from '../../../assets/mager.svg';
 export function HeroSection({ onScroll }) {
   return (
     <section
-      className="hero-section w-full h-[693px] relative overflow-hidden flex items-center"
+      className="hero-section w-full min-h-[600px] lg:h-[693px] relative overflow-hidden flex items-center py-16 lg:py-0"
       id="hero-section"
     >
-      {/* Gambar latar belakang */}
       <div className="absolute top-0 left-0 w-full h-full z-0" id="hero-gambar-latar">
         <img
           src={mainLandingPage}
@@ -18,7 +17,6 @@ export function HeroSection({ onScroll }) {
         />
       </div>
 
-      {/* Lapisan gradasi */}
       <div
         className="absolute top-0 left-0 w-full h-full z-[1]"
         id="hero-lapisan-gradasi"
@@ -27,13 +25,11 @@ export function HeroSection({ onScroll }) {
         }}
       />
 
-      {/* Kontainer konten hero */}
       <div
-        className="hero-konten relative z-[2] w-full h-full flex items-center justify-between px-10 mx-auto"
+        className="hero-konten relative z-[2] w-full max-w-[1306px] h-full flex flex-col lg:flex-row items-center justify-between gap-10 px-4 sm:px-6 lg:px-10 mx-auto"
         id="hero-konten"
       >
-        {/* Kiri: Judul, subjudul, CTA */}
-        <div className="hero-kiri flex-[0_0_50%] max-w-[550px] pt-5" id="hero-kiri">
+        <div className="hero-kiri w-full lg:flex-[0_0_50%] lg:max-w-[550px] pt-5 text-center lg:text-left" id="hero-kiri">
           <div
             className="animasi-dari-bawah tunda-1 inline-flex items-center gap-2 bg-[#1B2B3F] backdrop-blur-sm border border-[rgba(27,58,92,0.15)] rounded-full py-1.5 px-[18px] mb-6 text-xs font-semibold text-white tracking-[0.8px] uppercase"
             id="badge-baru"
@@ -43,7 +39,7 @@ export function HeroSection({ onScroll }) {
           </div>
 
           <h1
-            className="hero-judul animasi-dari-bawah tunda-2 text-[42px] font-extrabold leading-[1.15] text-[#1B3A5C] mb-5"
+            className="hero-judul animasi-dari-bawah tunda-2 text-3xl sm:text-4xl lg:text-[42px] font-extrabold leading-[1.15] text-[#1B3A5C] mb-5"
             id="hero-judul"
           >
             Kuasai Penampilanmu.
@@ -51,7 +47,7 @@ export function HeroSection({ onScroll }) {
           </h1>
 
           <p
-            className="hero-subjudul animasi-dari-bawah tunda-3 text-lg font-normal text-[#4a5568] leading-[1.7] mb-8 max-w-[546px]"
+            className="hero-subjudul animasi-dari-bawah tunda-3 text-base sm:text-lg font-normal text-[#4a5568] leading-[1.7] mb-8 max-w-[546px] mx-auto lg:mx-0"
             id="hero-subjudul"
           >
             Sistem operasi terbaik untuk atlet elit multidisiplin. Sinkronkan
@@ -60,7 +56,7 @@ export function HeroSection({ onScroll }) {
           </p>
 
           <div
-            className="hero-grup-cta animasi-dari-bawah tunda-4 flex items-center gap-4 flex-wrap"
+            className="hero-grup-cta animasi-dari-bawah tunda-4 flex items-center justify-center lg:justify-start gap-4 flex-wrap"
             id="hero-grup-cta"
           >
             <a
@@ -88,16 +84,15 @@ export function HeroSection({ onScroll }) {
           </div>
         </div>
 
-        {/* Kanan: Gambar dashboard */}
         <div
-          className="hero-kanan animasi-dari-kanan tunda-3 flex-[0_0_48%] flex items-center justify-end relative h-full pt-[30px]"
+          className="hero-kanan animasi-dari-kanan tunda-3 w-full lg:flex-[0_0_48%] flex items-center justify-center lg:justify-end relative lg:h-full lg:pt-[30px]"
           id="hero-kanan"
         >
-          <div className="hero-gambar-dashboard relative w-[110%] max-w-[580px] h-auto" id="hero-gambar-dashboard">
+          <div className="hero-gambar-dashboard relative w-full max-w-[580px] h-auto" id="hero-gambar-dashboard">
             <img
               src={page1}
               alt="Pratinjau dashboard MAGER - Portal atlet dengan metrik performa"
-              className="max-w-[110%] h-auto rounded-xl shadow-[0_20px_60px_rgba(27,58,92,0.25),0_8px_24px_rgba(27,58,92,0.15)] transition-transform duration-[400ms]"
+              className="w-full h-auto rounded-xl shadow-[0_20px_60px_rgba(27,58,92,0.25),0_8px_24px_rgba(27,58,92,0.15)] transition-transform duration-[400ms]"
             />
           </div>
         </div>
@@ -109,14 +104,13 @@ export function HeroSection({ onScroll }) {
 export function Footer({ onScroll }) {
   return (
     <footer
-      className="footer-utama w-full h-[125px] bg-[#EFF3FC] flex items-center justify-center border-t border-[#E2E8F0]"
+      className="footer-utama w-full py-6 lg:h-[125px] bg-[#EFF3FC] flex items-center justify-center border-t border-[#E2E8F0]"
       id="footer-utama"
     >
       <div
-        className="footer-konten w-full max-w-[1306px] mx-auto px-10 flex items-center justify-between"
+        className="footer-konten w-full max-w-[1306px] mx-auto px-4 sm:px-6 lg:px-10 flex flex-col lg:flex-row items-center justify-between gap-4 text-center lg:text-left"
         id="footer-konten"
       >
-        {/* Logo Website Kiri */}
         <div className="flex items-center" id="footer-kiri">
           <a
             href="#navigasi-utama"
@@ -132,8 +126,7 @@ export function Footer({ onScroll }) {
           </a>
         </div>
 
-        {/* Tengah: Link Navigasi Tambahan */}
-        <div className="footer-tengah flex gap-8" id="footer-tengah">
+        <div className="footer-tengah flex flex-wrap justify-center gap-4 sm:gap-8" id="footer-tengah">
           <a
             href="#kebijakan"
             className="no-underline text-[13px] font-semibold text-[#4682A9] tracking-[0.5px] transition-colors duration-300 hover:text-[#133957]"
@@ -150,8 +143,7 @@ export function Footer({ onScroll }) {
           </a>
         </div>
 
-        {/* Kanan: Hak Cipta */}
-        <div className="footer-kanan text-right" id="footer-kanan">
+        <div className="footer-kanan text-center lg:text-right" id="footer-kanan">
           <p className="text-xs font-medium text-[#4682A9] tracking-[0.3px]">
             © 2026 MAGER (MONITORING ATLET &amp; GERAK EFEKTIF RUTIN)
           </p>

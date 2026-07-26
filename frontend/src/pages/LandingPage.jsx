@@ -1,9 +1,12 @@
-import { useLandingPage } from '../hooks/useLandingPage';
-import Navigasi from '../layout/components/Landingpage/Navigasi';
-import { HeroSection, Footer } from '../layout/components/Landingpage/HeroSection';
-import KeunggulanTaktis from '../layout/components/Landingpage/KeunggulanTaktis';
-import PerformaMaksimal from '../layout/components/Landingpage/PerformaMaksimal';
-import SectionPremium from '../layout/components/Landingpage/SectionPremium';
+import { useLandingPage } from "../hooks/useLandingPage";
+import Navigasi from "../layout/components/Landingpage/Navigasi";
+import {
+  HeroSection,
+  Footer,
+} from "../layout/components/Landingpage/HeroSection";
+import KeunggulanTaktis from "../layout/components/Landingpage/KeunggulanTaktis";
+import PerformaMaksimal from "../layout/components/Landingpage/PerformaMaksimal";
+import SectionPremium from "../layout/components/Landingpage/SectionPremium";
 
 function LandingPageLayout() {
   const { navigasiRef, handleSmoothScroll } = useLandingPage();
@@ -18,7 +21,7 @@ function LandingPageLayout() {
 
       {/* Banner kepercayaan */}
       <div
-        className="animasi-saat-scroll w-full py-5 px-10 text-center border-b border-[#E2E8F0] bg-white"
+        className="animasi-saat-scroll w-full py-5 px-4 sm:px-6 lg:px-10 text-center border-b border-[#E2E8F0] bg-white"
         id="banner-kepercayaan"
       >
         <p className="text-sm font-medium text-[#4682A9] tracking-[0.3px]">

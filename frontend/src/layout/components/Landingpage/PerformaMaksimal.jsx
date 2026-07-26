@@ -3,21 +3,21 @@ import page2 from '../../../assets/page2.svg';
 function PerformaMaksimal() {
   return (
     <section
-      className="w-full bg-[#EFF3FC] py-[60px] px-10 mt-[50px] flex justify-center items-center"
+      className="w-full bg-[#EFF3FC] py-[60px] px-4 sm:px-6 lg:px-10 mt-[50px] flex justify-center items-center"
       id="section-performa-maksimal"
     >
-      <div className="performa-konten w-full max-w-[1306px] mx-auto flex items-center justify-between gap-12" id="performa-konten">
+      <div className="performa-konten w-full max-w-[1306px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-12" id="performa-konten">
 
         {/* Bagian kiri Informasi & Keunggulan */}
         <div
-          className="performa-kiri animasi-saat-scroll flex-[0_0_50%] max-w-[550px] flex flex-col items-start"
+          className="performa-kiri animasi-saat-scroll w-full lg:flex-[0_0_50%] lg:max-w-[550px] flex flex-col items-center lg:items-start text-center lg:text-left"
           id="performa-kiri"
         >
           <div className="inline-flex items-center bg-[#D2E3FC] rounded-full py-1.5 px-[18px] mb-5 text-xs font-bold text-[#1B3A5C] tracking-[0.8px] uppercase" id="badge-intuitif">
             INTUITIF &amp; MUDAH DIGUNAKAN
           </div>
 
-          <h2 className="performa-judul text-5xl font-extrabold leading-[1.15] text-[#133957] mb-5" id="performa-judul">
+          <h2 className="performa-judul text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-[1.15] text-[#133957] mb-5" id="performa-judul">
             Dirancang untuk
             <span className="block text-[#133957]">Performa Maksimal</span>
           </h2>
@@ -26,7 +26,7 @@ function PerformaMaksimal() {
             Antar muka simpel namun powerful yang membantu pelatih, atlit dan pengguna biasa pada apa yang paling penting
           </p>
 
-          <ul className="list-none p-0 m-0 flex flex-col gap-3" id="performa-poin-list">
+          <ul className="list-none p-0 m-0 flex flex-col gap-3 items-start" id="performa-poin-list">
             <li className="flex items-center gap-3 text-sm font-medium text-[#133957]">
               <span className="text-[#4178BF] font-bold text-base shrink-0">✓</span>
               <span>Navigasi mudah &amp; responsif</span>
@@ -44,10 +44,10 @@ function PerformaMaksimal() {
 
         {/* Bagian kanan Gambar Presentasi */}
         <div
-          className="performa-kanan animasi-saat-scroll tunda-scroll-1 flex-[0_0_48%] flex items-center justify-end"
+          className="performa-kanan animasi-saat-scroll tunda-scroll-1 w-full lg:flex-[0_0_48%] flex items-center justify-center lg:justify-end"
           id="performa-kanan"
         >
-          <div className="performa-gambar-container w-[511px] h-[356px] max-w-full" id="performa-gambar-container">
+          <div className="performa-gambar-container w-full max-w-[511px] aspect-[511/356] h-auto" id="performa-gambar-container">
             <img
               src={page2}
               alt="Pratinjau performa MAGER - Desain intuitif dan fungsional"
