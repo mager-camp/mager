@@ -1,0 +1,1120 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "http://localhost:5000/api/v1"
+    }
+  ],
+  "info": {
+    "title": "API",
+    "description": "Auto docs",
+    "version": "1.0.0"
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "RegisterRequest": {
+        "type": "object",
+        "required": ["email", "password", "fullName", "phone"],
+        "properties": {
+          "email": { "type": "string", "example": "test@mail.com" },
+          "password": { "type": "string", "example": "123456" },
+          "name": { "type": "string", "example": "John Doe" },
+                    "fullName": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "phone": {
+            "type": "string",
+            "example": "08123456789"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": { "type": "string", "example": "test@mail.com" },
+          "password": { "type": "string", "example": "123456" }
+        }
+      },
+      "GoogleAuthRequest": {
+        "type": "object",
+        "required": ["credential"],
+        "properties": {
+          "credential": { "type": "string", "example": "google_id_token_here" }
+        }
+      },
+      "ChangePasswordRequest": {
+        "type": "object",
+        "required": ["currentPassword", "newPassword"],
+        "properties": {
+          "currentPassword": { "type": "string", "example": "oldPassword123" },
+          "newPassword": { "type": "string", "example": "newPassword123" }
+        }
+      },
+      "CreateScheduleRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "example": "Morning Training" },
+          "date": { "type": "string", "format": "date", "example": "2025-01-15" },
+          "activityId": { "type": "string", "example": "activity_id_here" },
+          "notes": { "type": "string", "example": "Focus on endurance" }
+        }
+      },
+      "UpdateScheduleRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "example": "Morning Training Updated" },
+          "date": { "type": "string", "format": "date", "example": "2025-01-15" },
+          "notes": { "type": "string", "example": "Updated notes" }
+        }
+      },
+      "CreateWorkoutLogRequest": {
+        "type": "object",
+        "properties": {
+          "scheduleId": { "type": "string", "example": "schedule_id_here" },
+          "duration": { "type": "number", "example": 60 },
+          "notes": { "type": "string", "example": "Great session!" },
+          "rpe": { "type": "number", "example": 7 }
+        }
+      },
+      "UpdateWorkoutLogRequest": {
+        "type": "object",
+        "properties": {
+          "duration": { "type": "number", "example": 65 },
+          "notes": { "type": "string", "example": "Updated notes" },
+          "rpe": { "type": "number", "example": 8 }
+        }
+      },
+      "CreateCourseRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "example": "Strength Training 101" },
+          "description": { "type": "string", "example": "Course description" },
+          "type": { "type": "string", "example": "strength" }
+        }
+      },
+      "UpdateCourseRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "example": "Updated Title" },
+          "description": { "type": "string", "example": "Updated description" }
+        }
+      },
+      "UpdateProfileRequest": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "example": "John Doe" },
+          "phone": { "type": "string", "example": "+62812345678" },
+          "birthDate": { "type": "string", "format": "date", "example": "1995-01-15" },
+          "weight": { "type": "number", "example": 70 },
+          "height": { "type": "number", "example": 175 }
+        }
+      },
+      "CreatePaymentRequest": {
+        "type": "object",
+        "required": ["packageKey"],
+        "properties": {
+          "packageKey": { "type": "string", "example": "premium_monthly" }
+        }
+      },
+      "CreateSupportRequest": {
+        "type": "object",
+        "properties": {
+          "subject": { "type": "string", "example": "Login issue" },
+          "message": { "type": "string", "example": "I cannot login to my account" }
+        }
+      },
+      "CreateAdminUserRequest": {
+        "type": "object",
+        "required": ["email", "password", "name"],
+        "properties": {
+          "email": { "type": "string", "example": "user@mail.com" },
+          "password": { "type": "string", "example": "123456" },
+          "name": { "type": "string", "example": "John Doe" },
+          "role": { "type": "string", "example": "athlete" }
+        }
+      },
+      "UpdateAdminUserRequest": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "example": "John Doe" },
+          "email": { "type": "string", "example": "user@mail.com" },
+          "role": { "type": "string", "example": "athlete" }
+        }
+      },
+      "CreatePaymentMethodRequest": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "example": "Bank Transfer BCA" },
+          "type": { "type": "string", "example": "bank_transfer" },
+          "accountNumber": { "type": "string", "example": "1234567890" }
+        }
+      },
+      "UpdatePaymentMethodRequest": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "example": "Updated Method Name" },
+          "isActive": { "type": "boolean", "example": true }
+        }
+      },
+      "UpdateAdminProfileRequest": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "example": "Admin Name" },
+          "email": { "type": "string", "example": "admin@mail.com" }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register user",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "User created" },
+          "400": { "description": "Bad request" }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login user",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK - returns JWT token" },
+          "401": { "description": "Invalid credentials" }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Get current user",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/auth/google": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Google OAuth login",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoogleAuthRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK - returns JWT token" },
+          "400": { "description": "Bad request" }
+        }
+      }
+    },
+    "/schedules/instructor/athletes": {
+      "get": {
+        "tags": ["Schedules - Instructor"],
+        "summary": "Get athletes assigned to instructor",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/schedules/instructor/assign/{userId}": {
+      "post": {
+        "tags": ["Schedules - Instructor"],
+        "summary": "Assign athlete to instructor",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/schedules/instructor/all-schedules": {
+      "get": {
+        "tags": ["Schedules - Instructor"],
+        "summary": "Get all schedules for instructor",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/schedules/": {
+      "post": {
+        "tags": ["Schedules"],
+        "summary": "Create a schedule",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateScheduleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" }
+        }
+      },
+      "get": {
+        "tags": ["Schedules"],
+        "summary": "Get all schedules",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/schedules/{id}": {
+      "get": {
+        "tags": ["Schedules"],
+        "summary": "Get schedule by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not found" }
+        }
+      },
+      "patch": {
+        "tags": ["Schedules"],
+        "summary": "Update schedule",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateScheduleRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not found" }
+        }
+      },
+      "delete": {
+        "tags": ["Schedules"],
+        "summary": "Delete schedule",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not found" }
+        }
+      }
+    },
+    "/activities/": {
+      "get": {
+        "tags": ["Activities"],
+        "summary": "Get all activities",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/activities/{id}": {
+      "get": {
+        "tags": ["Activities"],
+        "summary": "Get activity by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not found" }
+        }
+      }
+    },
+    "/workout-logs/admin": {
+      "get": {
+        "tags": ["Workout Logs"],
+        "summary": "Get all workout logs (admin)",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/workout-logs/": {
+      "post": {
+        "tags": ["Workout Logs"],
+        "summary": "Create workout log",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateWorkoutLogRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" }
+        }
+      },
+      "get": {
+        "tags": ["Workout Logs"],
+        "summary": "Get my workout logs",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/workout-logs/{id}": {
+      "get": {
+        "tags": ["Workout Logs"],
+        "summary": "Get workout log by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not found" }
+        }
+      },
+      "patch": {
+        "tags": ["Workout Logs"],
+        "summary": "Update workout log",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateWorkoutLogRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      },
+      "delete": {
+        "tags": ["Workout Logs"],
+        "summary": "Delete workout log",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/dashboard/summary": {
+      "get": {
+        "tags": ["Dashboard"],
+        "summary": "Get dashboard summary",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/dashboard/weekly-progress": {
+      "get": {
+        "tags": ["Dashboard"],
+        "summary": "Get weekly progress",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/dashboard/monthly-progress": {
+      "get": {
+        "tags": ["Dashboard"],
+        "summary": "Get monthly progress",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/notifications/today": {
+      "get": {
+        "tags": ["Notifications"],
+        "summary": "Get today's notifications",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/notifications/": {
+      "get": {
+        "tags": ["Notifications"],
+        "summary": "Get all notifications",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/notifications/mark-all": {
+      "patch": {
+        "tags": ["Notifications"],
+        "summary": "Mark all notifications as read",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/notifications/{id}/read": {
+      "patch": {
+        "tags": ["Notifications"],
+        "summary": "Mark notification as read",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/profile/": {
+      "get": {
+        "tags": ["Profile"],
+        "summary": "Get my profile",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      },
+      "patch": {
+        "tags": ["Profile"],
+        "summary": "Update my profile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateProfileRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      },
+      "delete": {
+        "tags": ["Profile"],
+        "summary": "Delete my account",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/profile/change-password": {
+      "patch": {
+        "tags": ["Profile"],
+        "summary": "Change password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ChangePasswordRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/courses/": {
+      "get": {
+        "tags": ["Courses"],
+        "summary": "Get all courses",
+        "parameters": [
+          { "name": "type", "in": "query", "schema": { "type": "string" }, "description": "Filter by course type" }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      },
+      "post": {
+        "tags": ["Courses"],
+        "summary": "Create a course",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateCourseRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/courses/stats": {
+      "get": {
+        "tags": ["Courses"],
+        "summary": "Get course stats",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/courses/{id}": {
+      "get": {
+        "tags": ["Courses"],
+        "summary": "Get course by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not found" }
+        }
+      },
+      "patch": {
+        "tags": ["Courses"],
+        "summary": "Update course",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateCourseRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      },
+      "delete": {
+        "tags": ["Courses"],
+        "summary": "Delete course",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/courses/modules/{moduleId}/complete": {
+      "post": {
+        "tags": ["Courses"],
+        "summary": "Mark module as complete",
+        "parameters": [
+          { "name": "moduleId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/premium/status": {
+      "get": {
+        "tags": ["Premium"],
+        "summary": "Get premium status",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/premium/periodisasi": {
+      "get": {
+        "tags": ["Premium"],
+        "summary": "Get periodisasi (premium only)",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden - Premium required" }
+        }
+      }
+    },
+    "/premium-payment/webhook": {
+      "post": {
+        "tags": ["Premium Payment"],
+        "summary": "Payment webhook (internal)",
+        "security": [],
+        "responses": {
+          "200": { "description": "OK" }
+        }
+      }
+    },
+    "/premium-payment/packages": {
+      "get": {
+        "tags": ["Premium Payment"],
+        "summary": "Get available packages",
+        "security": [],
+        "responses": {
+          "200": { "description": "OK" }
+        }
+      }
+    },
+    "/premium-payment/create": {
+      "post": {
+        "tags": ["Premium Payment"],
+        "summary": "Create payment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreatePaymentRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/premium-payment/invoice/{invoiceNumber}": {
+      "get": {
+        "tags": ["Premium Payment"],
+        "summary": "Get invoice by number",
+        "parameters": [
+          { "name": "invoiceNumber", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not found" }
+        }
+      }
+    },
+    "/premium-payment/last-invoice": {
+      "get": {
+        "tags": ["Premium Payment"],
+        "summary": "Get last invoice",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/support/": {
+      "post": {
+        "tags": ["Support"],
+        "summary": "Create support ticket",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateSupportRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/support/mine": {
+      "get": {
+        "tags": ["Support"],
+        "summary": "Get my support tickets",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/readiness/": {
+      "get": {
+        "tags": ["Readiness"],
+        "summary": "Get readiness data",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/admin/dashboard-summary": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get admin dashboard summary",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden - Admin only" }
+        }
+      }
+    },
+    "/admin/premium-users": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get all premium users",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden - Admin only" }
+        }
+      }
+    },
+    "/admin/statistics": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get admin statistics",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden - Admin only" }
+        }
+      }
+    },
+    "/admin/profile": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get admin profile",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      },
+      "put": {
+        "tags": ["Admin"],
+        "summary": "Replace admin profile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateAdminProfileRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      },
+      "patch": {
+        "tags": ["Admin"],
+        "summary": "Update admin profile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateAdminProfileRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "tags": ["Admin - Users"],
+        "summary": "Get all users",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden - Admin only" }
+        }
+      },
+      "post": {
+        "tags": ["Admin - Users"],
+        "summary": "Create user (admin)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateAdminUserRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden - Admin only" }
+        }
+      }
+    },
+    "/admin/users/{id}": {
+      "get": {
+        "tags": ["Admin - Users"],
+        "summary": "Get user by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not found" }
+        }
+      },
+      "patch": {
+        "tags": ["Admin - Users"],
+        "summary": "Partially update user",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateAdminUserRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      },
+      "put": {
+        "tags": ["Admin - Users"],
+        "summary": "Replace user",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateAdminUserRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      },
+      "delete": {
+        "tags": ["Admin - Users"],
+        "summary": "Delete user",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/admin/users/{id}/deactivate": {
+      "patch": {
+        "tags": ["Admin - Users"],
+        "summary": "Deactivate user",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/admin/users/{id}/activate": {
+      "patch": {
+        "tags": ["Admin - Users"],
+        "summary": "Activate user",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/admin/users/{id}/payments": {
+      "get": {
+        "tags": ["Admin - Users"],
+        "summary": "Get user payment history",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/admin-payments/summary": {
+      "get": {
+        "tags": ["Admin - Payments"],
+        "summary": "Get payments summary",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden - Admin only" }
+        }
+      }
+    },
+    "/admin-payments/transactions": {
+      "get": {
+        "tags": ["Admin - Payments"],
+        "summary": "Get all transactions",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden - Admin only" }
+        }
+      }
+    },
+    "/admin-payments/methods": {
+      "get": {
+        "tags": ["Admin - Payments"],
+        "summary": "Get payment methods",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      },
+      "post": {
+        "tags": ["Admin - Payments"],
+        "summary": "Create payment method",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreatePaymentMethodRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/admin-payments/methods/{id}": {
+      "patch": {
+        "tags": ["Admin - Payments"],
+        "summary": "Update payment method",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdatePaymentMethodRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      },
+      "delete": {
+        "tags": ["Admin - Payments"],
+        "summary": "Delete payment method",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/pl-dashboard/stats": {
+      "get": {
+        "tags": ["PL Dashboard"],
+        "summary": "Get PL dashboard stats",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/athletes/": {
+      "get": {
+        "tags": ["Athletes"],
+        "summary": "Get all athletes",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    }
+  }
+}

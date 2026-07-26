@@ -5,9 +5,12 @@ import compression from 'compression';
 import routes from './routes/index.js';
 import errorMiddleware from './middlewares/error.middleware.js';
 import rateLimit from 'express-rate-limit';
-
+import swaggerUi from 'swagger-ui-express';
+import fs from 'fs';
 const app = express();
-
+const swaggerDocument = JSON.parse(
+  fs.readFileSync('./swagger-output.json', 'utf-8')
+);
 app.use(cors());
 app.use(helmet());
 app.use(compression());
@@ -18,6 +21,8 @@ app.use(express.json());
 //     max: 100
 //   })
 // );
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/', (req, res) => {
   res.json({
